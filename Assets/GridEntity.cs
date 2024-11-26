@@ -90,7 +90,8 @@ namespace GridModule
         public bool CanMove(Movement movement)
         {
             Vector3 endPosition = GetNextPosition(movement);
-            return Physics2D.OverlapBox(endPosition, new Vector2(GRID_SIZE, GRID_SIZE) * 0.9f, 0) == null;
+            return true;
+            //return Physics2D.OverlapBox(endPosition, new Vector2(GRID_SIZE, GRID_SIZE) * 0.9f, 0) == null;
         }
 
         private Vector3 GetNextPosition(Movement movement) => transform.position + movement switch
