@@ -36,6 +36,11 @@ namespace PlayerModule
 
         #endregion
 
+        private void Start()
+        {
+            StartCoroutine(ExecuteTurn());
+        }
+
         #region Turn
 
         /// <inheritdoc/>
@@ -51,9 +56,13 @@ namespace PlayerModule
                 yield return null;
 
             Movement selected = requestMove.Value;
-
+            
             // Process move
             yield return ApplyMovement(selected);
+
+            OnTurnEnded();
+            OnTurnStarted();
+            StartCoroutine(ExecuteTurn());
         }
 
         #endregion
@@ -70,23 +79,23 @@ namespace PlayerModule
         /// <inheritdoc/>
         protected override void OnMoveStart(Movement movement)
         {
-            // If going right, unflip
+            // If going right, flip
             if (movement == Movement.RIGHT)
-            {
-                spriteRenderer.flipX = false;
-            }
-            // If going left, flip
-            else if (movement == Movement.LEFT)
             {
                 spriteRenderer.flipX = true;
             }
+            // If going left, unflip
+            else if (movement == Movement.LEFT)
+            {
+                spriteRenderer.flipX = false;
+            }
 
-            animator.SetBool("isWalking", true);
+            //animator.SetBool("isWalking", true);
         }
 
         protected override void OnMoveEnd()
         {
-            animator.SetBool("isWalking", false);
+            //animator.SetBool("isWalking", false);
         }
 
         #endregion
