@@ -20,7 +20,11 @@ namespace Dungeon.Drawers
                     if (!hasPlacedEntrance)
                     {
                         entrance.position = new Vector3(x, -y, 0);
-                        player.position = new Vector3(x, -y, 0);
+                        player.position = new Vector3(x + 1, -y, 0);
+
+                        if (player.TryGetComponent(out PlayerModule.PlayerEntity entity))
+                            entity.FlipByMovement(GridModule.Movement.RIGHT);
+
                         hasPlacedEntrance = true;
                     }
                     else

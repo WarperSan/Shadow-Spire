@@ -159,7 +159,7 @@ namespace GridModule
         private SpriteRenderer spriteRenderer;
 
         /// <inheritdoc/>
-        protected void FlipByMovement(Movement movement)
+        public void FlipByMovement(Movement movement)
         {
             // If going right, flip
             if (movement == Movement.RIGHT)
