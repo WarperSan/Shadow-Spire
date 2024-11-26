@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace GridModule
@@ -15,7 +14,7 @@ namespace GridModule
         DOWN = 3
     }
 
-    public class GridEntity : NetworkBehaviour
+    public class GridEntity : MonoBehaviour
     {
         private const float MOVEMENT_DURATION_MS = 300f;
         private const float GRID_SIZE = 1;

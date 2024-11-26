@@ -7,15 +7,6 @@ namespace PlayerModule
 {
     public class PlayerEntity : GridEntity
     {
-        public override void OnNetworkSpawn()
-        {
-            if (!IsOwner)
-                return;
-
-            GameManager.Instance.player = this;
-            StartCoroutine(GameManager.Instance.ProcessTurn(this));
-        }
-
         #region Inputs
 
         private Movement? requestMove = null;
@@ -56,17 +47,10 @@ namespace PlayerModule
         /// <inheritdoc/>
         public override IEnumerator ExecuteTurn()
         {
-            // Show cursors
-            ShowNeededCursors();
-            yield return new WaitForSeconds(PlayerCursor.DURATION_MS / 1000f);
-
             while (requestMove == null)
                 yield return null;
 
             Movement selected = requestMove.Value;
-
-            // Hide all cursors
-            HideAllCursors();
 
             // Process move
             yield return ApplyMovement(selected);
@@ -103,43 +87,6 @@ namespace PlayerModule
         protected override void OnMoveEnd()
         {
             animator.SetBool("isWalking", false);
-        }
-
-        #endregion
-
-        #region Cursors
-
-        [Header("Cursors")]
-        [SerializeField]
-        private PlayerCursor upCursor;
-
-        [SerializeField]
-        private PlayerCursor rightCursor;
-
-        [SerializeField]
-        private PlayerCursor downCursor;
-
-        [SerializeField]
-        private PlayerCursor leftCursor;
-
-        /// <summary>
-        /// Shows the cursors of the movement allowed by the player
-        /// </summary>
-        private void ShowNeededCursors()
-        {
-            upCursor.SetVisibility(CanMove(Movement.UP));
-            rightCursor.SetVisibility(CanMove(Movement.RIGHT));
-            downCursor.SetVisibility(CanMove(Movement.DOWN));
-            leftCursor.SetVisibility(CanMove(Movement.LEFT));
-        }
-
-        /// <summary>Hides all the cursors</summary>
-        private void HideAllCursors()
-        {
-            upCursor.SetVisibility(false);
-            rightCursor.SetVisibility(false);
-            downCursor.SetVisibility(false);
-            leftCursor.SetVisibility(false);
         }
 
         #endregion
