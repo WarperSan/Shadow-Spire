@@ -40,8 +40,11 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public bool[,] Process(Room[] rooms, bool[,] groundGrid, System.Random random)
+        public override bool[,] Process(Room[] rooms)
         {
+            bool[,] groundGrid = Dungeon.Instance.Level.GroundGrid;
+            System.Random random = Dungeon.Instance.Level.Random;
+
             bool[,] grid = CreateEmpty(rooms);
 
             int height = grid.GetLength(0);
@@ -102,11 +105,6 @@ namespace Dungeon.Drawers
             }
 
             return grid;
-        }
-
-        public override bool[,] Process(Room[] rooms)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

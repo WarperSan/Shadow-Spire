@@ -36,68 +36,28 @@ namespace PlayerModule
 
         #endregion
 
-        private void Start()
-        {
-            StartCoroutine(ExecuteTurn());
-        }
-
         #region Turn
 
         /// <inheritdoc/>
-        public override void OnTurnStarted()
+        protected override void OnTurnStarted()
         {
             requestMove = null; // Clear previous moves
         }
 
-        /// <inheritdoc/>
-        public override IEnumerator ExecuteTurn()
+        protected override IEnumerator Think()
         {
             while (requestMove == null)
                 yield return null;
 
-            Movement selected = requestMove.Value;
-            
-            // Process move
-            yield return ApplyMovement(selected);
-
-            OnTurnEnded();
-            OnTurnStarted();
-            StartCoroutine(ExecuteTurn());
+            yield return requestMove.Value;
         }
 
         #endregion
-
-        #region Animation
-
-        [Header("Animations")]
-        [SerializeField]
-        private Animator animator;
-
-        [SerializeField]
-        private SpriteRenderer spriteRenderer;
 
         /// <inheritdoc/>
         protected override void OnMoveStart(Movement movement)
         {
-            // If going right, flip
-            if (movement == Movement.RIGHT)
-            {
-                spriteRenderer.flipX = true;
-            }
-            // If going left, unflip
-            else if (movement == Movement.LEFT)
-            {
-                spriteRenderer.flipX = false;
-            }
-
-            //animator.SetBool("isWalking", true);
+            FlipByMovement(movement);
         }
-
-        protected override void OnMoveEnd()
-        {
-            //animator.SetBool("isWalking", false);
-        }
-
-        #endregion
     }
 }

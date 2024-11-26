@@ -6,14 +6,6 @@ namespace Dungeon.Drawers
 {
     public abstract class Drawer : MonoBehaviour
     {
-        public void ProcessAndDraw(Room[] rooms) => ProcessAndDraw(rooms, out _);
-
-        public void ProcessAndDraw(Room[] rooms, out bool[,] grid)
-        {
-            grid = Process(rooms);
-            Draw(grid, rooms);
-        }
-
         public abstract bool[,] Process(Room[] rooms);
         public abstract void Draw(bool[,] grid, Room[] rooms);
 

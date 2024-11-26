@@ -19,6 +19,7 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
+            bool[,] entranceExitGrid = Dungeon.Instance.Level.EntranceExitGrid;
             bool[,] grid = CreateEmpty(rooms);
 
             foreach (var item in rooms)
@@ -26,7 +27,12 @@ namespace Dungeon.Drawers
                 for (int y = 0; y < item.Height; y++)
                 {
                     for (int x = 0; x < item.Width; x++)
+                    {
+                        if (entranceExitGrid[item.Y + y + 1, item.X + x + 1])
+                            continue;
+
                         grid[item.Y + y + 1, item.X + x + 1] = true;
+                    }
                 }
             }
 

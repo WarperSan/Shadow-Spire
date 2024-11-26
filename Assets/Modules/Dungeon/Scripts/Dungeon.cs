@@ -1,10 +1,11 @@
 using Dungeon.Drawers;
 using Dungeon.Generation;
 using UnityEngine;
+using UtilsModule;
 
 namespace Dungeon
 {
-    public class Dungeon : MonoBehaviour
+    public class Dungeon : Singleton<Dungeon>
     {
         public int overSeed;
         public bool useSeed;
@@ -21,6 +22,9 @@ namespace Dungeon
         [SerializeField]
         private GroundDrawer groundDrawer;
 
+        [SerializeField]
+        private EntranceExitDrawer entranceExitDrawer;
+
         #endregion
 
         private void Start()
@@ -30,20 +34,38 @@ namespace Dungeon
             if (useSeed)
                 seed = overSeed;
 
-            var random = new System.Random(seed);
+            StartLevel(seed);
+        }
+
+        public DungeonResult Level { get; private set; }
+
+        public void StartLevel(int? seed = null)
+        {
+            seed ??= Random.Range(int.MinValue, int.MaxValue);
+
+            var random = new System.Random(seed.Value);
 
             Debug.Log("Seed: " + seed);
 
-            var result = new DungeonGenerator(random).Generate(12,12);
+            Level = new DungeonGenerator(random).Generate(12, 12);
 
-            foreach (var room in result.rooms)
-                Debug.Log(room.X + ";" + room.Y + " (" + room.Width + "x" + room.Height + ")");
+            Level.Random = random;
+            Level.WallGrid = wallDrawer.Process(Level.Rooms);
+            Level.EntranceExitGrid = entranceExitDrawer.Process(Level.Rooms);
+            Level.GroundGrid = groundDrawer.Process(Level.Rooms);
+            Level.DoorGrid = doorDrawer.Process(Level.Rooms);
 
-            wallDrawer.ProcessAndDraw(result.rooms);
-            groundDrawer.ProcessAndDraw(result.rooms, out bool[,] groundGrid);
-
-            bool[,] doorGrid = doorDrawer.Process(result.rooms, groundGrid, random);
-            doorDrawer.Draw(doorGrid, result.rooms);
+            wallDrawer.Draw(Level.WallGrid, Level.Rooms);
+            entranceExitDrawer.Draw(Level.EntranceExitGrid, Level.Rooms);
+            groundDrawer.Draw(Level.GroundGrid, Level.Rooms);
+            doorDrawer.Draw(Level.DoorGrid, Level.Rooms);
         }
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override bool DestroyOnLoad => true;
+
+        #endregion
     }
 }

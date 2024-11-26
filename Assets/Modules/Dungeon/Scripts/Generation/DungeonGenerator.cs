@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Dungeon.Generation
 {
@@ -63,7 +64,7 @@ namespace Dungeon.Generation
             // Package results
             var result = new DungeonResult
             {
-                rooms = rooms,
+                Rooms = rooms,
             };
 
             return result;
@@ -192,11 +193,16 @@ namespace Dungeon.Generation
         /// <summary>
         /// All the final rooms in the dungeon
         /// </summary>
-        public Room[] rooms;
+        public Room[] Rooms;
 
-        /// <summary>
-        /// All the rooms in the generation of the dungeon
-        /// </summary>
-        //public Room[] allRooms;
+        public Random Random;
+
+        public bool[,] WallGrid;
+
+        public bool[,] GroundGrid;
+
+        public bool[,] DoorGrid;
+
+        public bool[,] EntranceExitGrid;
     }
 }
