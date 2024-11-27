@@ -2,74 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using Dungeon.Generation;
 using Entities;
+using Entities.Interfaces;
 using UtilsModule;
 
 public class TurnManager : Singleton<TurnManager>, IDungeonReceive
 {
     public PlayerEntity player;
 
-    private List<GridEntity> entities = new();
-
-    private List<GridEntity>[,] entityEvents;
+    private readonly List<GridEntity> turnEntities = new();
+    private readonly List<GridEntity> eventEntities = new();
 
     private IEnumerator ProcessTurn()
     {
-        while (true)
+        while (!Dungeon.Dungeon.Instance.IsLevelOver)
         {
-            yield return player.ExecuteTurn();
-
-            foreach (var item in entities)
-                yield return item.ExecuteTurn();
-        }
-    }
-
-    #region Enemies
-
-    public void RegisterEntity(GridEntity entity) => entities.Add(entity);
-    public void RemoveEntity(GridEntity entity) => entities.Remove(entity);
-
-    #endregion
-
-    #region Events
-
-    public void RegisterEvent(GridEntity entity)
-    {
-        // Vector2Int pos = entity.Position;
-
-        // entityEvents[pos.y, pos.x] ??= new();
-        // entityEvents[pos.y, pos.x].Add(entity);
-    }
-
-    public void MoveEvent(GridEntity entity)
-    {
-        DungeonResult level = Dungeon.Dungeon.Instance.Level;
-
-        for (int y = 0; y < level.Height; y++)
-        {
-            for (int x = 0; x < level.Width; x++)
+            foreach (var entity in turnEntities)
             {
-                if (entityEvents[y, x] == null)
-                    continue;
+                yield return entity.ExecuteTurn();
 
-                if (!entityEvents[y, x].Contains(entity))
-                    continue;
+                // Level over
+                if (Dungeon.Dungeon.Instance.IsLevelOver)
+                    break;
 
-                entityEvents[y, x].Remove(entity);
+                // Check for event
+                foreach (var item in eventEntities)
+                {
+                    if (item == entity)
+                        continue;
+
+                    if (item.Position != entity.Position)
+                        continue;
+
+                    (item as IEventable).OnEntityLand(entity);
+                }
             }
         }
-
-        RegisterEvent(entity);
     }
-
-    #endregion
 
     #region IDungeonReceive
 
     /// <inheritdoc/>
     public void OnLevelStart(DungeonResult level)
     {
-        entityEvents = new List<GridEntity>[level.Height, level.Width];
-        entities.Clear();
+        turnEntities.Clear();
+        eventEntities.Clear();
+
+        turnEntities.Add(player); // Make the player the first entity
+
+        var foundEntities = FindObjectsOfType<GridEntity>();
+
+        foreach (var item in foundEntities)
+        {
+            // Don't add player twice
+            if (item == player)
+                continue;
+
+            if (item is IEventable)
+                eventEntities.Add(item);
+
+            if (item is not ITurnable)
+                continue;
+
+            turnEntities.Add(item);
+        }
 
         StartCoroutine(ProcessTurn());
     }

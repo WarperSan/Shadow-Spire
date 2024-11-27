@@ -6,6 +6,48 @@ namespace Dungeon.Drawers
 {
     public class EntranceExitDrawer : Drawer
     {
+        #region Fields
+
+        [Header("Fields")]
+        [SerializeField]
+        private EntranceEntity entrance;
+
+        [SerializeField]
+        private ExitEntity exit;
+
+        [SerializeField]
+        private PlayerEntity player;
+
+        #endregion
+
+        private void PlaceEntrance(int x, int y)
+        {
+            entrance.transform.position = new Vector3(x, -y, 0);
+
+            bool isLeft = Dungeon.Instance.Level.WallGrid[y, x + 1];
+
+            Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
+
+            if (isLeft)
+                player.transform.position = new Vector3(x - 1, -y, 0);
+            else
+                player.transform.position = new Vector3(x + 1, -y, 0);
+
+            player.FlipByMovement(direction);
+            entrance.FlipByMovement(direction);
+        }
+
+        private void PlaceExit(int x, int y)
+        {
+            bool isLeft = Dungeon.Instance.Level.WallGrid[y, x + 1];
+            Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
+
+            exit.transform.position = new Vector3(x, -y, 0);
+            exit.FlipByMovement(direction);
+        }
+
+        #region Drawer
+
         /// <inheritdoc/>
         public override void Draw(bool[,] grid, Room[] rooms)
         {
@@ -20,18 +62,13 @@ namespace Dungeon.Drawers
 
                     if (!hasPlacedEntrance)
                     {
-                        entrance.position = new Vector3(x, -y, 0);
-                        player.position = new Vector3(x + 1, -y, 0);
-
-                        if (player.TryGetComponent(out PlayerEntity entity))
-                            entity.FlipByMovement(Movement.RIGHT);
-
+                        PlaceEntrance(x, y);
                         hasPlacedEntrance = true;
                     }
                     else
                     {
-                        exit.position = new Vector3(x, -y, 0);
-                        return;
+                        PlaceExit(x, y);
+                        return; // Exit because last
                     }
                 }
             }
@@ -78,17 +115,13 @@ namespace Dungeon.Drawers
             return grid;
         }
 
-        #region Fields
-
-        [Header("Fields")]
-        [SerializeField]
-        private Transform entrance;
-
-        [SerializeField]
-        private Transform exit;
-
-        [SerializeField]
-        private Transform player;
+        /// <inheritdoc/>
+        public override void Clear()
+        {
+            entrance.transform.position = Vector3.zero;
+            exit.transform.position = Vector3.zero;
+            player.transform.position = Vector3.zero;
+        }
 
         #endregion
     }

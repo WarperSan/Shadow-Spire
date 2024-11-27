@@ -8,6 +8,7 @@ namespace Dungeon.Drawers
     {
         public abstract bool[,] Process(Room[] rooms);
         public abstract void Draw(bool[,] grid, Room[] rooms);
+        public abstract void Clear();
 
         /// <summary>
         /// Creates an empty grid with the given rooms

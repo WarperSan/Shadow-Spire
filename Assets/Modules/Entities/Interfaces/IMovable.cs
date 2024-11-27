@@ -7,18 +7,20 @@ namespace Entities.Interfaces
     {
         private const float MOVEMENT_DURATION_MS = 100f;
 
-        protected Transform Transform { get; }
-
-        public Vector2Int Position => new(Mathf.FloorToInt(Transform.position.x), Mathf.FloorToInt(Transform.position.y));
-
         public IEnumerator ApplyMovement(Movement movement)
         {
+            // Must be a GridEntity
+            if (this is not GridEntity gridEntity)
+                yield break;
+
+            Transform transform = gridEntity.transform;
+
             const float duration = MOVEMENT_DURATION_MS / 1000f;
 
             OnMoveStart(movement);
 
             // Make a note of where we are and where we are going.
-            Vector2 startPosition = Transform.position;
+            Vector2 startPosition = transform.position;
             Vector2 endPosition = GetNextPosition(movement);
 
             // If there is an object at the next position
@@ -34,12 +36,12 @@ namespace Entities.Interfaces
                 {
                     elapsedTime += Time.deltaTime;
                     float percent = elapsedTime / duration;
-                    Transform.position = Vector2.Lerp(startPosition, endPosition, percent);
+                    transform.position = Vector2.Lerp(startPosition, endPosition, percent);
                     yield return null;
                 }
 
                 // Make sure we end up exactly where we want.
-                Transform.position = endPosition;
+                transform.position = endPosition;
             }
 
             OnMoveEnd();
@@ -55,8 +57,11 @@ namespace Entities.Interfaces
 
         private Vector2Int GetNextPosition(Movement movement)
         {
-            Vector2Int position = Position;
+            Vector2Int position = Vector2Int.zero;
             Vector2Int movePos = Vector2Int.zero;
+
+            if (this is GridEntity gridEntity)
+                position = gridEntity.Position;
 
             switch (movement)
             {

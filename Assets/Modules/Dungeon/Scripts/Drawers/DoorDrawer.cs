@@ -21,6 +21,7 @@ namespace Dungeon.Drawers
 
         #endregion
 
+        /// <inheritdoc/>
         public override void Draw(bool[,] grid, Room[] rooms)
         {
             int height = grid.GetLength(0);
@@ -106,5 +107,8 @@ namespace Dungeon.Drawers
 
             return grid;
         }
+
+        /// <inheritdoc/>
+        public override void Clear() => wallMap.ClearAllTiles();
     }
 }

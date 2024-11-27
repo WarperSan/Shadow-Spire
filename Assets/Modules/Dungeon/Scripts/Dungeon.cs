@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
@@ -38,30 +39,37 @@ namespace Dungeon
             StartLevel(seed);
         }
 
+        #region Game Flow
+
         public DungeonResult Level { get; private set; }
 
         private IDungeonReceive[] Receivers;
 
+        public bool IsLevelOver { get; private set; }
+
         public void StartLevel(int? seed = null)
         {
+            IsLevelOver = false;
+
             seed ??= Random.Range(int.MinValue, int.MaxValue);
 
             var random = new System.Random(seed.Value);
 
             Debug.Log("Seed: " + seed);
 
-            Level = new DungeonGenerator(random).Generate(12, 12);
+            var lvl = new DungeonGenerator(random).Generate(12, 12);
+            Level = lvl;
 
-            Level.Random = random;
-            Level.WallGrid = wallDrawer.Process(Level.Rooms);
-            Level.EntranceExitGrid = entranceExitDrawer.Process(Level.Rooms);
-            Level.GroundGrid = groundDrawer.Process(Level.Rooms);
-            Level.DoorGrid = doorDrawer.Process(Level.Rooms);
+            lvl.Random = random;
+            lvl.WallGrid = wallDrawer.Process(lvl.Rooms);
+            lvl.EntranceExitGrid = entranceExitDrawer.Process(lvl.Rooms);
+            lvl.GroundGrid = groundDrawer.Process(lvl.Rooms);
+            lvl.DoorGrid = doorDrawer.Process(lvl.Rooms);
 
-            wallDrawer.Draw(Level.WallGrid, Level.Rooms);
-            entranceExitDrawer.Draw(Level.EntranceExitGrid, Level.Rooms);
-            groundDrawer.Draw(Level.GroundGrid, Level.Rooms);
-            doorDrawer.Draw(Level.DoorGrid, Level.Rooms);
+            wallDrawer.Draw(Level.WallGrid, lvl.Rooms);
+            entranceExitDrawer.Draw(lvl.EntranceExitGrid, lvl.Rooms);
+            groundDrawer.Draw(lvl.GroundGrid, lvl.Rooms);
+            doorDrawer.Draw(lvl.DoorGrid, lvl.Rooms);
 
             Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
 
@@ -71,8 +79,26 @@ namespace Dungeon
 
         public void EndLevel()
         {
-            
+            IsLevelOver = true;
+            StartCoroutine(LevelEndSequence());
         }
+
+        private IEnumerator LevelEndSequence()
+        {
+            yield return new WaitForSeconds(1.5f); // Level end animation
+
+            // Clear all drawers
+            wallDrawer.Clear();
+            doorDrawer.Clear();
+            groundDrawer.Clear();
+            entranceExitDrawer.Clear();
+
+            yield return null; // Wait 1 frame
+
+            StartLevel();
+        }
+
+        #endregion
 
         #region Singleton
 

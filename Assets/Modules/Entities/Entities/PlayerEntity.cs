@@ -57,8 +57,6 @@ namespace Entities
 
         #region IMovable
 
-        Transform IMovable.Transform => transform;
-
         /// <inheritdoc/>
         void IMovable.OnMoveStart(Movement movement)
         {

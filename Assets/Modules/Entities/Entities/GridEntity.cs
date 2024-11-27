@@ -18,7 +18,7 @@ namespace Entities
 
     public abstract class GridEntity : MonoBehaviour
     {
-        private const float MOVEMENT_DURATION_MS = 100f;
+        public Vector2Int Position => new(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
 
         public IEnumerator ExecuteTurn()
         {
@@ -59,17 +59,6 @@ namespace Entities
             {
                 spriteRenderer.flipX = false;
             }
-        }
-
-        #endregion
-
-        #region MonoBehaviour
-
-        /// <inheritdoc/>
-        private void Start()
-        {
-            if (this is ITurnable && this is not PlayerEntity)
-                TurnManager.Instance.RegisterEntity(this);
         }
 
         #endregion

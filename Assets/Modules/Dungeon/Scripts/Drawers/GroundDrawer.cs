@@ -16,6 +16,8 @@ namespace Dungeon.Drawers
 
         #endregion
 
+        #region Drawer
+
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
@@ -57,5 +59,10 @@ namespace Dungeon.Drawers
                 }
             }
         }
+
+        /// <inheritdoc/>
+        public override void Clear() => groundMap.ClearAllTiles();
+
+        #endregion
     }
 }
