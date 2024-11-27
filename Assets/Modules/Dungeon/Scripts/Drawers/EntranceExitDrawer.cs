@@ -1,4 +1,5 @@
 using Dungeon.Generation;
+using Entities;
 using UnityEngine;
 
 namespace Dungeon.Drawers
@@ -22,8 +23,8 @@ namespace Dungeon.Drawers
                         entrance.position = new Vector3(x, -y, 0);
                         player.position = new Vector3(x + 1, -y, 0);
 
-                        if (player.TryGetComponent(out PlayerModule.PlayerEntity entity))
-                            entity.FlipByMovement(GridModule.Movement.RIGHT);
+                        if (player.TryGetComponent(out PlayerEntity entity))
+                            entity.FlipByMovement(Movement.RIGHT);
 
                         hasPlacedEntrance = true;
                     }

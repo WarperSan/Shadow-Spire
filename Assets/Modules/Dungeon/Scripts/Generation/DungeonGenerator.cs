@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Random = System.Random;
 
 namespace Dungeon.Generation
@@ -65,6 +64,8 @@ namespace Dungeon.Generation
             var result = new DungeonResult
             {
                 Rooms = rooms,
+                Width = width,
+                Height = height
             };
 
             return result;
@@ -195,8 +196,23 @@ namespace Dungeon.Generation
         /// </summary>
         public Room[] Rooms;
 
+        /// <summary>
+        /// The element used for random generation
+        /// </summary>
         public Random Random;
 
+        /// <summary>
+        /// Width of the entire dungeon
+        /// </summary>
+        public int Width;
+
+        /// <summary>
+        /// Height of the entire dungeon
+        /// </summary>
+        public int Height;
+
+        /// <summary>
+        /// </summary>
         public bool[,] WallGrid;
 
         public bool[,] GroundGrid;

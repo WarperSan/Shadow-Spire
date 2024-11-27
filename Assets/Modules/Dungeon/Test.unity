@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overSeed: -1157219126
-  useSeed: 1
+  useSeed: 0
   wallDrawer: {fileID: 895919165}
   doorDrawer: {fileID: 895919164}
   groundDrawer: {fileID: 2116156617}

@@ -1,3 +1,4 @@
+using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
 using UnityEngine;
@@ -39,6 +40,8 @@ namespace Dungeon
 
         public DungeonResult Level { get; private set; }
 
+        private IDungeonReceive[] Receivers;
+
         public void StartLevel(int? seed = null)
         {
             seed ??= Random.Range(int.MinValue, int.MaxValue);
@@ -59,6 +62,16 @@ namespace Dungeon
             entranceExitDrawer.Draw(Level.EntranceExitGrid, Level.Rooms);
             groundDrawer.Draw(Level.GroundGrid, Level.Rooms);
             doorDrawer.Draw(Level.DoorGrid, Level.Rooms);
+
+            Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
+
+            foreach (var receiver in Receivers)
+                receiver.OnLevelStart(Level);
+        }
+
+        public void EndLevel()
+        {
+            
         }
 
         #region Singleton

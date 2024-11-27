@@ -1,11 +1,11 @@
 using System.Collections;
-using GridModule;
+using Entities.Interfaces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace PlayerModule
+namespace Entities
 {
-    public class PlayerEntity : GridEntity
+    public class PlayerEntity : GridEntity, ITurnable, IMovable
     {
         #region Inputs
 
@@ -30,21 +30,22 @@ namespace PlayerModule
                 movement = Movement.DOWN;
 
             // If can apply movement, register
-            if (CanMove(movement))
+            if ((this as IMovable).CanMove(movement))
                 requestMove = movement;
         }
 
         #endregion
 
-        #region Turn
+        #region ITurnable
 
         /// <inheritdoc/>
-        protected override void OnTurnStarted()
+        public void OnTurnStarted()
         {
             requestMove = null; // Clear previous moves
         }
 
-        protected override IEnumerator Think()
+        /// <inheritdoc/>
+        IEnumerator ITurnable.Think()
         {
             while (requestMove == null)
                 yield return null;
@@ -54,10 +55,16 @@ namespace PlayerModule
 
         #endregion
 
+        #region IMovable
+
+        Transform IMovable.Transform => transform;
+
         /// <inheritdoc/>
-        protected override void OnMoveStart(Movement movement)
+        void IMovable.OnMoveStart(Movement movement)
         {
             FlipByMovement(movement);
         }
+
+        #endregion
     }
 }
