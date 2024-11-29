@@ -7,7 +7,7 @@ using UtilsModule;
 
 namespace Dungeon
 {
-    public class Dungeon : Singleton<Dungeon>
+    public class DungeonManager : Singleton<DungeonManager>
     {
         public int overSeed;
         public bool useSeed;
