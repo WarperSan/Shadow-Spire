@@ -1,7 +1,6 @@
 using System.Collections;
 using Entities.Interfaces;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Entities
 {
@@ -27,7 +26,6 @@ namespace Entities
                 return;
 
             Debug.Log("hit");
-            SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
         }
 
         #endregion
