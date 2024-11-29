@@ -371,6 +371,7 @@ MonoBehaviour:
   groundDrawer: {fileID: 2116156617}
   entranceExitDrawer: {fileID: 895919159}
   blackout: {fileID: 444811996}
+  transitionLevelText: {fileID: 5877184638961969173}
 --- !u!4 &824904447
 Transform:
   m_ObjectHideFlags: 0
@@ -974,7 +975,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1405,6 +1406,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e331d902e74a4bc9e957ba0eaf7b83ab, type: 3}
+--- !u!114 &5877184638961969173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1113176926319881878, guid: e331d902e74a4bc9e957ba0eaf7b83ab, type: 3}
+  m_PrefabInstance: {fileID: 5877184638961969172}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

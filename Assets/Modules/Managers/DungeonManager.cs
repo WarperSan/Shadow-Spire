@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UtilsModule;
@@ -32,6 +33,8 @@ namespace Managers
 
         private void Start()
         {
+            originalLevelText = transitionLevelText.text;
+
             var seed = Random.Range(int.MinValue, int.MaxValue);
 
             if (useSeed)
@@ -98,8 +101,21 @@ namespace Managers
                 blackout.color = blackoutColor;
                 yield return new WaitForSeconds(0.2f);
             }
-            
-            yield return new WaitForSeconds(1.5f); // Level end animation
+
+            yield return new WaitForSeconds(0.6f);
+
+            transitionLevelText.gameObject.SetActive(true);
+            transitionLevelText.text = string.Format(originalLevelText, 1);
+
+            yield return new WaitForSeconds(1f);
+
+            transitionLevelText.text = string.Format(originalLevelText, 2);
+
+            yield return new WaitForSeconds(1.5f);
+
+            transitionLevelText.gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(0.2f); // Level end animation
 
             // Clear all drawers
             wallDrawer.Clear();
@@ -110,6 +126,15 @@ namespace Managers
             yield return null; // Wait 1 frame
 
             StartLevel();
+
+            yield return null;
+
+            for (int i = 1; i <= END_TRANSITION_TICKS; i++)
+            {
+                blackoutColor.a = 1f - 1f / END_TRANSITION_TICKS * i;
+                blackout.color = blackoutColor;
+                yield return new WaitForSeconds(0.2f);
+            }
         }
 
         #endregion
@@ -119,6 +144,10 @@ namespace Managers
         [Header("UI")]
         [SerializeField]
         private Graphic blackout;
+
+        [SerializeField]
+        private TextMeshProUGUI transitionLevelText;
+        private string originalLevelText;
 
         #endregion
 
