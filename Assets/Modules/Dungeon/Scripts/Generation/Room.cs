@@ -20,41 +20,52 @@ namespace Dungeon.Generation
             var roomA = new Room();
             var roomB = new Room();
 
-            var splitVertical = rand.Next(0, 2) == 0;
-            var percent = rand.NextDouble() * 0.4f + 0.3f; // 30-70%
+            bool hasSplitted = false;
+            bool splitVertical = false;
 
-            var newWidth = (int)Math.Floor(Width * percent);
-            var newHeight = (int)Math.Floor(Height * percent);
-
-            // If splitting vertically makes two big enough room
-            if (splitVertical && newWidth >= minWidth && Width - newWidth >= minWidth)
+            for (int i = 0; i < 10; i++)
             {
-                roomA.X = X;
-                roomA.Y = Y;
-                roomA.Width = newWidth;
-                roomA.Height = Height;
+                splitVertical = rand.Next(0, 2) == 0;
+                var percent = rand.NextDouble() * 0.4f + 0.3f; // 30-70%
 
-                roomB.X = X + newWidth;
-                roomB.Y = Y;
-                roomB.Width = Width - newWidth;
-                roomB.Height = Height;
+                var newWidth = (int)Math.Floor(Width * percent);
+                var newHeight = (int)Math.Floor(Height * percent);
+
+                // If splitting vertically makes two big enough room
+                if (splitVertical && newWidth >= minWidth && Width - newWidth >= minWidth)
+                {
+                    roomA.X = X;
+                    roomA.Y = Y;
+                    roomA.Width = newWidth;
+                    roomA.Height = Height;
+
+                    roomB.X = X + newWidth;
+                    roomB.Y = Y;
+                    roomB.Width = Width - newWidth;
+                    roomB.Height = Height;
+
+                    hasSplitted = true;
+                    break;
+                }
+                else if (newHeight >= minHeight && Height - newHeight >= minHeight)
+                {
+                    roomA.X = X;
+                    roomA.Y = Y;
+                    roomA.Width = Width;
+                    roomA.Height = newHeight;
+
+                    roomB.X = X;
+                    roomB.Y = Y + newHeight;
+                    roomB.Width = Width;
+                    roomB.Height = Height - newHeight;
+
+                    splitVertical = false; // Vertical can fail
+                    hasSplitted = true;
+                    break;
+                }
             }
-            else if (newHeight >= minHeight && Height - newHeight >= minHeight)
-            {
-                roomA.X = X;
-                roomA.Y = Y;
-                roomA.Width = Width;
-                roomA.Height = newHeight;
 
-                roomB.X = X;
-                roomB.Y = Y + newHeight;
-                roomB.Width = Width;
-                roomB.Height = Height - newHeight;
-
-                splitVertical = false; // Vertical can fail
-            }
-            // No split possible
-            else
+            if (!hasSplitted)
                 return false;
 
             roomA.GenerateDoors(rand, splitVertical);

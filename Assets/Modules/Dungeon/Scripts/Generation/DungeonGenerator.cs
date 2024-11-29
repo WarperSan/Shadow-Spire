@@ -17,8 +17,8 @@ namespace Dungeon.Generation
 
         #region Rooms
 
-        private const int MINIMUM_ROOM_WIDTH = 3;
-        private const int MINIMUM_ROOM_HEIGHT = 3;
+        private const int MINIMUM_ROOM_WIDTH = 5;
+        private const int MINIMUM_ROOM_HEIGHT = 5;
 
         private DungeonResult GenerateRooms(int width, int height, int sliceCount)
         {
@@ -58,7 +58,7 @@ namespace Dungeon.Generation
             Room[] rooms = endRooms.ToArray();
 
             // Pushes the rooms to let a gap between the rooms
-            PushRooms(rooms);
+            //PushRooms(rooms);
 
             // Package results
             var result = new DungeonResult
@@ -102,86 +102,61 @@ namespace Dungeon.Generation
         /// </summary>
         private void PushRooms(Room[] rooms)
         {
-            var sortedRooms = rooms.OrderBy(r => r.X).ThenBy(r => r.Y).ToArray();
+            Dictionary<Room, int> push = new();
 
-            // Push left
-            foreach (var roomPushing in sortedRooms)
+            // Push right
+            for (int i = 0; i < rooms.Length; i++)
             {
-                foreach (var roomToPush in rooms)
+                var roomPushing = rooms[i];
+
+                for (int j = i + 1; j < rooms.Length; j++)
                 {
-                    // If pushing self, skip
-                    if (roomToPush == roomPushing)
-                        continue;
+                    var roomToPush = rooms[j];
 
-                    // If room is left, skip
-                    if (roomToPush.X < roomPushing.X)
-                        continue;
+                    var pushingMin = roomPushing.Y;
+                    var pushingMax = roomPushing.Y + roomPushing.Height;
 
-                    // If room is under, skip
-                    if (roomToPush.Y >= roomPushing.Y + roomPushing.Height)
-                        continue;
+                    var pushedMin = roomToPush.Y;
+                    var pushedMax = roomToPush.Y + roomToPush.Height;
 
-                    // If room is above, skip
-                    if (roomToPush.Y < roomPushing.Y)
-                        continue;
+                    if ((pushedMax > pushingMin) && (pushedMin < pushingMax))
+                    {
+                        if (push.TryGetValue(roomToPush, out int x) && x >= roomPushing.X)
+                            continue;
 
-                    // bool isRight = false;
-
-                    // for (int i = 0; i < roomToPush.Height; i++)
-                    // {
-                    //     if (roomToPush.Y + i > roomPushing.Y && roomToPush.Y + i < roomPushing.Y + roomPushing.Height)
-                    //     {
-                    //         isRight = true;
-                    //         break;
-                    //     }
-                    // }
-
-                    // if (!isRight)
-                    //     continue;
-
-                    //UnityEngine.Debug.Log($"{roomPushing} pushed {roomToPush} left");
-                    roomToPush.X++;
+                        roomToPush.X++;
+                        push[roomToPush] = roomPushing.X;
+                    }
                 }
             }
 
-            sortedRooms = rooms.OrderBy(r => r.Y).ThenBy(r => r.X).ToArray();
+            push.Clear();
+
+            var sortedRooms = rooms.OrderBy(r => r.Y).ThenBy(r => r.X).ToArray();
 
             // Push down
-            foreach (var roomPushing in sortedRooms)
+            for (int i = 0; i < sortedRooms.Length; i++)
             {
-                foreach (var roomToPush in rooms)
+                var roomPushing = rooms[i];
+
+                for (int j = i + 1; j < sortedRooms.Length; j++)
                 {
-                    // If pushing self, skip
-                    if (roomToPush == roomPushing)
-                        continue;
+                    var roomToPush = rooms[j];
 
-                    // If room is above, skip
-                    if (roomToPush.Y < roomPushing.Y)
-                        continue;
+                    var pushingMin = roomPushing.X;
+                    var pushingMax = roomPushing.X + roomPushing.Width;
 
-                    // If room is right, skip
-                    if (roomToPush.X > roomPushing.X + roomPushing.Width)
-                        continue;
+                    var pushedMin = roomToPush.X;
+                    var pushedMax = roomToPush.X + roomToPush.Width;
 
-                    if (roomToPush.X < roomPushing.X)
-                        continue;
+                    if ((pushedMax > pushingMin) && (pushedMin < pushingMax))
+                    {
+                        if (push.TryGetValue(roomToPush, out int y) && y >= roomPushing.Y)
+                            continue;
 
-                    // bool isUnder = false;
-
-                    // for (int i = 0; i < roomToPush.Width; i++)
-                    // {
-                    //     if (roomToPush.X + i >= roomPushing.X && roomToPush.X + i <= roomPushing.X + roomPushing.Width)
-                    //     {
-                    //         isUnder = true;
-                    //         break;
-                    //     }
-                    // }
-
-                    // if (!isUnder)
-                    //     continue;
-
-                    //UnityEngine.Debug.Log($"{roomPushing} pushed {roomToPush} down");
-                    roomToPush.Y++;
+                        roomToPush.Y++;
+                        push[roomToPush] = roomPushing.Y;
+                    }
                 }
             }
         }

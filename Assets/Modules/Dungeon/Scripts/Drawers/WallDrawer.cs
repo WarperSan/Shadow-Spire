@@ -30,31 +30,26 @@ namespace Dungeon.Drawers
 
             foreach (var room in rooms)
             {
-                //UnityEngine.Debug.Log(room.X + ";" + room.Y + " (" + room.Width + "x" + room.Height + ")");
-
-                // for (int x = 0; x <= room.Width; x++)
-                // {
-                //     grid[room.Y, room.X + x] = true; // Top border
-                //     grid[room.Y + room.Height, room.X + x] = true; // Bottom border
-                // }
-
-                // for (int y = 0; y <= room.Height; y++)
-                // {
-                //     grid[room.Y + y, room.X] = true; // Left border
-                //     grid[room.Y + y, room.X + room.Width] = true; // Right border
-                // }
-
-                for (int x = 0; x <= room.Width + 1; x++)
+                if (room.X == 0)
                 {
-                    grid[room.Y, room.X + x] = true; // Top border
-                    grid[room.Y + room.Height + 1, room.X + x] = true; // Bottom border
+                    for (int y = 0; y < room.Height; y++)
+                        grid[room.Y + y, room.X] = true;
                 }
 
-                for (int y = 0; y <= room.Height + 1; y++)
+                if (room.Y == 0)
                 {
-                    grid[room.Y + y, room.X] = true; // Left border
-                    grid[room.Y + y, room.X + room.Width + 1] = true; // Right border
+                    for (int x = 0; x < room.Width; x++)
+                        grid[room.Y, room.X + x] = true;
                 }
+
+                for (int y = 0; y <= room.Height; y++)
+                    grid[room.Y + y, room.X + room.Width] = true;
+
+                for (int x = 0; x < room.Width; x++)
+                    grid[room.Y + room.Height, room.X + x] = true;
+
+                room.Width--;
+                room.Height--;
             }
 
             return grid;

@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410e0ddfed63e4bc8b070a6b5d4738e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overSeed: -1157219126
+  overSeed: 1509572951
   useSeed: 0
   wallDrawer: {fileID: 895919165}
   doorDrawer: {fileID: 895919164}
@@ -733,7 +733,7 @@ Transform:
   m_GameObject: {fileID: 1197061265}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: -8, z: -32}
+  m_LocalPosition: {x: 11, y: -8, z: -32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

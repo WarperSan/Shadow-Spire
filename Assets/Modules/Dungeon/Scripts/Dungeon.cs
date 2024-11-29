@@ -57,7 +57,7 @@ namespace Dungeon
 
             Debug.Log("Seed: " + seed);
 
-            var lvl = new DungeonGenerator(random).Generate(12, 12);
+            var lvl = new DungeonGenerator(random).Generate(18, 12);
             Level = lvl;
 
             lvl.Random = random;
