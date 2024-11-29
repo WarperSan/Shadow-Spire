@@ -1,6 +1,7 @@
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Managers;
 
 namespace Dungeon.Drawers
 {
@@ -21,7 +22,7 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
-            bool[,] entranceExitGrid = Dungeon.Instance.Level.EntranceExitGrid;
+            bool[,] entranceExitGrid = DungeonManager.Instance.Level.EntranceExitGrid;
             bool[,] grid = CreateEmpty(rooms);
 
             foreach (var item in rooms)

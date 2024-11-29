@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Managers;
 
 namespace Dungeon.Drawers
 {
@@ -43,8 +44,8 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
-            bool[,] groundGrid = Dungeon.Instance.Level.GroundGrid;
-            System.Random random = Dungeon.Instance.Level.Random;
+            bool[,] groundGrid = DungeonManager.Instance.Level.GroundGrid;
+            System.Random random = DungeonManager.Instance.Level.Random;
 
             bool[,] grid = CreateEmpty(rooms);
 

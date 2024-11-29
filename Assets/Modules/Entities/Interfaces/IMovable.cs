@@ -83,7 +83,7 @@ namespace Entities.Interfaces
 
             position += movePos;
 
-            if (Dungeon.Dungeon.Instance.Level.DoorGrid[-position.y, position.x])
+            if (Managers.DungeonManager.Instance.Level.DoorGrid[-position.y, position.x])
             {
                 position += movePos;
             }

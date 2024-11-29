@@ -14,14 +14,14 @@ public class TurnManager : Singleton<TurnManager>, IDungeonReceive
 
     private IEnumerator ProcessTurn()
     {
-        while (!Dungeon.Dungeon.Instance.IsLevelOver)
+        while (!Managers.DungeonManager.Instance.IsLevelOver)
         {
             foreach (var entity in turnEntities)
             {
                 yield return entity.ExecuteTurn();
 
                 // Level over
-                if (Dungeon.Dungeon.Instance.IsLevelOver)
+                if (Managers.DungeonManager.Instance.IsLevelOver)
                     break;
 
                 // Check for event

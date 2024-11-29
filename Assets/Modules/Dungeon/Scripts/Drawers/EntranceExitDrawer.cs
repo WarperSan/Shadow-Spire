@@ -1,6 +1,7 @@
 using Dungeon.Generation;
 using Entities;
 using UnityEngine;
+using Managers;
 
 namespace Dungeon.Drawers
 {
@@ -24,7 +25,7 @@ namespace Dungeon.Drawers
         {
             entrance.transform.position = new Vector3(x, -y, 0);
 
-            bool isLeft = Dungeon.Instance.Level.WallGrid[y, x + 1];
+            bool isLeft = DungeonManager.Instance.Level.WallGrid[y, x + 1];
 
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
@@ -39,7 +40,7 @@ namespace Dungeon.Drawers
 
         private void PlaceExit(int x, int y)
         {
-            bool isLeft = Dungeon.Instance.Level.WallGrid[y, x + 1];
+            bool isLeft = DungeonManager.Instance.Level.WallGrid[y, x + 1];
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
             exit.transform.position = new Vector3(x, -y, 0);

@@ -3,9 +3,10 @@ using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
 using UnityEngine;
+using UnityEngine.UI;
 using UtilsModule;
 
-namespace Dungeon
+namespace Managers
 {
     public class DungeonManager : Singleton<DungeonManager>
     {
@@ -85,6 +86,19 @@ namespace Dungeon
 
         private IEnumerator LevelEndSequence()
         {
+            yield return new WaitForSeconds(0.2f);
+
+            const int END_TRANSITION_TICKS = 4;
+
+            var blackoutColor = new Color(0, 0, 0, 0);
+
+            for (int i = 1; i <= END_TRANSITION_TICKS; i++)
+            {
+                blackoutColor.a = 1f / END_TRANSITION_TICKS * i;
+                blackout.color = blackoutColor;
+                yield return new WaitForSeconds(0.2f);
+            }
+            
             yield return new WaitForSeconds(1.5f); // Level end animation
 
             // Clear all drawers
@@ -97,6 +111,14 @@ namespace Dungeon
 
             StartLevel();
         }
+
+        #endregion
+
+        #region UI
+
+        [Header("UI")]
+        [SerializeField]
+        private Graphic blackout;
 
         #endregion
 
