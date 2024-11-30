@@ -18,6 +18,9 @@ namespace Managers
         [SerializeField]
         private DungeonManager dungeonManager;
 
+        [SerializeField]
+        private int levelIndex = 0;
+
         public int overSeed;
         public bool useSeed;
 
@@ -28,17 +31,26 @@ namespace Managers
         {
             Level = null;
             IsLevelOver = false;
+            levelIndex++;
 
             int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
+            overSeed = seed;
 
-            Debug.Log("Seed: " + seed);
-            Level = dungeonManager.StartLevel(seed);
+            var settings = new DungeonSettings
+            {
+                Seed = seed,
+                Width = 18,
+                Height = 12,
+                SliceCount = 10
+            };
+
+            Level = dungeonManager.StartLevel(settings);
         }
 
         public void EndLevel()
         {
             IsLevelOver = true;
-            StartCoroutine(dungeonManager.EndLevel(1, 2, new System.Func<IEnumerator>(EndLevelCallback)));
+            StartCoroutine(dungeonManager.EndLevel(levelIndex, levelIndex + 1, new System.Func<IEnumerator>(EndLevelCallback)));
         }
 
         private IEnumerator EndLevelCallback()

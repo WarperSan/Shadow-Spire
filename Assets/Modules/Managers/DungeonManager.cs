@@ -106,11 +106,11 @@ namespace Managers
 
         private IDungeonReceive[] Receivers;
 
-        public DungeonResult StartLevel(int seed)
+        public DungeonResult StartLevel(DungeonSettings settings)
         {
             // Generate level
-            var random = new System.Random(seed);
-            var lvl = new DungeonGenerator(random).Generate(18, 12);
+            var random = new System.Random(settings.Seed);
+            var lvl = new DungeonGenerator(random).Generate(settings.Width, settings.Height, settings.SliceCount);
 
             // Create drawers
             wallDrawer = new WallDrawer(lvl, wallMap, wallTiles);
@@ -155,11 +155,11 @@ namespace Managers
             transitionLevelText.gameObject.SetActive(true);
             transitionLevelText.text = string.Format(originalLevelText, currentLevel);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
 
             transitionLevelText.text = string.Format(originalLevelText, nextLevel);
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
 
             transitionLevelText.gameObject.SetActive(false);
 
