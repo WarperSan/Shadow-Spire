@@ -2,25 +2,21 @@ using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Managers;
 
 namespace Dungeon.Drawers
 {
     public class DoorDrawer : Drawer
     {
-        #region Fields
+        private readonly Tilemap wallMap;
+        private readonly TileBase doorTile;
 
-        [Header("Fields")]
-        [SerializeField]
-        private Tilemap wallMap;
+        #region Drawer
 
-        [SerializeField]
-        private TileBase openDoorTile;
-
-        [SerializeField]
-        private TileBase closeDoorTile;
-
-        #endregion
+        public DoorDrawer(DungeonResult level, Tilemap wallMap, TileBase doorTile) : base(level)
+        {
+            this.wallMap = wallMap;
+            this.doorTile = doorTile;
+        }
 
         /// <inheritdoc/>
         public override void Draw(bool[,] grid, Room[] rooms)
@@ -36,7 +32,7 @@ namespace Dungeon.Drawers
                     if (!grid[y, x])
                         continue;
 
-                    wallMap.SetTile(new Vector3Int(x, -y, 0), closeDoorTile);
+                    wallMap.SetTile(new Vector3Int(x, -y, 0), doorTile);
                 }
             }
         }
@@ -44,8 +40,8 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
-            bool[,] groundGrid = DungeonManager.Instance.Level.GroundGrid;
-            System.Random random = DungeonManager.Instance.Level.Random;
+            bool[,] groundGrid = Level.GroundGrid;
+            System.Random random = Level.Random;
 
             bool[,] grid = CreateEmpty(rooms);
 
@@ -111,5 +107,7 @@ namespace Dungeon.Drawers
 
         /// <inheritdoc/>
         public override void Clear() => wallMap.ClearAllTiles();
+
+        #endregion
     }
 }

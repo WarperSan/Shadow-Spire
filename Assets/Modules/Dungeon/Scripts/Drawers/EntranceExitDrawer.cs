@@ -1,31 +1,20 @@
 using Dungeon.Generation;
 using Entities;
 using UnityEngine;
-using Managers;
 
 namespace Dungeon.Drawers
 {
     public class EntranceExitDrawer : Drawer
     {
-        #region Fields
-
-        [Header("Fields")]
-        [SerializeField]
-        private EntranceEntity entrance;
-
-        [SerializeField]
-        private ExitEntity exit;
-
-        [SerializeField]
-        private PlayerEntity player;
-
-        #endregion
+        private readonly EntranceEntity entrance;
+        private readonly ExitEntity exit;
+        private readonly PlayerEntity player;
 
         private void PlaceEntrance(int x, int y)
         {
             entrance.transform.position = new Vector3(x, -y, 0);
 
-            bool isLeft = DungeonManager.Instance.Level.WallGrid[y, x + 1];
+            bool isLeft = Level.WallGrid[y, x + 1];
 
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
@@ -40,7 +29,7 @@ namespace Dungeon.Drawers
 
         private void PlaceExit(int x, int y)
         {
-            bool isLeft = DungeonManager.Instance.Level.WallGrid[y, x + 1];
+            bool isLeft = Level.WallGrid[y, x + 1];
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
             exit.transform.position = new Vector3(x, -y, 0);
@@ -48,6 +37,13 @@ namespace Dungeon.Drawers
         }
 
         #region Drawer
+
+        public EntranceExitDrawer(DungeonResult level, EntranceEntity entrance, ExitEntity exit, PlayerEntity player) : base(level)
+        {
+            this.entrance = entrance;
+            this.exit = exit;
+            this.player = player;
+        }
 
         /// <inheritdoc/>
         public override void Draw(bool[,] grid, Room[] rooms)

@@ -1,28 +1,26 @@
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Managers;
 
 namespace Dungeon.Drawers
 {
     public class GroundDrawer : Drawer
     {
-        #region Fields
-
-        [Header("Fields")]
-        [SerializeField]
-        private Tilemap groundMap;
-
-        public TileBase tile;
-
-        #endregion
+        private readonly Tilemap groundMap;
+        private readonly TileBase tile;
 
         #region Drawer
+
+        public GroundDrawer(DungeonResult level, Tilemap groundMap, TileBase tile) : base(level)
+        {
+            this.groundMap = groundMap;
+            this.tile = tile;
+        }
 
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
-            bool[,] entranceExitGrid = DungeonManager.Instance.Level.EntranceExitGrid;
+            bool[,] entranceExitGrid = Level.EntranceExitGrid;
             bool[,] grid = CreateEmpty(rooms);
 
             foreach (var item in rooms)

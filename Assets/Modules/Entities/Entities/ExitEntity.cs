@@ -9,7 +9,7 @@ namespace Entities
             if (entity is not PlayerEntity)
                 return;
 
-            Managers.DungeonManager.Instance.EndLevel();
+            Managers.GameManager.Instance.EndLevel();
         }
     }
 }

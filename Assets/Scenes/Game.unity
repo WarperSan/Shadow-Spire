@@ -185,6 +185,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5202896080868194380, guid: b39f9018b13836412820c23e76a6c2d2, type: 3}
   m_PrefabInstance: {fileID: 38550078}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &38550080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1818942884704175196, guid: b39f9018b13836412820c23e76a6c2d2, type: 3}
+  m_PrefabInstance: {fileID: 38550078}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4d598236b37f40f0b4e5f4d6376becb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &444811996 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6288148346714307681, guid: e331d902e74a4bc9e957ba0eaf7b83ab, type: 3}
@@ -242,17 +253,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &634871776 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1818942884704175196, guid: b39f9018b13836412820c23e76a6c2d2, type: 3}
-  m_PrefabInstance: {fileID: 38550078}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d598236b37f40f0b4e5f4d6376becb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &683283763
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,12 +364,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410e0ddfed63e4bc8b070a6b5d4738e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overSeed: 1509572951
-  useSeed: 0
-  wallDrawer: {fileID: 895919165}
-  doorDrawer: {fileID: 895919164}
-  groundDrawer: {fileID: 2116156617}
-  entranceExitDrawer: {fileID: 895919159}
+  groundMap: {fileID: 2116156616}
+  groundTile: {fileID: 11400000, guid: 3d6cea5d26b7cc21eb191d92a5f33032, type: 2}
+  wallMap: {fileID: 895919162}
+  wallTiles:
+  - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 1e323e7ee43523ff3808c13767c47947, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
+  - {fileID: 11400000, guid: d9112d6622cefe1869123cb0509eeb87, type: 2}
+  - {fileID: 11400000, guid: da61176ab1cea94418b1582f34098788, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 6c40d0ff2c5313ffa8883c7fa9406f2d, type: 2}
+  - {fileID: 11400000, guid: e17c36891247093dc90dd0e04261efe2, type: 2}
+  - {fileID: 11400000, guid: a7ff9784fef21dd169df86fe051ae6aa, type: 2}
+  - {fileID: 11400000, guid: 78c48c1b32c8c405c86420df9fbb5608, type: 2}
+  - {fileID: 11400000, guid: 8ef2afb952727cd46a6713ef75dbebf1, type: 2}
+  - {fileID: 11400000, guid: 8233416f5519e8b65a2339999efbc361, type: 2}
+  - {fileID: 11400000, guid: e721235c0dde5cc778e859d008c1c597, type: 2}
+  doorTile: {fileID: 11400000, guid: b164d27faa45fc33aa63a3d1a03894b4, type: 2}
+  entrance: {fileID: 889232534}
+  exit: {fileID: 38550080}
+  player: {fileID: 1931053744}
   blackout: {fileID: 444811996}
   transitionLevelText: {fileID: 5877184638961969173}
 --- !u!4 &824904447
@@ -474,9 +492,6 @@ GameObject:
   - component: {fileID: 895919162}
   - component: {fileID: 895919161}
   - component: {fileID: 895919160}
-  - component: {fileID: 895919165}
-  - component: {fileID: 895919164}
-  - component: {fileID: 895919159}
   m_Layer: 10
   m_Name: Walls
   m_TagString: Untagged
@@ -484,21 +499,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &895919159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895919158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 286c392ff9f0a9549832c10c22609f61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entrance: {fileID: 889232534}
-  exit: {fileID: 634871776}
-  player: {fileID: 1931053744}
 --- !u!19719996 &895919160
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -681,51 +681,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 616062160}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &895919164
+--- !u!1 &998314052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 998314053}
+  - component: {fileID: 998314054}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &998314053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998314052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &998314054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895919158}
+  m_GameObject: {fileID: 998314052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83515e5b1c2825c5091462a49d30ab0b, type: 3}
+  m_Script: {fileID: 11500000, guid: 437e6ecaedc2cca4bb8e99e76caabd32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallMap: {fileID: 895919162}
-  openDoorTile: {fileID: 11400000, guid: 17345f2b772d4bf808d762b5cd19cf15, type: 2}
-  closeDoorTile: {fileID: 11400000, guid: b164d27faa45fc33aa63a3d1a03894b4, type: 2}
---- !u!114 &895919165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895919158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2c3a6e8230b886308cfdf3808857b8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallMap: {fileID: 895919162}
-  tiles:
-  - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 1e323e7ee43523ff3808c13767c47947, type: 2}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
-  - {fileID: 11400000, guid: d9112d6622cefe1869123cb0509eeb87, type: 2}
-  - {fileID: 11400000, guid: da61176ab1cea94418b1582f34098788, type: 2}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 6c40d0ff2c5313ffa8883c7fa9406f2d, type: 2}
-  - {fileID: 11400000, guid: e17c36891247093dc90dd0e04261efe2, type: 2}
-  - {fileID: 11400000, guid: a7ff9784fef21dd169df86fe051ae6aa, type: 2}
-  - {fileID: 11400000, guid: 78c48c1b32c8c405c86420df9fbb5608, type: 2}
-  - {fileID: 11400000, guid: 8ef2afb952727cd46a6713ef75dbebf1, type: 2}
-  - {fileID: 11400000, guid: 8233416f5519e8b65a2339999efbc361, type: 2}
-  - {fileID: 11400000, guid: e721235c0dde5cc778e859d008c1c597, type: 2}
+  dungeonManager: {fileID: 824904446}
+  overSeed: 0
+  useSeed: 0
 --- !u!1 &1197061265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,7 +1086,6 @@ GameObject:
   - component: {fileID: 2116156614}
   - component: {fileID: 2116156616}
   - component: {fileID: 2116156615}
-  - component: {fileID: 2116156617}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -1238,20 +1239,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &2116156617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116156613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfb1d283ed904540994c98b9625cfaf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundMap: {fileID: 2116156616}
-  tile: {fileID: 11400000, guid: 3d6cea5d26b7cc21eb191d92a5f33032, type: 2}
 --- !u!1001 &2673581267942553174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1421,6 +1408,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 998314053}
   - {fileID: 1197061268}
   - {fileID: 824904447}
   - {fileID: 1888611492}

@@ -2,114 +2,162 @@ using System.Collections;
 using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
+using Entities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using UtilsModule;
 
 namespace Managers
 {
-    public class DungeonManager : Singleton<DungeonManager>
+    public class DungeonManager : MonoBehaviour
     {
-        public int overSeed;
-        public bool useSeed;
+        #region Ground
 
-        #region Drawers
-
-        [Header("Drawers")]
+        [Header("Ground")]
         [SerializeField]
-        private WallDrawer wallDrawer;
+        private Tilemap groundMap;
 
         [SerializeField]
-        private DoorDrawer doorDrawer;
-
-        [SerializeField]
-        private GroundDrawer groundDrawer;
-
-        [SerializeField]
-        private EntranceExitDrawer entranceExitDrawer;
+        private TileBase groundTile;
 
         #endregion
 
-        private void Start()
+        #region Walls
+
+        [Header("Walls")]
+        [SerializeField]
+        private Tilemap wallMap;
+
+        // TOP    = 0b0001 = 1
+        // RIGHT  = 0b0010 = 2
+        // BOTTOM = 0b0100 = 4
+        // LEFT   = 0b1000 = 8
+        [SerializeField]
+        private TileBase[] wallTiles;
+
+        #endregion
+
+        #region Doors
+
+        [Header("Doors")]
+        [SerializeField]
+        private TileBase doorTile;
+
+        #endregion
+
+        #region Entities
+
+        [Header("Entities")]
+
+        [SerializeField]
+        private EntranceEntity entrance;
+
+        [SerializeField]
+        private ExitEntity exit;
+
+        [SerializeField]
+        private PlayerEntity player;
+
+        #endregion
+
+        #region UI
+
+        [Header("UI")]
+        [SerializeField]
+        private Graphic blackout;
+
+        [SerializeField]
+        private TextMeshProUGUI transitionLevelText;
+        private string originalLevelText;
+
+        private IEnumerator BlackoutFadeIn(int transitionTicks)
         {
-            originalLevelText = transitionLevelText.text;
+            var blackoutColor = new Color(0, 0, 0, 0);
 
-            var seed = Random.Range(int.MinValue, int.MaxValue);
-
-            if (useSeed)
-                seed = overSeed;
-
-            StartLevel(seed);
+            for (int i = 1; i <= transitionTicks; i++)
+            {
+                blackoutColor.a = 1f / transitionTicks * i;
+                blackout.color = blackoutColor;
+                yield return new WaitForSeconds(0.2f);
+            }
         }
 
-        #region Game Flow
+        private IEnumerator BlackoutFadeOut(int transitionTicks)
+        {
+            var blackoutColor = new Color(0, 0, 0, 1);
 
-        public DungeonResult Level { get; private set; }
+            for (int i = 1; i <= transitionTicks; i++)
+            {
+                blackoutColor.a = 1f - 1f / transitionTicks * i;
+                blackout.color = blackoutColor;
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
+
+        #endregion
+
+        #region Generation
+
+        private WallDrawer wallDrawer;
+        private DoorDrawer doorDrawer;
+        private GroundDrawer groundDrawer;
+        private EntranceExitDrawer entranceExitDrawer;
 
         private IDungeonReceive[] Receivers;
 
-        public bool IsLevelOver { get; private set; }
-
-        public void StartLevel(int? seed = null)
+        public DungeonResult StartLevel(int seed)
         {
-            IsLevelOver = false;
-
-            seed ??= Random.Range(int.MinValue, int.MaxValue);
-
-            var random = new System.Random(seed.Value);
-
-            Debug.Log("Seed: " + seed);
-
+            // Generate level
+            var random = new System.Random(seed);
             var lvl = new DungeonGenerator(random).Generate(18, 12);
-            Level = lvl;
 
+            // Create drawers
+            wallDrawer = new WallDrawer(lvl, wallMap, wallTiles);
+            entranceExitDrawer = new EntranceExitDrawer(lvl, entrance, exit, player);
+            groundDrawer = new GroundDrawer(lvl, groundMap, groundTile);
+            doorDrawer = new DoorDrawer(lvl, wallMap, doorTile);
+
+            // Process the level
             lvl.Random = random;
             lvl.WallGrid = wallDrawer.Process(lvl.Rooms);
             lvl.EntranceExitGrid = entranceExitDrawer.Process(lvl.Rooms);
             lvl.GroundGrid = groundDrawer.Process(lvl.Rooms);
             lvl.DoorGrid = doorDrawer.Process(lvl.Rooms);
 
-            wallDrawer.Draw(Level.WallGrid, lvl.Rooms);
+            // Draw the level
+            wallDrawer.Draw(lvl.WallGrid, lvl.Rooms);
             entranceExitDrawer.Draw(lvl.EntranceExitGrid, lvl.Rooms);
             groundDrawer.Draw(lvl.GroundGrid, lvl.Rooms);
             doorDrawer.Draw(lvl.DoorGrid, lvl.Rooms);
 
+            // Notify all receivers
             Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
 
             foreach (var receiver in Receivers)
-                receiver.OnLevelStart(Level);
+                receiver.OnLevelStart(lvl);
+
+            return lvl;
         }
 
-        public void EndLevel()
+        public IEnumerator EndLevel(int currentLevel, int nextLevel, System.Func<IEnumerator> callback = null)
         {
-            IsLevelOver = true;
-            StartCoroutine(LevelEndSequence());
-        }
+            const int BLACKOUT_TICKS = 4;
 
-        private IEnumerator LevelEndSequence()
-        {
             yield return new WaitForSeconds(0.2f);
 
-            const int END_TRANSITION_TICKS = 4;
-
-            var blackoutColor = new Color(0, 0, 0, 0);
-
-            for (int i = 1; i <= END_TRANSITION_TICKS; i++)
-            {
-                blackoutColor.a = 1f / END_TRANSITION_TICKS * i;
-                blackout.color = blackoutColor;
-                yield return new WaitForSeconds(0.2f);
-            }
+            yield return BlackoutFadeIn(BLACKOUT_TICKS);
 
             yield return new WaitForSeconds(0.6f);
 
+            originalLevelText ??= transitionLevelText.text;
+
             transitionLevelText.gameObject.SetActive(true);
-            transitionLevelText.text = string.Format(originalLevelText, 1);
+            transitionLevelText.text = string.Format(originalLevelText, currentLevel);
 
             yield return new WaitForSeconds(1f);
 
-            transitionLevelText.text = string.Format(originalLevelText, 2);
+            transitionLevelText.text = string.Format(originalLevelText, nextLevel);
 
             yield return new WaitForSeconds(1.5f);
 
@@ -125,36 +173,14 @@ namespace Managers
 
             yield return null; // Wait 1 frame
 
-            StartLevel();
+            if (callback != null)
+                yield return callback.Invoke();
+            //StartLevel();
 
-            yield return null;
+            yield return BlackoutFadeOut(BLACKOUT_TICKS);
 
-            for (int i = 1; i <= END_TRANSITION_TICKS; i++)
-            {
-                blackoutColor.a = 1f - 1f / END_TRANSITION_TICKS * i;
-                blackout.color = blackoutColor;
-                yield return new WaitForSeconds(0.2f);
-            }
+            yield return new WaitForSeconds(0.2f);
         }
-
-        #endregion
-
-        #region UI
-
-        [Header("UI")]
-        [SerializeField]
-        private Graphic blackout;
-
-        [SerializeField]
-        private TextMeshProUGUI transitionLevelText;
-        private string originalLevelText;
-
-        #endregion
-
-        #region Singleton
-
-        /// <inheritdoc/>
-        protected override bool DestroyOnLoad => true;
 
         #endregion
     }

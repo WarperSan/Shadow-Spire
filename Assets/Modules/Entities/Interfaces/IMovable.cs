@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Entities.Interfaces
@@ -83,10 +84,25 @@ namespace Entities.Interfaces
 
             position += movePos;
 
-            if (Managers.DungeonManager.Instance.Level.DoorGrid[-position.y, position.x])
+            var level = Managers.GameManager.Instance.Level;
+
+            if (level == null)
             {
-                position += movePos;
+                Debug.LogError("No level has been initialized.");
+                return position;
             }
+
+            if (level.DoorGrid == null)
+                return position;
+
+            if (-position.y < 0 || level.DoorGrid.GetLength(0) <= -position.y)
+                return position;
+
+            if (position.x < 0 || level.DoorGrid.GetLength(1) <= position.x)
+                return position;
+            
+            if (level.DoorGrid[-position.y, position.x])
+                position += movePos;
 
             return position;
         }

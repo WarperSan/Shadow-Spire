@@ -6,22 +6,16 @@ namespace Dungeon.Drawers
 {
     public class WallDrawer : Drawer
     {
-        #region Fields
-
-        [Header("Fields")]
-        [SerializeField]
-        private Tilemap wallMap;
-
-        // TOP    = 0b0001 = 1
-        // RIGHT  = 0b0010 = 2
-        // BOTTOM = 0b0100 = 4
-        // LEFT   = 0b1000 = 8
-        [SerializeField]
-        private TileBase[] tiles;
-
-        #endregion
+        private readonly Tilemap wallMap;
+        private readonly TileBase[] tiles;
 
         #region Drawer
+        
+        public WallDrawer(DungeonResult level, Tilemap wallMap, TileBase[] tiles) : base(level)
+        {
+            this.wallMap = wallMap;
+            this.tiles = tiles;
+        }
 
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)

@@ -1,13 +1,33 @@
 using System;
 using Dungeon.Generation;
-using UnityEngine;
 
 namespace Dungeon.Drawers
 {
-    public abstract class Drawer : MonoBehaviour
+    /// <summary>
+    /// Class that processes and draws the given dungeon
+    /// </summary>
+    public abstract class Drawer
     {
+        protected DungeonResult Level;
+
+        public Drawer(DungeonResult level)
+        {
+            Level = level;
+        }
+
+        /// <summary>
+        /// Processes the given rooms for the specific logic
+        /// </summary>
         public abstract bool[,] Process(Room[] rooms);
+
+        /// <summary>
+        /// Draws the specific logic from the processed data
+        /// </summary>
         public abstract void Draw(bool[,] grid, Room[] rooms);
+
+        /// <summary>
+        /// Clears the drawings
+        /// </summary>
         public abstract void Clear();
 
         /// <summary>
