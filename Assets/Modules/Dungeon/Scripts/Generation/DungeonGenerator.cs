@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using Random = System.Random;
 
 namespace Dungeon.Generation
@@ -32,43 +32,19 @@ namespace Dungeon.Generation
             SlicesRooms(root, sliceCount);
 
             // Compile all the rooms
-            List<Room> allRooms = new();
-            List<Room> endRooms = new();
-            Stack<Room> exploreRooms = new();
-            exploreRooms.Push(root);
+            Room[] rooms = CompileRooms(root);
 
-            while (exploreRooms.Count > 0)
-            {
-                var room = exploreRooms.Pop();
-                allRooms.Add(room);
-
-                // If has children, keep going
-                if (room.Children != null)
-                {
-                    foreach (var item in room.Children)
-                        exploreRooms.Push(item);
-                    continue;
-                }
-
-                endRooms.Add(room);
-            }
-
-            endRooms.Reverse();
-
-            Room[] rooms = endRooms.ToArray();
-
-            // Pushes the rooms to let a gap between the rooms
-            //PushRooms(rooms);
+            // Find adjacent rooms
+            Dictionary<Room, List<Room>> adjacentRoom = FindAdjacentRooms(rooms);
 
             // Package results
-            var result = new DungeonResult
+            return new DungeonResult
             {
                 Rooms = rooms,
                 Width = width,
-                Height = height
+                Height = height,
+                AdjacentRooms = adjacentRoom
             };
-
-            return result;
         }
 
         /// <summary>
@@ -98,67 +74,62 @@ namespace Dungeon.Generation
         }
 
         /// <summary>
-        /// Expands the rooms to allow walls
+        /// Finds all the rooms from the given root
         /// </summary>
-        private void PushRooms(Room[] rooms)
+        private Room[] CompileRooms(Room root)
         {
-            Dictionary<Room, int> push = new();
+            Stack<Room> roomsToExplore = new();
+            roomsToExplore.Push(root);
 
-            // Push right
-            for (int i = 0; i < rooms.Length; i++)
+            List<Room> rooms = new();
+
+            while (roomsToExplore.Count > 0)
             {
-                var roomPushing = rooms[i];
+                var room = roomsToExplore.Pop();
 
-                for (int j = i + 1; j < rooms.Length; j++)
+                // If has children, keep going
+                if (room.Children != null)
                 {
-                    var roomToPush = rooms[j];
+                    foreach (var item in room.Children)
+                        roomsToExplore.Push(item);
+                    continue;
+                }
 
-                    var pushingMin = roomPushing.Y;
-                    var pushingMax = roomPushing.Y + roomPushing.Height;
+                rooms.Add(room);
+            }
 
-                    var pushedMin = roomToPush.Y;
-                    var pushedMax = roomToPush.Y + roomToPush.Height;
+            rooms.Reverse();
 
-                    if ((pushedMax > pushingMin) && (pushedMin < pushingMax))
-                    {
-                        if (push.TryGetValue(roomToPush, out int x) && x >= roomPushing.X)
-                            continue;
+            return rooms.ToArray();
+        }
 
-                        roomToPush.X++;
-                        push[roomToPush] = roomPushing.X;
-                    }
+        private Dictionary<Room, List<Room>> FindAdjacentRooms(Room[] rooms)
+        {
+            var roomLinks = new Dictionary<Room, List<Room>>();
+
+            foreach (var firstRoom in rooms)
+            {
+                foreach (var secondRoom in rooms)
+                {
+                    // If same room, skip
+                    if (firstRoom == secondRoom)
+                        continue;
+
+                    if (!firstRoom.IsAdjacent(secondRoom))
+                        continue;
+
+                    if (!roomLinks.ContainsKey(firstRoom))
+                        roomLinks.Add(firstRoom, new());
+
+                    if (!roomLinks.ContainsKey(secondRoom))
+                        roomLinks.Add(secondRoom, new());
+
+                    roomLinks[firstRoom].Add(secondRoom);
+                    roomLinks[secondRoom].Add(firstRoom);
                 }
             }
 
-            push.Clear();
-
-            var sortedRooms = rooms.OrderBy(r => r.Y).ThenBy(r => r.X).ToArray();
-
-            // Push down
-            for (int i = 0; i < sortedRooms.Length; i++)
-            {
-                var roomPushing = rooms[i];
-
-                for (int j = i + 1; j < sortedRooms.Length; j++)
-                {
-                    var roomToPush = rooms[j];
-
-                    var pushingMin = roomPushing.X;
-                    var pushingMax = roomPushing.X + roomPushing.Width;
-
-                    var pushedMin = roomToPush.X;
-                    var pushedMax = roomToPush.X + roomToPush.Width;
-
-                    if ((pushedMax > pushingMin) && (pushedMin < pushingMax))
-                    {
-                        if (push.TryGetValue(roomToPush, out int y) && y >= roomPushing.Y)
-                            continue;
-
-                        roomToPush.Y++;
-                        push[roomToPush] = roomPushing.Y;
-                    }
-                }
-            }
+            return roomLinks;
         }
 
         #endregion

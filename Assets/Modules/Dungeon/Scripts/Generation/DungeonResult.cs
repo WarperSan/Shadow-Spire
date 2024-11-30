@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Dungeon.Generation
 {
@@ -25,7 +26,10 @@ namespace Dungeon.Generation
         public int Height;
 
         /// <summary>
+        /// Every rooms that is adjacent to a room
         /// </summary>
+        public Dictionary<Room, List<Room>> AdjacentRooms;
+
         public bool[,] WallGrid;
 
         public bool[,] GroundGrid;

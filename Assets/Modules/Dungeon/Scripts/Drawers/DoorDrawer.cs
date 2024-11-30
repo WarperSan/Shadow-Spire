@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
@@ -40,65 +41,31 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override bool[,] Process(Room[] rooms)
         {
-            bool[,] groundGrid = Level.GroundGrid;
             System.Random random = Level.Random;
 
             bool[,] grid = CreateEmpty(rooms);
 
-            int height = grid.GetLength(0);
-            int width = grid.GetLength(1);
-
-            foreach (var item in rooms)
+            foreach (var (room, adjacents) in Level.AdjacentRooms)
             {
-                List<(int x, int y)> positions = new();
-
-                int rightX = item.X + item.Width;
-                int downY = item.Y + item.Height;
-
-                if (rightX < width - 2)
+                foreach (var adjacent in adjacents)
                 {
-                    int x = rightX + 1;
-                    int y = item.Y + 1;
-
-                    for (int i = 1; i < item.Height - 1; i++)
+                    if (room.X < adjacent.X && room.IsBeside(adjacent))
                     {
-                        if (!groundGrid[y + i, x + 1])
-                            continue;
-
-                        if (!groundGrid[y + i, x - 1])
-                            continue;
-
-                        positions.Add((x, y + i));
+                        var rdmY = random.Next(
+                            Mathf.Max(room.Y, adjacent.Y) + 1, // Start from the point at the most down
+                            Mathf.Min(adjacent.Y + adjacent.Height, room.Y + room.Height) - 1 // Start from the point at the most up
+                        );
+                        grid[rdmY, room.X + room.Width] = true;
                     }
-                }
-
-                if (downY < height - 2)
-                {
-                    int x = item.X + 1;
-                    int y = downY + 1;
-
-                    for (int i = 1; i < item.Width - 1; i++)
+                    else if (room.Y < adjacent.Y && room.IsUnder(adjacent))
                     {
-                        if (!groundGrid[y + 1, x + i])
-                            continue;
+                        var rdmX = random.Next(
+                            Mathf.Max(room.X, adjacent.X) + 1, // Start from the point at the most right
+                            Mathf.Min(room.X + room.Width, adjacent.X + adjacent.Width) - 1 // Start from the point at the most left
+                        );
 
-                        if (!groundGrid[y - 1, x + i])
-                            continue;
-
-                        positions.Add((x + i, y));
+                        grid[room.Y + room.Height, rdmX] = true;
                     }
-                }
-
-                if (positions.Count == 0)
-                    continue;
-
-                for (int i = positions.Count / 5; i >= 0; i--)
-                {
-                    var index = random.Next(0, positions.Count);
-                    var pos = positions[index];
-                    positions.RemoveAt(index);
-
-                    grid[pos.y, pos.x] = true;
                 }
             }
 

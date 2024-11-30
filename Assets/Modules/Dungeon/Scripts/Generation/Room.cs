@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace Dungeon.Generation
 {
@@ -13,9 +13,8 @@ namespace Dungeon.Generation
 
         public Room[] Children { get; private set; }
         public bool FromVerticalSlice { get; private set; }
-        public int[] Doors { get; set; }
 
-        public bool Split(Random rand, int minWidth, int minHeight)
+        public bool Split(System.Random rand, int minWidth, int minHeight)
         {
             var roomA = new Room();
             var roomB = new Room();
@@ -68,8 +67,6 @@ namespace Dungeon.Generation
             if (!hasSplitted)
                 return false;
 
-            roomA.GenerateDoors(rand, splitVertical);
-
             roomA.FromVerticalSlice = splitVertical;
             roomB.FromVerticalSlice = splitVertical;
 
@@ -78,42 +75,26 @@ namespace Dungeon.Generation
             return true;
         }
 
-        private void GenerateDoors(Random rand, bool splitVertical)
+        public bool IsAdjacent(Room other) => IsUnder(other) || IsBeside(other);
+
+        public bool IsUnder(Room other)
         {
-            // Generate doors
-            var cutLength = splitVertical ? Width : Height;
-            var doors = new int[cutLength / 3];
+            var selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
+            var otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
 
-            //UnityEngine.Debug.Log(doors.Length);
-
-            // Add possible spots
-            var indexes = new List<int>();
-            for (var i = 1; i < cutLength - 2; i++)
-                indexes.Add(i);
-
-            for (var i = 0; indexes.Count > 0 && i < doors.Length; i++)
-            {
-                var rdmIndex = rand.Next(0, indexes.Count);
-                doors[i] = indexes[rdmIndex];
-
-                // Remove after
-                if (rdmIndex < indexes.Count - 1)
-                    indexes.RemoveAt(rdmIndex + 1);
-
-                // Remove self
-                indexes.RemoveAt(rdmIndex);
-
-                // Remove before
-                if (rdmIndex > 0)
-                    indexes.RemoveAt(rdmIndex - 1);
-            }
-
-            Doors = doors;
+            return (other.Y - selfMax.y == 1) && // The rooms only are 1 tile apart 
+                (otherMax.x > X) && (other.X < selfMax.x); // The rooms have a common X point
         }
 
-        public override string ToString()
+        public bool IsBeside(Room other)
         {
-            return $"[{X};{Y} ({Width}x{Height})]";
+            var selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
+            var otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
+
+            return (other.X - selfMax.x == 1) && // The rooms only are 1 tile apart
+                (otherMax.y > Y) && (other.Y < selfMax.y); // The rooms have a common Y point
         }
+
+        public override string ToString() => $"[{X};{Y} ({Width}x{Height})]";
     }
 }

@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Managers
 {
@@ -75,6 +76,9 @@ namespace Managers
         {
             var blackoutColor = new Color(0, 0, 0, 0);
 
+            blackout.color = blackoutColor;
+            blackout.gameObject.SetActive(true);
+
             for (int i = 1; i <= transitionTicks; i++)
             {
                 blackoutColor.a = 1f / transitionTicks * i;
@@ -87,12 +91,17 @@ namespace Managers
         {
             var blackoutColor = new Color(0, 0, 0, 1);
 
+            blackout.color = blackoutColor;
+            blackout.gameObject.SetActive(true);
+
             for (int i = 1; i <= transitionTicks; i++)
             {
                 blackoutColor.a = 1f - 1f / transitionTicks * i;
                 blackout.color = blackoutColor;
                 yield return new WaitForSeconds(0.2f);
             }
+
+            blackout.gameObject.SetActive(false);
         }
 
         #endregion
@@ -120,16 +129,16 @@ namespace Managers
 
             // Process the level
             lvl.Random = random;
+            lvl.DoorGrid = doorDrawer.Process(lvl.Rooms);
             lvl.WallGrid = wallDrawer.Process(lvl.Rooms);
             lvl.EntranceExitGrid = entranceExitDrawer.Process(lvl.Rooms);
             lvl.GroundGrid = groundDrawer.Process(lvl.Rooms);
-            lvl.DoorGrid = doorDrawer.Process(lvl.Rooms);
 
             // Draw the level
             wallDrawer.Draw(lvl.WallGrid, lvl.Rooms);
+            doorDrawer.Draw(lvl.DoorGrid, lvl.Rooms);
             entranceExitDrawer.Draw(lvl.EntranceExitGrid, lvl.Rooms);
             groundDrawer.Draw(lvl.GroundGrid, lvl.Rooms);
-            doorDrawer.Draw(lvl.DoorGrid, lvl.Rooms);
 
             // Notify all receivers
             Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
