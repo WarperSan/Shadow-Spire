@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UtilsModule;
 
 namespace Dungeon.Drawers
 {
@@ -20,17 +20,16 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public override void Draw(bool[,] grid, Room[] rooms)
+        public override void Draw(Room[] rooms)
         {
-            int height = grid.GetLength(0);
-            int width = grid.GetLength(1);
+            int height = Level.Grid.GetLength(0);
+            int width = Level.Grid.GetLength(1);
 
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    // If no wall, skip
-                    if (!grid[y, x])
+                    if (!Level.HasDoor(x, y))
                         continue;
 
                     wallMap.SetTile(new Vector3Int(x, -y, 0), doorTile);
@@ -39,37 +38,53 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public override bool[,] Process(Room[] rooms)
+        public override void Process(Room[] rooms)
         {
             System.Random random = Level.Random;
 
-            bool[,] grid = CreateEmpty(rooms);
+            List<(Room, Room)> processedLinks = new();
 
             foreach (var (room, adjacents) in Level.AdjacentRooms)
             {
                 foreach (var adjacent in adjacents)
                 {
-                    if (room.X < adjacent.X && room.IsBeside(adjacent))
-                    {
-                        var rdmY = random.Next(
-                            Mathf.Max(room.Y, adjacent.Y) + 1, // Start from the point at the most down
-                            Mathf.Min(adjacent.Y + adjacent.Height, room.Y + room.Height) - 1 // Start from the point at the most up
-                        );
-                        grid[rdmY, room.X + room.Width] = true;
-                    }
-                    else if (room.Y < adjacent.Y && room.IsUnder(adjacent))
-                    {
-                        var rdmX = random.Next(
-                            Mathf.Max(room.X, adjacent.X) + 1, // Start from the point at the most right
-                            Mathf.Min(room.X + room.Width, adjacent.X + adjacent.Width) - 1 // Start from the point at the most left
-                        );
+                    // If already processed, skip
+                    if (processedLinks.Contains((adjacent, room)))
+                        continue;
 
-                        grid[room.Y + room.Height, rdmX] = true;
+                    Vector2Int point = new(room.X + room.Width + 1, room.Y + room.Height + 1);
+
+                    if (adjacent.X >= room.X + room.Width)
+                    {
+                        var minY = Mathf.Max(room.Y, adjacent.Y);
+                        var maxY = Mathf.Min(room.Y + room.Height, adjacent.Y + adjacent.Height);
+
+                        if (maxY - minY >= 3)
+                        {
+                            minY++;
+                            maxY--;
+                        }
+
+                        point.y = random.Next(minY, maxY) + 1;
                     }
+                    else
+                    {
+                        var minX = Mathf.Max(room.X, adjacent.X);
+                        var maxX = Mathf.Min(room.X + room.Width, adjacent.X + adjacent.Width);
+
+                        if (maxX - minX >= 3)
+                        {
+                            minX++;
+                            maxX--;
+                        }
+
+                        point.x = random.Next(minX, maxX) + 1;
+                    }
+
+                    Level.Add(point.x, point.y, Generation.Tile.DOOR_CLOSED);
+                    processedLinks.Add((room, adjacent));
                 }
             }
-
-            return grid;
         }
 
         /// <inheritdoc/>

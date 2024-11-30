@@ -3,6 +3,26 @@ using System.Collections.Generic;
 
 namespace Dungeon.Generation
 {
+    [Flags]
+    public enum Tile
+    {
+        NONE = 0,
+        GROUND = 1 << 1,
+        // 1 << 2
+        // 1 << 3
+        // 1 << 4
+        WALL = 1 << 5,
+        // 1 << 6
+        // 1 << 7
+        // 1 << 8
+        DOOR_CLOSED = 1 << 9,
+        DOOR_OPENED = 1 << 10,
+        // 1 << 11
+        // 1 << 12
+        ENTRANCE = 1 << 13,
+        EXIT = 1 << 14
+    }
+
     public class DungeonResult
     {
         /// <summary>
@@ -30,12 +50,9 @@ namespace Dungeon.Generation
         /// </summary>
         public Dictionary<Room, List<Room>> AdjacentRooms;
 
-        public bool[,] WallGrid;
-
-        public bool[,] GroundGrid;
-
-        public bool[,] DoorGrid;
-
-        public bool[,] EntranceExitGrid;
+        /// <summary>
+        /// Tiles for the dungeon
+        /// </summary>
+        public Tile[,] Grid;
     }
 }

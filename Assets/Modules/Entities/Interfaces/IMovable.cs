@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UtilsModule;
 
 namespace Entities.Interfaces
 {
@@ -92,16 +93,7 @@ namespace Entities.Interfaces
                 return position;
             }
 
-            if (level.DoorGrid == null)
-                return position;
-
-            if (-position.y < 0 || level.DoorGrid.GetLength(0) <= -position.y)
-                return position;
-
-            if (position.x < 0 || level.DoorGrid.GetLength(1) <= position.x)
-                return position;
-            
-            if (level.DoorGrid[-position.y, position.x])
+            if (level.HasDoor(position.x, -position.y))
                 position += movePos;
 
             return position;

@@ -1,6 +1,7 @@
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UtilsModule;
 
 namespace Dungeon.Drawers
 {
@@ -10,7 +11,7 @@ namespace Dungeon.Drawers
         private readonly TileBase[] tiles;
 
         #region Drawer
-        
+
         public WallDrawer(DungeonResult level, Tilemap wallMap, TileBase[] tiles) : base(level)
         {
             this.wallMap = wallMap;
@@ -18,63 +19,63 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public override bool[,] Process(Room[] rooms)
+        public override void Process(Room[] rooms)
         {
-            bool[,] grid = CreateEmpty(rooms);
-
             foreach (var room in rooms)
             {
+                // Left wall
                 if (room.X == 0)
                 {
                     for (int y = 0; y < room.Height; y++)
-                        grid[room.Y + y, room.X] = true;
+                        Level.Set(room.X, room.Y + y, Generation.Tile.WALL);
                 }
 
+                // Up wall
                 if (room.Y == 0)
                 {
                     for (int x = 0; x < room.Width; x++)
-                        grid[room.Y, room.X + x] = true;
+                        Level.Set(room.X + x, room.Y, Generation.Tile.WALL);
                 }
 
+                // Down wall
                 for (int y = 0; y <= room.Height; y++)
-                    grid[room.Y + y, room.X + room.Width] = true;
+                    Level.Set(room.X + room.Width, room.Y + y, Generation.Tile.WALL);
 
+                // Right wall
                 for (int x = 0; x < room.Width; x++)
-                    grid[room.Y + room.Height, room.X + x] = true;
+                    Level.Set(room.X + x, room.Y + room.Height, Generation.Tile.WALL);
 
                 room.Width--;
                 room.Height--;
             }
-
-            return grid;
         }
 
         /// <inheritdoc/>
-        public override void Draw(bool[,] grid, Room[] rooms)
+        public override void Draw(Room[] rooms)
         {
-            int height = grid.GetLength(0);
-            int width = grid.GetLength(1);
+            int height = Level.Grid.GetLength(0);
+            int width = Level.Grid.GetLength(1);
 
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
                     // If no wall, skip
-                    if (!grid[y, x])
+                    if (!Level.HasWall(x, y))
                         continue;
 
                     var index = 0;
 
-                    if (y > 0 && grid[y - 1, x])
+                    if (y > 0 && Level.HasWall(x, y - 1))
                         index += 0b0001; // TOP
 
-                    if (y < height - 1 && grid[y + 1, x])
+                    if (y < height - 1 && Level.HasWall(x, y + 1))
                         index += 0b0100; // BOTTOM
 
-                    if (x > 0 && grid[y, x - 1])
+                    if (x > 0 && Level.HasWall(x - 1, y))
                         index += 0b1000; // LEFT
 
-                    if (x < width - 1 && grid[y, x + 1])
+                    if (x < width - 1 && Level.HasWall(x + 1, y))
                         index += 0b0010; // RIGHT
 
                     wallMap.SetTile(new Vector3Int(x, -y, 0), tiles[index]);

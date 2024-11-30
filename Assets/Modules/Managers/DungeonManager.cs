@@ -108,11 +108,7 @@ namespace Managers
 
         #region Generation
 
-        private WallDrawer wallDrawer;
-        private DoorDrawer doorDrawer;
-        private GroundDrawer groundDrawer;
-        private EntranceExitDrawer entranceExitDrawer;
-
+        private Drawer[] DrawerPipeline;
         private IDungeonReceive[] Receivers;
 
         public DungeonResult StartLevel(DungeonSettings settings)
@@ -122,23 +118,24 @@ namespace Managers
             var lvl = new DungeonGenerator(random).Generate(settings.Width, settings.Height, settings.SliceCount);
 
             // Create drawers
-            wallDrawer = new WallDrawer(lvl, wallMap, wallTiles);
-            entranceExitDrawer = new EntranceExitDrawer(lvl, entrance, exit, player);
-            groundDrawer = new GroundDrawer(lvl, groundMap, groundTile);
-            doorDrawer = new DoorDrawer(lvl, wallMap, doorTile);
+            DrawerPipeline = new Drawer[]
+            {
+                new WallDrawer(lvl, wallMap, wallTiles),
+                new DoorDrawer(lvl, wallMap, doorTile),
+                new EntranceExitDrawer(lvl, entrance, exit, player),
+                new GroundDrawer(lvl, groundMap, groundTile),
+            };
 
             // Process the level
             lvl.Random = random;
-            lvl.DoorGrid = doorDrawer.Process(lvl.Rooms);
-            lvl.WallGrid = wallDrawer.Process(lvl.Rooms);
-            lvl.EntranceExitGrid = entranceExitDrawer.Process(lvl.Rooms);
-            lvl.GroundGrid = groundDrawer.Process(lvl.Rooms);
+            lvl.Grid = Drawer.CreateEmpty(lvl.Rooms);
+
+            foreach (var drawer in DrawerPipeline)
+                drawer.Process(lvl.Rooms);
 
             // Draw the level
-            wallDrawer.Draw(lvl.WallGrid, lvl.Rooms);
-            doorDrawer.Draw(lvl.DoorGrid, lvl.Rooms);
-            entranceExitDrawer.Draw(lvl.EntranceExitGrid, lvl.Rooms);
-            groundDrawer.Draw(lvl.GroundGrid, lvl.Rooms);
+            foreach (var drawer in DrawerPipeline)
+                drawer.Draw(lvl.Rooms);
 
             // Notify all receivers
             Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
@@ -175,10 +172,8 @@ namespace Managers
             yield return new WaitForSeconds(0.2f); // Level end animation
 
             // Clear all drawers
-            wallDrawer.Clear();
-            doorDrawer.Clear();
-            groundDrawer.Clear();
-            entranceExitDrawer.Clear();
+            foreach (var drawer in DrawerPipeline)
+                drawer.Clear();
 
             yield return null; // Wait 1 frame
 

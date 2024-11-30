@@ -727,8 +727,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dungeonManager: {fileID: 824904446}
   levelIndex: 0
-  overSeed: -291365202
-  useSeed: 0
+  overSeed: 1198032176
+  useSeed: 1
 --- !u!1 &1197061265
 GameObject:
   m_ObjectHideFlags: 0

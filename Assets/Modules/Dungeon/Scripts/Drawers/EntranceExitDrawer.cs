@@ -1,6 +1,7 @@
 using Dungeon.Generation;
 using Entities;
 using UnityEngine;
+using UtilsModule;
 
 namespace Dungeon.Drawers
 {
@@ -14,7 +15,7 @@ namespace Dungeon.Drawers
         {
             entrance.transform.position = new Vector3(x, -y, 0);
 
-            bool isLeft = Level.WallGrid[y, x + 1];
+            bool isLeft = Level.HasWall(x + 1, y);
 
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
@@ -29,7 +30,7 @@ namespace Dungeon.Drawers
 
         private void PlaceExit(int x, int y)
         {
-            bool isLeft = Level.WallGrid[y, x + 1];
+            bool isLeft = Level.HasWall(x + 1, y);
             Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
 
             exit.transform.position = new Vector3(x, -y, 0);
@@ -46,36 +47,26 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public override void Draw(bool[,] grid, Room[] rooms)
+        public override void Draw(Room[] rooms)
         {
-            bool hasPlacedEntrance = false;
+            int height = Level.Grid.GetLength(0);
+            int width = Level.Grid.GetLength(1);
 
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < grid.GetLength(1); x++)
+                for (int x = 0; x < width; x++)
                 {
-                    if (!grid[y, x])
-                        continue;
-
-                    if (!hasPlacedEntrance)
-                    {
+                    if (Level.Has(x, y, Tile.ENTRANCE))
                         PlaceEntrance(x, y);
-                        hasPlacedEntrance = true;
-                    }
-                    else
-                    {
+                    else if (Level.Has(x, y, Tile.EXIT))
                         PlaceExit(x, y);
-                        return; // Exit because last
-                    }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override bool[,] Process(Room[] rooms)
+        public override void Process(Room[] rooms)
         {
-            bool[,] grid = CreateEmpty(rooms);
-
             // Find smallest
             Room smallest = rooms[0];
             int smallestSize = smallest.Width * smallest.Height;
@@ -106,10 +97,8 @@ namespace Dungeon.Drawers
                 }
             }
 
-            grid[smallest.Y + smallest.Height, smallest.X + 1] = true;
-            grid[furthest.Y + 1, furthest.X + furthest.Width] = true;
-
-            return grid;
+            Level.Add(smallest.X + 1, smallest.Y + smallest.Height, Tile.ENTRANCE);
+            Level.Add(furthest.X + furthest.Width, furthest.Y + 1, Tile.EXIT);
         }
 
         /// <inheritdoc/>

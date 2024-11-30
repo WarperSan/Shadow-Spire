@@ -1,6 +1,7 @@
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UtilsModule;
 
 namespace Dungeon.Drawers
 {
@@ -18,40 +19,34 @@ namespace Dungeon.Drawers
         }
 
         /// <inheritdoc/>
-        public override bool[,] Process(Room[] rooms)
+        public override void Process(Room[] rooms)
         {
-            bool[,] entranceExitGrid = Level.EntranceExitGrid;
-            bool[,] grid = CreateEmpty(rooms);
-
-            foreach (var item in rooms)
+            foreach (var room in rooms)
             {
-                for (int y = 0; y < item.Height; y++)
+                for (int y = 0; y < room.Height; y++)
                 {
-                    for (int x = 0; x < item.Width; x++)
+                    for (int x = 0; x < room.Width; x++)
                     {
-                        if (entranceExitGrid[item.Y + y + 1, item.X + x + 1])
+                        if (Level.HasObstacle(room.X + x + 1, room.Y + y + 1))
                             continue;
 
-                        grid[item.Y + y + 1, item.X + x + 1] = true;
+                        Level.Add(room.X + x + 1, room.Y + y + 1, Generation.Tile.GROUND);
                     }
                 }
             }
-
-            return grid;
         }
 
         /// <inheritdoc/>
-        public override void Draw(bool[,] grid, Room[] rooms)
+        public override void Draw(Room[] rooms)
         {
-            int height = grid.GetLength(0);
-            int width = grid.GetLength(1);
+            int height = Level.Grid.GetLength(0);
+            int width = Level.Grid.GetLength(1);
 
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    // If no wall, skip
-                    if (!grid[y, x])
+                    if (!Level.HasGround(x, y))
                         continue;
 
                     groundMap.SetTile(new Vector3Int(x, -y, 0), tile);
