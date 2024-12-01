@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PathFinding.Graphs;
 
 namespace Dungeon.Generation
 {
@@ -54,5 +55,7 @@ namespace Dungeon.Generation
         /// Tiles for the dungeon
         /// </summary>
         public Tile[,] Grid;
+
+        public TileGraph TileGraph;
     }
 }

@@ -3,9 +3,17 @@ using UnityEngine;
 
 namespace PathFinding.Graphs
 {
-    public class RoomGraph : Graph<Node2D>
+    public class TileGraph : Graph<Node2D>
     {
+        public TileGraph(int[,] ids)
+        {
+            _ids = ids;
+        }
+
         private int _nextNodeId;
+        private int[,] _ids;
+
+        public int GetID(int x, int y) => _ids[y, x];
 
         /// <summary>
         /// Adds a node to this graph
