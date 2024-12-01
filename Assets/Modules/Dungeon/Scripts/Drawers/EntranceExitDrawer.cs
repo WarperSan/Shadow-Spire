@@ -82,23 +82,26 @@ namespace Dungeon.Drawers
                 }
             }
 
-            // Find biggest
-            Room furthest = rooms[0];
-            float distance = Vector2.Distance(new Vector2(smallest.X, smallest.Y), new Vector2(furthest.X, furthest.Y));
+            var entrancePosition = new Vector2Int(smallest.X + 1, smallest.Y + smallest.Height);
 
-            for (int i = 1; i < rooms.Length; i++)
+            // Find biggest
+            var exitPosition = new Vector2Int(0, 0);
+            float distance = float.MinValue;
+
+            for (int i = 0; i < rooms.Length; i++)
             {
-                float newDistance = Vector2.Distance(new Vector2(smallest.X, smallest.Y), new Vector2(rooms[i].X, rooms[i].Y));
+                var newExit = new Vector2Int(rooms[i].X + rooms[i].Width, rooms[i].Y + 1);
+                float newDistance = Vector2.Distance(entrancePosition, newExit);
 
                 if (newDistance > distance)
                 {
                     distance = newDistance;
-                    furthest = rooms[i];
+                    exitPosition = newExit;
                 }
             }
 
-            Level.Add(smallest.X + 1, smallest.Y + smallest.Height, Tile.ENTRANCE);
-            Level.Add(furthest.X + furthest.Width, furthest.Y + 1, Tile.EXIT);
+            Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
+            Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
         }
 
         /// <inheritdoc/>

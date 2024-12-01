@@ -86,6 +86,9 @@ namespace Managers
                         next = graph.GetID(x, y + 1);
                     }
 
+                    if (current == NO_NODE_ID || next == NO_NODE_ID)
+                        continue;
+
                     graph.AddLink(current, next, 3f, true);
                 }
             }

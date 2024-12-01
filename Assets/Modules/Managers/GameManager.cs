@@ -45,6 +45,8 @@ namespace Managers
                 Seed = seed,
                 Width = 18,
                 Height = 12,
+                MinimumRoomHeight = 5,
+                MinimumRoomWidth = 5,
                 SliceCount = 10
             };
 

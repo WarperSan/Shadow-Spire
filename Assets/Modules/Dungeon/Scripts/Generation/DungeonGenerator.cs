@@ -12,14 +12,9 @@ namespace Dungeon.Generation
             this.random = random;
         }
 
-        public DungeonResult Generate(int width, int height, int sliceCount) => GenerateRooms(width, height, sliceCount);
-
         #region Rooms
 
-        private const int MINIMUM_ROOM_WIDTH = 5;
-        private const int MINIMUM_ROOM_HEIGHT = 5;
-
-        private DungeonResult GenerateRooms(int width, int height, int sliceCount)
+        public DungeonResult Generate(int width, int height, int sliceCount, int minRoomWidth, int minRoomHeight)
         {
             var root = new Room
             {
@@ -28,7 +23,7 @@ namespace Dungeon.Generation
             };
 
             // Slices the root into smaller rooms
-            SlicesRooms(root, sliceCount);
+            SlicesRooms(root, sliceCount, minRoomWidth, minRoomHeight);
 
             // Compile all the rooms
             Room[] rooms = CompileRooms(root);
@@ -49,7 +44,7 @@ namespace Dungeon.Generation
         /// <summary>
         /// Slices the given room into smaller rooms
         /// </summary>
-        private void SlicesRooms(Room root, int sliceCount)
+        private void SlicesRooms(Room root, int sliceCount, int minRoomWidth, int minRoomHeight)
         {
             var rooms = new Queue<Room>();
             rooms.Enqueue(root);
@@ -61,7 +56,7 @@ namespace Dungeon.Generation
                 var room = rooms.Dequeue();
 
                 // Split
-                bool sliced = room.Split(random, MINIMUM_ROOM_WIDTH, MINIMUM_ROOM_HEIGHT);
+                bool sliced = room.Split(random, minRoomWidth, minRoomHeight);
 
                 if (sliced)
                 {

@@ -3,12 +3,10 @@ using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
 using Entities;
-using PathFinding.Graphs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using UtilsModule;
 
 namespace Managers
 {
@@ -116,7 +114,13 @@ namespace Managers
         {
             // Generate level
             var random = new System.Random(settings.Seed);
-            var lvl = new DungeonGenerator(random).Generate(settings.Width, settings.Height, settings.SliceCount);
+            var lvl = new DungeonGenerator(random).Generate(
+                settings.Width, 
+                settings.Height, 
+                settings.SliceCount,
+                settings.MinimumRoomWidth,
+                settings.MinimumRoomHeight
+            );
 
             // Create drawers
             DrawerPipeline = new Drawer[]
