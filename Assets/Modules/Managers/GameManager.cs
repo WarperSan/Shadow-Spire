@@ -66,51 +66,5 @@ namespace Managers
         }
 
         #endregion
-
-        #region Gizmos
-#if UNITY_EDITOR
-
-        [Header("Gizmos")]
-        [SerializeField, Tooltip("Icon used for a node that is in the selected path")]
-        private string SelectedPathIcon = "sv_icon_dot3_pix16_gizmo"; // Green dot
-
-        [SerializeField, Tooltip("Icon used for a node that is not in the selected path")]
-        private string NodeIcon = "sv_icon_dot1_pix16_gizmo"; // Blue dot
-
-        [SerializeField, Tooltip("Gradient used for the links")]
-        private Gradient LinkCostColor;
-
-        /// <inheritdoc/>
-        private void OnDrawGizmos()
-        {
-            if (Level == null || Level.TileGraph == null)
-                return;
-
-            var height = Level.Grid.GetLength(0);
-            var width = Level.Grid.GetLength(1);
-
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    var id = Level.TileGraph.GetID(x, y);
-
-                    if (id == -1)
-                        continue;
-
-                    var n = Level.TileGraph.GetNode(id);
-
-                    // Draw links
-                    foreach (var neighbor in n.GetNeighbors())
-                    {
-                        Gizmos.color = LinkCostColor.Evaluate(n.GetCost(neighbor) / 3f);
-                        Gizmos.DrawLine(n.Position, Level.TileGraph.GetNode(neighbor).Position);
-                    }
-                }
-            }
-        }
-
-#endif
-        #endregion
     }
 }

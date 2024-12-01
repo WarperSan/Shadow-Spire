@@ -34,8 +34,8 @@ namespace Entities
             CoroutineWithData cd = new(this, turnable.Think());
             yield return cd.coroutine;
 
-            Movement movement = (Movement?)cd.result ?? Movement.LEFT;
-            yield return movable.ApplyMovement(movement);
+            if (cd.result is Movement movement)
+                yield return movable.ApplyMovement(movement);
 
             turnable.OnTurnEnded();
         }

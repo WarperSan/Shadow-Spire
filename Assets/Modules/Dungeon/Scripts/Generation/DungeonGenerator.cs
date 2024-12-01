@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using PathFinding.Graphs;
-using UnityEngine;
 using Random = System.Random;
 
 namespace Dungeon.Generation
@@ -104,6 +102,9 @@ namespace Dungeon.Generation
             return rooms.ToArray();
         }
 
+        /// <summary>
+        /// Creates a map of all the rooms and all the rooms they are connected to
+        /// </summary>
         private Dictionary<Room, List<Room>> FindAdjacentRooms(Room[] rooms)
         {
             var roomLinks = new Dictionary<Room, List<Room>>();

@@ -130,11 +130,14 @@ namespace Managers
             // Process the level
             lvl.Random = random;
             lvl.Grid = Drawer.CreateEmpty(lvl.Rooms);
+            lvl.Height = lvl.Grid.GetLength(0);
+            lvl.Width = lvl.Grid.GetLength(1);
 
             foreach (var drawer in DrawerPipeline)
                 drawer.Process(lvl.Rooms);
 
-            lvl.TileGraph = ComputeTileGraph(lvl);
+            // Compute graphs
+            lvl.TileGraph = PathFindingManager.ComputeTileGraph(lvl);
 
             // Draw the level
             foreach (var drawer in DrawerPipeline)
@@ -147,92 +150,6 @@ namespace Managers
                 receiver.OnLevelStart(lvl);
 
             return lvl;
-        }
-
-        private TileGraph ComputeTileGraph(DungeonResult lvl)
-        {
-            var height = lvl.Grid.GetLength(0);
-            var width = lvl.Grid.GetLength(1);
-            int[,] ids = new int[height, width];
-
-            var graph = new TileGraph(ids);
-
-            // Generate nodes
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    ids[y, x] = -1;
-
-                    // If not ground, skip
-                    if (!lvl.HasGround(x, y))
-                        continue;
-
-                    ids[y, x] = graph.AddNode(new Vector2(x + 0.5f, -y - 0.5f));
-                }
-            }
-
-            // Generale links between room nodes
-            foreach (var room in lvl.Rooms)
-            {
-                var maxX = room.X + room.Width + 1;
-                var maxY = room.Y + room.Height + 1;
-
-                for (int y = room.Y; y < maxY; y++)
-                {
-                    for (int x = room.X; x < maxX; x++)
-                    {
-                        int current = graph.GetID(x, y);
-
-                        if (current == -1)
-                            continue;
-
-                        int[] nexts = new int[]
-                        {
-                            graph.GetID(x + 1, y), // To right
-                            graph.GetID(x, y - 1) // To bottom
-                        };
-
-                        foreach (var next in nexts)
-                        {
-                            if (next == -1)
-                                continue;
-
-                            graph.AddLink(current, next, 1f, true);
-                        }
-                    }
-                }
-            }
-
-            // Generate links between doors
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    // If not a door, skip
-                    if (!lvl.HasDoor(x, y))
-                        continue;
-
-                    int current;
-                    int next;
-
-                    // If on vertical wall
-                    if (lvl.HasWall(x, y + 1))
-                    {
-                        current = graph.GetID(x - 1, y);
-                        next = graph.GetID(x + 1, y);
-                    }
-                    else
-                    {
-                        current = graph.GetID(x, y - 1);
-                        next = graph.GetID(x, y + 1);
-                    }
-
-                    graph.AddLink(current, next, 3f, true);
-                }
-            }
-
-            return graph;
         }
 
         public IEnumerator EndLevel(int currentLevel, int nextLevel, System.Func<IEnumerator> callback = null)
