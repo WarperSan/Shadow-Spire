@@ -44,7 +44,7 @@ namespace Entities
 
         [Header("Render")]
         [SerializeField]
-        private SpriteRenderer spriteRenderer;
+        protected SpriteRenderer spriteRenderer;
 
         /// <inheritdoc/>
         public void FlipByMovement(Movement movement)

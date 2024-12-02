@@ -1,4 +1,5 @@
 using System.Collections;
+using Enemies;
 using Entities.Interfaces;
 using Managers;
 using UnityEngine;
@@ -7,6 +8,31 @@ namespace Entities
 {
     public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable
     {
+        public EnemySO temp;
+
+        private void Start()
+        {
+            EnemyData = temp;
+        }
+
+        #region Data
+
+        private EnemySO _data;
+
+        public EnemySO EnemyData
+        {
+            get => _data;
+            set => SetData(value);
+        }
+
+        private void SetData(EnemySO data)
+        {
+            spriteRenderer.sprite = data.OverworldSprite;
+            _data = data;
+        }
+
+        #endregion
+
         #region ITurnable
 
         /// <inheritdoc/>
@@ -61,6 +87,7 @@ namespace Entities
             // If the player lands on an enemy, this method will be called twice,
             // because the player calls OnEntityLanded and this entity calls OnEntityLand.
             Debug.Log("hit");
+            GameManager.Instance.StartBattle(this);
         }
 
         #endregion

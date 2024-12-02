@@ -69,6 +69,33 @@ namespace Managers
 
         #endregion
 
+        #region Battle
+
+        [Header("Battle")]
+        [SerializeField]
+        private BattleManager battleManager;
+
+        private bool isInBattle;
+
+        public void StartBattle(EnemyEntity enemy)
+        {
+            if (isInBattle)
+            {
+                Debug.LogWarning("Tried to start a battle while a battle is already occuring.");
+                return;
+            }
+
+            isInBattle = true;
+            battleManager.StartBattle();
+        }
+
+        public void EndBattle()
+        {
+            isInBattle = false;
+        }
+
+        #endregion
+
         #region Singleton
 
         /// <inheritdoc/>
