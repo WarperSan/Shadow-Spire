@@ -263,7 +263,6 @@ MonoBehaviour:
   doorTile: {fileID: 11400000, guid: b164d27faa45fc33aa63a3d1a03894b4, type: 2}
   entrance: {fileID: 889232534}
   exit: {fileID: 38550080}
-  player: {fileID: 1931053744}
   blackout: {fileID: 444811996}
   transitionLevelText: {fileID: 5877184638961969173}
 --- !u!114 &444811996 stripped
@@ -1042,7 +1041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217786a2b06bedea9b8b264f505ec5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1931053744}
 --- !u!4 &1551055280 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5209748686242371978, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
@@ -1476,7 +1474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8825905050529268576, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -15,8 +15,8 @@ namespace Entities
             path = PathFindingManager.FindPath(this, GetPathFindingTarget());
             movements = PathFindingManager.GetDirections(path);
 
-            // If no path found
-            if (movements == null)
+            // If no path found or on the same tile
+            if (movements == null || movements.Length == 0)
                 yield return null;
             else
                 yield return movements[0];
@@ -38,10 +38,28 @@ namespace Entities
         /// <inheritdoc/>
         public void OnEntityLand(GridEntity entity)
         {
-            // If not player, skip
-            if (entity is not PlayerEntity)
+            if (entity is PlayerEntity player)
+            {
+                OnPlayerTouched(player);
                 return;
+            }
+        }
 
+        /// <inheritdoc/>
+        public void OnEntityLanded(GridEntity entity)
+        {
+            if (entity is PlayerEntity player)
+            {
+                OnPlayerTouched(player);
+                return;
+            }
+        }
+
+        private void OnPlayerTouched(PlayerEntity player)
+        {
+            // Needs to check if you aleady started a battle.
+            // If the player lands on an enemy, this method will be called twice,
+            // because the player calls OnEntityLanded and this entity calls OnEntityLand.
             Debug.Log("hit");
         }
 

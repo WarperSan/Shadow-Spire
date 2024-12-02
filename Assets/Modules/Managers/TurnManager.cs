@@ -10,7 +10,7 @@ namespace Managers
     public class TurnManager : MonoBehaviour, IDungeonReceive
     {
         private readonly List<GridEntity> turnEntities = new();
-        private readonly List<GridEntity> eventEntities = new();
+        private GridEntity[] foundEntities;
 
         private IEnumerator ProcessTurn()
         {
@@ -18,22 +18,28 @@ namespace Managers
             {
                 foreach (var entity in turnEntities)
                 {
-                    yield return entity.ExecuteTurn();
-
                     // Level over
                     if (GameManager.Instance.IsLevelOver)
                         break;
 
+                    yield return entity.ExecuteTurn();
+
                     // Check for event
-                    foreach (var item in eventEntities)
+                    foreach (var item in foundEntities)
                     {
+                        // If checking self, skip
                         if (item == entity)
                             continue;
 
+                        // If not on the same position, skip
                         if (item.Position != entity.Position)
                             continue;
 
-                        (item as IEventable).OnEntityLand(entity);
+                        if (entity is IEventable landOn)
+                            landOn.OnEntityLand(item);
+
+                        if (item is IEventable landedOn)
+                            landedOn.OnEntityLanded(entity);
                     }
                 }
             }
@@ -47,20 +53,15 @@ namespace Managers
             var player = level.Player;
 
             turnEntities.Clear();
-            eventEntities.Clear();
-
             turnEntities.Add(player); // Make the player the first entity
 
-            var foundEntities = FindObjectsOfType<GridEntity>();
+            foundEntities = FindObjectsOfType<GridEntity>();
 
             foreach (var item in foundEntities)
             {
                 // Don't add player twice
                 if (item == player)
                     continue;
-
-                if (item is IEventable)
-                    eventEntities.Add(item);
 
                 if (item is not ITurnable)
                     continue;

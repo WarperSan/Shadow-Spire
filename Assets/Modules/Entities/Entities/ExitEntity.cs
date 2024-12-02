@@ -2,14 +2,13 @@ using Entities.Interfaces;
 
 namespace Entities
 {
-    public class ExitEntity : GridEntity, IEventable
+    public class ExitEntity : GridEntity, IEventable<PlayerEntity>
     {
-        public void OnEntityLand(GridEntity entity)
-        {
-            if (entity is not PlayerEntity)
-                return;
+        /// <inheritdoc/>
+        public void OnEntityLand(PlayerEntity entity) { /* Exit can't move on another entity */ }
 
-            Managers.GameManager.Instance.EndLevel();
-        }
+        /// <inheritdoc/>
+        public void OnEntityLanded(PlayerEntity entity) => Managers.GameManager.Instance.EndLevel();
+        
     }
 }
