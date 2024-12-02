@@ -56,9 +56,6 @@ namespace Managers
         [SerializeField]
         private ExitEntity exit;
 
-        [SerializeField]
-        private PlayerEntity player;
-
         #endregion
 
         #region UI
@@ -110,7 +107,7 @@ namespace Managers
         private Drawer[] DrawerPipeline;
         private IDungeonReceive[] Receivers;
 
-        public DungeonResult StartLevel(DungeonSettings settings)
+        public DungeonResult StartLevel(DungeonSettings settings, PlayerEntity player)
         {
             // Generate level
             var random = new System.Random(settings.Seed);
@@ -132,6 +129,7 @@ namespace Managers
             };
 
             // Process the level
+            lvl.Player = player;
             lvl.Random = random;
             lvl.Grid = Drawer.CreateEmpty(lvl.Rooms);
             lvl.Height = lvl.Grid.GetLength(0);

@@ -52,7 +52,7 @@ namespace Managers
 
             Debug.Log("Seed: " + seed);
 
-            Level = dungeonManager.StartLevel(settings);
+            Level = dungeonManager.StartLevel(settings, player);
         }
 
         public void EndLevel()
@@ -66,6 +66,13 @@ namespace Managers
             StartLevel();
             yield return null;
         }
+
+        #endregion
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override bool DestroyOnLoad => true;
 
         #endregion
     }

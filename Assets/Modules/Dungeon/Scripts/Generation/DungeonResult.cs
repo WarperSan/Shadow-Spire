@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Entities;
 using PathFinding.Graphs;
 
 namespace Dungeon.Generation
@@ -32,6 +33,11 @@ namespace Dungeon.Generation
         public Room[] Rooms;
 
         /// <summary>
+        /// Every rooms that is adjacent to a room
+        /// </summary>
+        public Dictionary<Room, List<Room>> AdjacentRooms;
+
+        /// <summary>
         /// The element used for random generation
         /// </summary>
         public Random Random;
@@ -47,15 +53,15 @@ namespace Dungeon.Generation
         public int Height;
 
         /// <summary>
-        /// Every rooms that is adjacent to a room
-        /// </summary>
-        public Dictionary<Room, List<Room>> AdjacentRooms;
-
-        /// <summary>
         /// Tiles for the dungeon
         /// </summary>
         public Tile[,] Grid;
 
+        /// <summary>
+        /// Graph of all the tiles for the dungeon
+        /// </summary>
         public TileGraph TileGraph;
+
+        public PlayerEntity Player;
     }
 }

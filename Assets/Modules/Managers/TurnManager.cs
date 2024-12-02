@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using Dungeon.Generation;
 using Entities;
 using Entities.Interfaces;
-using UtilsModule;
+using UnityEngine;
 
 namespace Managers
 {
-    public class TurnManager : Singleton<TurnManager>, IDungeonReceive
+    public class TurnManager : MonoBehaviour, IDungeonReceive
     {
-        public PlayerEntity player;
-
         private readonly List<GridEntity> turnEntities = new();
         private readonly List<GridEntity> eventEntities = new();
 
@@ -46,6 +44,8 @@ namespace Managers
         /// <inheritdoc/>
         public void OnLevelStart(DungeonResult level)
         {
+            var player = level.Player;
+
             turnEntities.Clear();
             eventEntities.Clear();
 
@@ -73,13 +73,6 @@ namespace Managers
 
         /// <inheritdoc/>
         public void OnLevelEnd(DungeonResult level) { }
-
-        #endregion
-
-        #region Singleton
-
-        /// <inheritdoc/>
-        protected override bool DestroyOnLoad => true;
 
         #endregion
     }
