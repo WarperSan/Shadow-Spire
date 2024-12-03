@@ -82,9 +82,9 @@ namespace Managers
             if (IsInBattle)
                 return;
 
-            InputManager.Instance.SwitchToUI();
             IsInBattle = true;
             battleManager.StartBattle();
+            InputManager.Instance.SwitchToUI();
         }
 
         public void EndBattle()

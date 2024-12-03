@@ -16,7 +16,7 @@ namespace Entities
 
         private Movement? requestMove = null;
 
-        public void Move(Vector2 dir)
+        private void Move(Vector2 dir)
         {
             Movement movement;
 

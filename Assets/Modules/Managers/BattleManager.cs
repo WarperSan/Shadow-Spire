@@ -8,6 +8,24 @@ namespace Managers
 {
     public class BattleManager : MonoBehaviour
     {
+        private void Start()
+        {
+            InputManager.Instance.OnMoveUI.AddListener(Move);
+        }
+
+        public void StartBattle()
+        {
+            StartCoroutine(StartBattleTransition());
+
+        }
+
+        public void EndBattle()
+        {
+
+        }
+
+        private BattleUI battleUI;
+
         #region Battle Transition
 
         [Header("Battle Transition")]
@@ -17,16 +35,6 @@ namespace Managers
         public EnemySO enemyTemp1;
         public EnemySO enemyTemp2;
         public EnemySO enemyTemp3;
-
-        public void StartBattle()
-        {
-            StartCoroutine(StartBattleTransition());
-        }
-
-        public void EndBattle()
-        {
-
-        }
 
         private IEnumerator StartBattleTransition()
         {
@@ -40,8 +48,9 @@ namespace Managers
 
             yield return new WaitForSeconds(1f);
 
-            BattleUI battleUI = FindObjectOfType<BattleUI>();
+            battleUI = FindObjectOfType<BattleUI>();
             battleUI.ClearAllSlots();
+            battleUI.UpdateActionText(0);
 
             yield return null; // Wait for everything to set up
 
@@ -59,9 +68,10 @@ namespace Managers
             yield return null; // Wait for spoiler to get removed
         }
 
-        private void EndBattleTransition()
+        private IEnumerator EndBattleTransition()
         {
-
+            battleUI = null;
+            yield return null;
         }
 
         #endregion
@@ -100,6 +110,18 @@ namespace Managers
         {
             SetTransitionTexture(null);
             SetTransitionCutoff(0);
+        }
+
+        #endregion
+
+        #region Inputs
+
+        private void Move(Vector2 dir)
+        {
+            if (battleUI == null)
+                return;
+
+            battleUI.MoveActionCursor(dir);
         }
 
         #endregion
