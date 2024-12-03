@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dungeon.Generation;
 using Entities;
 using Entities.Interfaces;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Managers
@@ -14,13 +15,17 @@ namespace Managers
 
         private IEnumerator ProcessTurn()
         {
-            while (!GameManager.Instance.IsLevelOver)
+            bool _continue = true;
+            while (_continue)
             {
                 foreach (var entity in turnEntities)
                 {
-                    // Level over
-                    if (GameManager.Instance.IsLevelOver)
+                    // If player is in battle or if the level is over, skip turn
+                    if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver)
+                    {
+                        _continue = false;
                         break;
+                    }
 
                     yield return entity.ExecuteTurn();
 

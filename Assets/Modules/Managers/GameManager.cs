@@ -75,23 +75,23 @@ namespace Managers
         [SerializeField]
         private BattleManager battleManager;
 
-        private bool isInBattle;
+        public bool IsInBattle;
 
         public void StartBattle(EnemyEntity enemy)
         {
-            if (isInBattle)
+            if (IsInBattle)
             {
                 Debug.LogWarning("Tried to start a battle while a battle is already occuring.");
                 return;
             }
 
-            isInBattle = true;
+            IsInBattle = true;
             battleManager.StartBattle();
         }
 
         public void EndBattle()
         {
-            isInBattle = false;
+            IsInBattle = false;
         }
 
         #endregion
