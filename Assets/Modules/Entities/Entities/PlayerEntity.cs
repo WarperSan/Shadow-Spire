@@ -1,23 +1,23 @@
 using System.Collections;
 using Entities.Interfaces;
+using Managers;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Entities
 {
     public class PlayerEntity : GridEntity, ITurnable, IMovable
     {
+        private void Start()
+        {
+            InputManager.Instance.OnMovePlayer.AddListener(Move);
+        }
+
         #region Inputs
 
         private Movement? requestMove = null;
 
-        public void Move(InputAction.CallbackContext context)
+        public void Move(Vector2 dir)
         {
-            if (!context.started)
-                return;
-
-            Vector2 dir = context.ReadValue<Vector2>();
-
             Movement movement;
 
             if (dir.x > 0)

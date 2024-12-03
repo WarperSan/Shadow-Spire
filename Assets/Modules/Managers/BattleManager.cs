@@ -1,4 +1,6 @@
 using System.Collections;
+using Battle;
+using Enemies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +13,10 @@ namespace Managers
         [Header("Battle Transition")]
         [SerializeField] Material transitionMat;
         [SerializeField] Texture[] transitionTextures;
+
+        public EnemySO enemyTemp1;
+        public EnemySO enemyTemp2;
+        public EnemySO enemyTemp3;
 
         public void StartBattle()
         {
@@ -25,9 +31,32 @@ namespace Managers
         private IEnumerator StartBattleTransition()
         {
             yield return LoadRandomTransition();
-            yield return TransitionFadeIn(1.5f);
-            yield return new WaitForSeconds(10.5f);
-            SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
+            yield return TransitionFadeIn(0.9f);
+
+            var loadScene = SceneManager.LoadSceneAsync("BattleScene", LoadSceneMode.Additive);
+
+            while (!loadScene.isDone)
+                yield return null;
+
+            yield return new WaitForSeconds(1f);
+
+            BattleUI battleUI = FindObjectOfType<BattleUI>();
+            battleUI.ClearAllSlots();
+
+            yield return null; // Wait for everything to set up
+
+            battleUI.SetSlot(enemyTemp1, 0);
+            battleUI.SetSlot(enemyTemp2, 1);
+            battleUI.SetSlot(enemyTemp3, 2);
+
+            for (int i = 0; i < 3; i++)
+                StartCoroutine(battleUI.GetSlot(i).SpawnAnimation());
+
+            yield return null;
+
+            battleUI.SPOILER.SetActive(false);
+
+            yield return null; // Wait for spoiler to get removed
         }
 
         private void EndBattleTransition()

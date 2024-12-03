@@ -80,11 +80,9 @@ namespace Managers
         public void StartBattle(EnemyEntity enemy)
         {
             if (IsInBattle)
-            {
-                Debug.LogWarning("Tried to start a battle while a battle is already occuring.");
                 return;
-            }
 
+            InputManager.Instance.SwitchToUI();
             IsInBattle = true;
             battleManager.StartBattle();
         }
@@ -92,6 +90,7 @@ namespace Managers
         public void EndBattle()
         {
             IsInBattle = false;
+            InputManager.Instance.SwitchToPlayer();
         }
 
         #endregion

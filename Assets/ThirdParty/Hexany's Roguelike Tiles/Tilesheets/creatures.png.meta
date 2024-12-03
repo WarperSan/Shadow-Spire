@@ -164,6 +164,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: overworld_reaper
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43bc586c0f1499b66bfaec024f28aeb6
+      internalID: -1146474306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: overworld_orc
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc0b6d93dee3c9203a9f8056e06f7f68
+      internalID: -2040698843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -176,6 +218,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Player: 1049150707
+      overworld_orc: -2040698843
+      overworld_reaper: -1146474306
       overworld_zombie: 2087767863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

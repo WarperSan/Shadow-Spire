@@ -614,7 +614,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_24
+      name: fight_reaper
       rect:
         serializedVersion: 2
         x: 0
@@ -845,7 +845,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_35
+      name: fight_orc
       rect:
         serializedVersion: 2
         x: 96
@@ -1464,6 +1464,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      fight_orc: -620138874
+      fight_reaper: 1976018159
       fight_zombie: 718047891
       monochrome_32x32_transparent_0: -233166337
       monochrome_32x32_transparent_1: -631411837
@@ -1481,7 +1483,6 @@ TextureImporter:
       monochrome_32x32_transparent_20: -508793675
       monochrome_32x32_transparent_22: -773263675
       monochrome_32x32_transparent_23: 1080712877
-      monochrome_32x32_transparent_24: 1976018159
       monochrome_32x32_transparent_25: -1268546407
       monochrome_32x32_transparent_26: -431813863
       monochrome_32x32_transparent_27: 1854031816
@@ -1493,7 +1494,6 @@ TextureImporter:
       monochrome_32x32_transparent_32: 1549134744
       monochrome_32x32_transparent_33: 1705346344
       monochrome_32x32_transparent_34: -348603638
-      monochrome_32x32_transparent_35: -620138874
       monochrome_32x32_transparent_36: 417967483
       monochrome_32x32_transparent_37: 594527533
       monochrome_32x32_transparent_38: -113047956
