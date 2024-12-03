@@ -115,8 +115,8 @@ namespace Managers
                 settings.Width, 
                 settings.Height, 
                 settings.SliceCount,
-                settings.MinimumRoomWidth,
-                settings.MinimumRoomHeight
+                settings.MinimumRoomWidth + 1, // Add right wall
+                settings.MinimumRoomHeight + 1 // Add down wall
             );
 
             // Create drawers

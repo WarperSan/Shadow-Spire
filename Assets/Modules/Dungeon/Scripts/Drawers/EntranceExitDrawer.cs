@@ -82,7 +82,7 @@ namespace Dungeon.Drawers
                 }
             }
 
-            var entrancePosition = new Vector2Int(smallest.X + 1, smallest.Y + smallest.Height);
+            var entrancePosition = new Vector2Int(smallest.X, smallest.Y + smallest.Height - 1);
 
             // Find biggest
             var exitPosition = new Vector2Int(0, 0);
@@ -90,7 +90,7 @@ namespace Dungeon.Drawers
 
             for (int i = 0; i < rooms.Length; i++)
             {
-                var newExit = new Vector2Int(rooms[i].X + rooms[i].Width, rooms[i].Y + 1);
+                var newExit = new Vector2Int(rooms[i].X + rooms[i].Width - 1, rooms[i].Y);
                 float newDistance = Vector2.Distance(entrancePosition, newExit);
 
                 if (newDistance > distance)
@@ -99,6 +99,9 @@ namespace Dungeon.Drawers
                     exitPosition = newExit;
                 }
             }
+
+            Debug.Log(entrancePosition);
+            Debug.Log(exitPosition);
 
             Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);

@@ -23,20 +23,6 @@ namespace Dungeon.Drawers
         {
             foreach (var room in rooms)
             {
-                // Left wall
-                if (room.X == 0)
-                {
-                    for (int y = 0; y < room.Height; y++)
-                        Level.Set(room.X, room.Y + y, Generation.Tile.WALL);
-                }
-
-                // Up wall
-                if (room.Y == 0)
-                {
-                    for (int x = 0; x < room.Width; x++)
-                        Level.Set(room.X + x, room.Y, Generation.Tile.WALL);
-                }
-
                 // Down wall
                 for (int y = 0; y <= room.Height; y++)
                     Level.Set(room.X + room.Width, room.Y + y, Generation.Tile.WALL);
@@ -45,9 +31,19 @@ namespace Dungeon.Drawers
                 for (int x = 0; x < room.Width; x++)
                     Level.Set(room.X + x, room.Y + room.Height, Generation.Tile.WALL);
 
+                room.X++; // Move room left by 1
+                room.Y++; // Move room down by 1
                 room.Width--;
                 room.Height--;
             }
+
+            // Left wall
+            for (int y = 0; y < Level.Height; y++)
+                Level.Set(0, y, Generation.Tile.WALL);
+
+            // Up wall
+            for (int x = 0; x < Level.Width; x++)
+                Level.Set(x, 0, Generation.Tile.WALL);
         }
 
         /// <inheritdoc/>

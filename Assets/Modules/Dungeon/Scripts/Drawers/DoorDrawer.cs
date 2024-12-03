@@ -52,7 +52,7 @@ namespace Dungeon.Drawers
                     if (processedLinks.Contains((adjacent, room)))
                         continue;
 
-                    Vector2Int point = new(room.X + room.Width + 1, room.Y + room.Height + 1);
+                    Vector2Int point = new(room.X + room.Width, room.Y + room.Height);
 
                     if (adjacent.X >= room.X + room.Width)
                     {
@@ -65,7 +65,7 @@ namespace Dungeon.Drawers
                             maxY--;
                         }
 
-                        point.y = random.Next(minY, maxY) + 1;
+                        point.y = random.Next(minY, maxY);
                     }
                     else
                     {
@@ -78,7 +78,7 @@ namespace Dungeon.Drawers
                             maxX--;
                         }
 
-                        point.x = random.Next(minX, maxX) + 1;
+                        point.x = random.Next(minX, maxX);
                     }
 
                     Level.Add(point.x, point.y, Generation.Tile.DOOR_CLOSED);

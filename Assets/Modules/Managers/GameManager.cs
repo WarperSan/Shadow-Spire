@@ -45,9 +45,9 @@ namespace Managers
                 Seed = seed,
                 Width = 18,
                 Height = 12,
-                MinimumRoomHeight = 5,
-                MinimumRoomWidth = 5,
-                SliceCount = 10
+                MinimumRoomHeight = 3,
+                MinimumRoomWidth = 3,
+                SliceCount = 7
             };
 
             Debug.Log("Seed: " + seed);

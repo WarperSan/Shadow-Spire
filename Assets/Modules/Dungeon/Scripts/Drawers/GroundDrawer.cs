@@ -27,10 +27,10 @@ namespace Dungeon.Drawers
                 {
                     for (int x = 0; x < room.Width; x++)
                     {
-                        if (Level.HasObstacle(room.X + x + 1, room.Y + y + 1))
+                        if (Level.HasObstacle(room.X + x, room.Y + y))
                             continue;
 
-                        Level.Add(room.X + x + 1, room.Y + y + 1, Generation.Tile.GROUND);
+                        Level.Add(room.X + x, room.Y + y, Generation.Tile.GROUND);
                     }
                 }
             }
