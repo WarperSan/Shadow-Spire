@@ -100,9 +100,6 @@ namespace Dungeon.Drawers
                 }
             }
 
-            Debug.Log(entrancePosition);
-            Debug.Log(exitPosition);
-
             Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
         }
