@@ -15,7 +15,6 @@ namespace Managers
         public void StartBattle()
         {
             StartCoroutine(StartBattleTransition());
-            //SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
         }
 
         public void EndBattle()
@@ -27,6 +26,8 @@ namespace Managers
         {
             yield return LoadRandomTransition();
             yield return TransitionFadeIn(1.5f);
+            yield return new WaitForSeconds(10.5f);
+            SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
         }
 
         private void EndBattleTransition()
