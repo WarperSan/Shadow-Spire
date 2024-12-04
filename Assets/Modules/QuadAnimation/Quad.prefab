@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: 0.1
-  period: 1.2
-  waveSpeed: 5
+  period: 1
+  waveSpeed: 6
   waveDirection: {x: 1, y: 0}
 --- !u!114 &8066995285785271585
 MonoBehaviour:
@@ -114,5 +114,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 1.1
-  width: 2
+  width: 1.5
   resolution: {x: 30, y: 30}
