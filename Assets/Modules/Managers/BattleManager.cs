@@ -8,15 +8,9 @@ namespace Managers
 {
     public class BattleManager : MonoBehaviour
     {
-        private void Start()
-        {
-            InputManager.Instance.OnMoveUI.AddListener(Move);
-        }
-
         public void StartBattle()
         {
             StartCoroutine(StartBattleTransition());
-
         }
 
         public void EndBattle()
@@ -66,6 +60,8 @@ namespace Managers
             battleUI.SPOILER.SetActive(false);
 
             yield return null; // Wait for spoiler to get removed
+
+            AddInputs();
         }
 
         private IEnumerator EndBattleTransition()
@@ -115,6 +111,16 @@ namespace Managers
         #endregion
 
         #region Inputs
+
+        private void AddInputs()
+        {
+            InputManager.Instance.OnMoveUI.AddListener(Move);
+        }
+
+        private void RemoveInputs()
+        {
+            InputManager.Instance.OnMoveUI.RemoveListener(Move);
+        }
 
         private void Move(Vector2 dir)
         {
