@@ -20,6 +20,8 @@ namespace Entities
     {
         public Vector2Int Position => new(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
 
+        #region Turn
+
         public IEnumerator ExecuteTurn()
         {
             // An entity must be a Turnable and a Movable in order to move 
@@ -31,14 +33,21 @@ namespace Entities
 
             turnable.OnTurnStarted();
 
+            yield return ProcessTurn(turnable, movable);
+
+            turnable.OnTurnEnded();
+        }
+
+        protected virtual IEnumerator ProcessTurn(ITurnable turnable, IMovable movable)
+        {
             CoroutineWithData cd = new(this, turnable.Think());
             yield return cd.coroutine;
 
             if (cd.result is Movement movement)
                 yield return movable.ApplyMovement(movement);
-
-            turnable.OnTurnEnded();
         }
+
+        #endregion
 
         #region Render
 
