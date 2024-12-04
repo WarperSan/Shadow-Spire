@@ -91,6 +91,16 @@ namespace Entities
 
         #endregion
 
+        #region IMovable
+
+        /// <inheritdoc/>
+        void IMovable.OnMoveStart(Movement movement)
+        {
+            FlipByMovement(movement);
+        }
+
+        #endregion
+
         #region Gizmos
 #if UNITY_EDITOR
         /// <inheritdoc/>

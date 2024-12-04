@@ -6,6 +6,9 @@ namespace Enemies
     public class EnemySO : ScriptableObject
     {
         public Sprite OverworldSprite;
+
+        [Header("Fight")]
         public Sprite FightSprite;
+        public Sprite FightShadowSprite;
     }
 }

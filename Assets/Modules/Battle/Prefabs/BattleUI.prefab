@@ -408,7 +408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2090645866408114982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1021,10 +1021,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342651778282307090}
     m_Modifications:
-    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1109,14 +1105,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySlot-Left
       objectReference: {fileID: 0}
-    - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -233166337, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
-    - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1146,14 +1134,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342651778282307090}
     m_Modifications:
-    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1238,22 +1218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySlot-Middle
       objectReference: {fileID: 0}
-    - target: {fileID: 6898504773107672355, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_text
-      value: '- TARGET -'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8937178944237886429, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -14808172, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
-    - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1283,10 +1251,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342651778282307090}
     m_Modifications:
-    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1374,11 +1338,7 @@ PrefabInstance:
     - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 843628579, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
-    - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1788289355, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

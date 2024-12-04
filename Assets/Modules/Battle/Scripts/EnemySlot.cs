@@ -11,7 +11,13 @@ namespace Battle
 
         [Header("Fields")]
         [SerializeField]
+        private RectTransform enemy;
+
+        [SerializeField]
         private Image sprite;
+
+        [SerializeField]
+        private Image shadow;
 
         [SerializeField]
         private GameObject target;
@@ -32,6 +38,8 @@ namespace Battle
         {
             sprite.sprite = null;
             sprite.enabled = false;
+            shadow.sprite = null;
+            shadow.enabled = false;
             UnTargetSlot();
         }
 
@@ -39,6 +47,8 @@ namespace Battle
         {
             sprite.sprite = data.FightSprite;
             sprite.enabled = true;
+            shadow.sprite = data.FightShadowSprite;
+            shadow.enabled = data.FightShadowSprite != null;
             UnTargetSlot();
         }
 
@@ -51,9 +61,12 @@ namespace Battle
             const float DURATION = 1.5f;
             const float TICKS = 8;
             const float START_Y = 80f;
+            const float ALPHA_SPRITE = 1f;
+            const float ALPHA_SHADOW = 26f / 255f;
 
-            var pos = sprite.rectTransform.anchoredPosition;
-            var color = Color.black;
+            var pos = enemy.anchoredPosition;
+            var spriteColor = Color.black;
+            var shadowColor = Color.black;
             pos.y = START_Y;
 
             yield return null; // Wait 1 frame
@@ -61,10 +74,13 @@ namespace Battle
             for (int i = 0; i <= TICKS; i++)
             {
                 pos.y = START_Y - START_Y / TICKS * i;
-                color.r = color.g = color.b = 1f / TICKS * i;
 
-                sprite.rectTransform.anchoredPosition = pos;
-                sprite.color = color;
+                spriteColor.r = spriteColor.g = spriteColor.b = ALPHA_SPRITE / TICKS * i;
+                shadowColor.r = shadowColor.g = shadowColor.b = ALPHA_SHADOW / TICKS * i;
+
+                enemy.anchoredPosition = pos;
+                sprite.color = spriteColor;
+                shadow.color = shadowColor;
                 yield return new WaitForSeconds(DURATION / TICKS);
             }
         }
