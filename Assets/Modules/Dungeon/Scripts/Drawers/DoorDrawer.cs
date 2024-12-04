@@ -52,12 +52,12 @@ namespace Dungeon.Drawers
                     if (processedLinks.Contains((adjacent, room)))
                         continue;
 
-                    Vector2Int point = new(room.X + room.Width, room.Y + room.Height);
+                    Vector2Int point = new(1, 1);
 
                     if (adjacent.X >= room.X + room.Width)
                     {
                         var minY = Mathf.Max(room.Y, adjacent.Y);
-                        var maxY = Mathf.Min(room.Y + room.Height, adjacent.Y + adjacent.Height);
+                        var maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
 
                         if (maxY - minY >= 3)
                         {
@@ -65,12 +65,13 @@ namespace Dungeon.Drawers
                             maxY--;
                         }
 
+                        point.x = adjacent.X - 1;
                         point.y = random.Next(minY, maxY);
                     }
-                    else
+                    else if (adjacent.Y >= room.Y + room.Height)
                     {
                         var minX = Mathf.Max(room.X, adjacent.X);
-                        var maxX = Mathf.Min(room.X + room.Width, adjacent.X + adjacent.Width);
+                        var maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
 
                         if (maxX - minX >= 3)
                         {
@@ -78,8 +79,12 @@ namespace Dungeon.Drawers
                             maxX--;
                         }
 
+
                         point.x = random.Next(minX, maxX);
+                        point.y = adjacent.Y - 1;
                     }
+                    else
+                        continue;
 
                     Level.Add(point.x, point.y, Generation.Tile.DOOR_CLOSED);
                     processedLinks.Add((room, adjacent));

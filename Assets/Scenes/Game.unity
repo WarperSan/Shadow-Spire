@@ -914,7 +914,7 @@ MonoBehaviour:
   player: {fileID: 1931053744}
   dungeonManager: {fileID: 366401024}
   levelIndex: 0
-  overSeed: 1563386252
+  overSeed: 681880049
   useSeed: 0
   battleManager: {fileID: 75914958}
   IsInBattle: 0
