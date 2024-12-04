@@ -296,14 +296,14 @@ MonoBehaviour:
   wallMap: {fileID: 895919162}
   wallTiles:
   - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: b5d5cfee83654cabba461960d52960f7, type: 2}
+  - {fileID: 11400000, guid: aaeae1880985dbc23953a51c3b8c55fc, type: 2}
   - {fileID: 11400000, guid: 1e323e7ee43523ff3808c13767c47947, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 7390da8bb6b919dc585cd0618616a565, type: 2}
   - {fileID: 11400000, guid: 9fbe58d7b668443dc8efc7be4c8f1349, type: 2}
   - {fileID: 11400000, guid: d9112d6622cefe1869123cb0509eeb87, type: 2}
   - {fileID: 11400000, guid: da61176ab1cea94418b1582f34098788, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 063d8cd507bf9a5f790a72fdcd3a53f0, type: 2}
   - {fileID: 11400000, guid: 6c40d0ff2c5313ffa8883c7fa9406f2d, type: 2}
   - {fileID: 11400000, guid: e17c36891247093dc90dd0e04261efe2, type: 2}
   - {fileID: 11400000, guid: a7ff9784fef21dd169df86fe051ae6aa, type: 2}
@@ -914,7 +914,7 @@ MonoBehaviour:
   player: {fileID: 1931053744}
   dungeonManager: {fileID: 366401024}
   levelIndex: 0
-  overSeed: -864024232
+  overSeed: 1563386252
   useSeed: 0
   battleManager: {fileID: 75914958}
   IsInBattle: 0

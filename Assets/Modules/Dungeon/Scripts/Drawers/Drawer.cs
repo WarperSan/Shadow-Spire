@@ -72,7 +72,7 @@ namespace Dungeon.Drawers
                 maxY = Math.Max(maxY, room.Y + room.Height);
             }
 
-            return new Tile[maxY - minY + 2, maxX - minX + 2];
+            return new Tile[maxY - minY + 1, maxX - minX + 1];
         }
     }
 }
