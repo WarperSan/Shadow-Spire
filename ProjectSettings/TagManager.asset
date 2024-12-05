@@ -34,8 +34,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Overworld
+  - Battle
   - 
   m_SortingLayers:
   - name: Default

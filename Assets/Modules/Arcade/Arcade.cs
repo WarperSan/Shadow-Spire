@@ -23,4 +23,10 @@ public class Arcade : MonoBehaviour, IInteractable
             yield return null;
     }
 
+    private void Start()
+    {
+        CameraUtils.Camera2D.IsIn3D = true;
+        OnClick();
+    }
+
 }
