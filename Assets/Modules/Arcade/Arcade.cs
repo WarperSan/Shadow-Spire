@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +9,6 @@ public class Arcade : MonoBehaviour, IInteractable
 
     /// <inheritdoc/>
     public void OnClick() => StartCoroutine(Start2DGame());
-
 
     public IEnumerator Start2DGame()
     {
@@ -28,5 +25,4 @@ public class Arcade : MonoBehaviour, IInteractable
         CameraUtils.Camera2D.IsIn3D = true;
         OnClick();
     }
-
 }

@@ -1,3 +1,4 @@
+using BattleEntity;
 using UnityEngine;
 
 namespace Enemies
@@ -10,5 +11,10 @@ namespace Enemies
         [Header("Fight")]
         public Sprite FightSprite;
         public Sprite FightShadowSprite;
+
+        public int BaseHealth = 1;
+        public int BaseAttack = 1;
+        public BattleEntityType Type = BattleEntityType.NORMAL;
+
     }
 }
