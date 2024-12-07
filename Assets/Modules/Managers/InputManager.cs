@@ -13,6 +13,8 @@ namespace Managers
 
         [Header("UI")]
         public UnityEvent<Vector2> OnMoveUI;
+        public UnityEvent OnEnterUI;
+        public UnityEvent OnEscapeUI;
 
         #region Inputs
 
@@ -41,6 +43,22 @@ namespace Managers
 
             Vector2 dir = context.ReadValue<Vector2>();
             OnMoveUI?.Invoke(dir);
+        }
+
+        public void EnterUI(InputAction.CallbackContext context)
+        {
+            if (!context.started)
+                return;
+
+            OnEnterUI?.Invoke();
+        }
+
+        public void EscapeUI(InputAction.CallbackContext context)
+        {
+            if (!context.started)
+                return;
+
+            OnEscapeUI?.Invoke();
         }
 
         #endregion

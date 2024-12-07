@@ -49,9 +49,13 @@ namespace Battle
         [SerializeField]
         private TextMeshProUGUI actionsText;
         private int actionIndex = 0;
-        private string[] ACTIONS = new string[] {
-            "ATTACK", "HEAL"
-        };
+        private string[] ACTIONS;
+
+        public void LoadActions(string[] actions)
+        {
+            ACTIONS = actions;
+            UpdateActionText(0);
+        }
 
         public void MoveActionCursor(Vector2 dir)
         {
@@ -97,6 +101,8 @@ namespace Battle
 
             actionsText.text = text.ToString();
         }
+
+        public string GetAction() => ACTIONS[actionIndex];
 
         #endregion
     }

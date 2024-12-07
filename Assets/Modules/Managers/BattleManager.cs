@@ -44,7 +44,7 @@ namespace Managers
 
             battleUI = FindObjectOfType<BattleUI>();
             battleUI.ClearAllSlots();
-            battleUI.UpdateActionText(0);
+            battleUI.LoadActions(new string[] { "ATTACK", "HEAL" });
 
             yield return null; // Wait for everything to set up
 
@@ -115,11 +115,15 @@ namespace Managers
         private void AddInputs()
         {
             InputManager.Instance.OnMoveUI.AddListener(Move);
+            InputManager.Instance.OnEnterUI.AddListener(Enter);
+            InputManager.Instance.OnEscapeUI.AddListener(Escape);
         }
 
         private void RemoveInputs()
         {
             InputManager.Instance.OnMoveUI.RemoveListener(Move);
+            InputManager.Instance.OnEnterUI.RemoveListener(Enter);
+            InputManager.Instance.OnEscapeUI.RemoveListener(Escape);
         }
 
         private void Move(Vector2 dir)
@@ -128,6 +132,16 @@ namespace Managers
                 return;
 
             battleUI.MoveActionCursor(dir);
+        }
+
+        private void Enter()
+        {
+            Debug.Log(battleUI.GetAction());
+        }
+
+        private void Escape()
+        {
+
         }
 
         #endregion
