@@ -1,4 +1,5 @@
 using Enemies;
+using Managers;
 using UnityEngine;
 
 namespace Battle.UI
@@ -47,8 +48,13 @@ namespace Battle.UI
 
             if (enemyOptions.IsSelected)
             {
-                enemyOptions.GetSelectedSlot()?.UnTargetSlot();
-                enemyOptions.GetSelectedSlot()?.HitAnimation(2);
+                var slot = enemyOptions.GetSelectedSlot();
+                
+                if (slot == null)
+                    return;
+
+                slot.UnTargetSlot();
+                slot.HitAnimation(Mathf.RoundToInt(2 * battleManager.GetEffectiveness(slot.GetEntity()) / 100f));
                 return;
             }
         }
@@ -75,6 +81,9 @@ namespace Battle.UI
         [SerializeField]
         private EnemyOptions enemyOptions;
 
+        [HideInInspector]
+        public BattleManager battleManager;
+
         public void SetBattleOptions(params string[] options)
         {
             if (battleOptions == null)
@@ -89,6 +98,7 @@ namespace Battle.UI
             if (enemyOptions == null)
                 return;
 
+            enemyOptions.battleManager = battleManager;
             enemyOptions.SetSlot(left, 0);
             enemyOptions.GetSlot(0).SetHealth(20);
             enemyOptions.SetSlot(middle, 1);

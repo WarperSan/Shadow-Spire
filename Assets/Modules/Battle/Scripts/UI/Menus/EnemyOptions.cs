@@ -1,11 +1,13 @@
 using Enemies;
+using Managers;
 using UnityEngine;
 
 namespace Battle.UI
 {
     public class EnemyOptions : SelectMenu
     {
-        public Weapons.WeaponSO weapon;
+        [HideInInspector]
+        public BattleManager battleManager;
 
         #region Slots
 
@@ -83,8 +85,10 @@ namespace Battle.UI
             if (slot == null)
                 return;
 
+            var weapon = battleManager.GetWeapon();
+
             slot.TargetSlot();
-            slot.SetEffectiveness(selectedTarget / 2f * 250f, weapon);
+            slot.SetEffectiveness(battleManager.GetEffectiveness(slot.GetEntity()), weapon);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace Weapons
     public class WeaponSO : ScriptableObject
     {
         public Sprite Icon;
+        public BattleEntity.BattleEntityType AttackType;
     }
 }

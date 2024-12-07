@@ -2,7 +2,7 @@
 
 namespace BattleEntity
 {
-    internal class BattleEnemyEntity : BattleEntity
+    public class BattleEnemyEntity : BattleEntity
     {
         public EnemySO Enemy { get; private set; }
 

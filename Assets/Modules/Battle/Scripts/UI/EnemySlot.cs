@@ -1,3 +1,4 @@
+using BattleEntity;
 using Enemies;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,8 @@ namespace Battle.UI
 
         #region Data
 
+        private BattleEnemyEntity entity;
+
         public void SetEnemy(EnemySO data)
         {
             if (data == null)
@@ -41,6 +44,7 @@ namespace Battle.UI
             sprite.enabled = false;
             shadow.sprite = null;
             shadow.enabled = false;
+            entity = null;
             UnTargetSlot();
         }
 
@@ -50,8 +54,11 @@ namespace Battle.UI
             sprite.enabled = true;
             shadow.sprite = data.FightShadowSprite;
             shadow.enabled = data.FightShadowSprite != null;
+            entity = new BattleEnemyEntity(data);
             UnTargetSlot();
         }
+
+        public BattleEnemyEntity GetEntity() => entity;
 
         #endregion
 

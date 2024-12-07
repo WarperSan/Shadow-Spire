@@ -3,11 +3,14 @@ using Battle.UI;
 using Enemies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Weapons;
 
 namespace Managers
 {
     public class BattleManager : MonoBehaviour
     {
+        public WeaponSO weapon;
+
         public void StartBattle()
         {
             StartCoroutine(StartBattleTransition());
@@ -18,7 +21,7 @@ namespace Managers
 
         }
 
-        private BattleUI battleUI;
+        public BattleUI battleUI;
 
         #region Battle Transition
 
@@ -43,6 +46,7 @@ namespace Managers
             yield return new WaitForSeconds(1f);
 
             battleUI = FindObjectOfType<BattleUI>();
+            battleUI.battleManager = this;
             battleUI.SetBattleOptions("ATTACK", "HEAL");
 
             yield return null; // Wait for everything to set up
@@ -104,8 +108,15 @@ namespace Managers
 
         #endregion
 
-        #region Inputs
+        #region Weapon
 
+        public WeaponSO GetWeapon() => weapon;
+
+        public float GetEffectiveness(BattleEntity.BattleEntity entity) => entity.CalculateEffectiveness(GetWeapon().AttackType);
+
+        #endregion
+
+        #region Inputs
 
         private void AddInputs()
         {
