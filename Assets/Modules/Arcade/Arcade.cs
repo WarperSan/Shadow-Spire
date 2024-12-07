@@ -16,7 +16,7 @@ public class Arcade : MonoBehaviour, IInteractable
     public IEnumerator Start2DGame()
     {
         Debug.Log("activated");
-        AudioFilter.enabled = true;
+        //AudioFilter.enabled = true;
         var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
 
         while (!loadScene.isDone)
