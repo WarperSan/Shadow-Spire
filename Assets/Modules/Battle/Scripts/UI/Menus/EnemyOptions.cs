@@ -5,6 +5,8 @@ namespace Battle.UI
 {
     public class EnemyOptions : SelectMenu
     {
+        public Weapons.WeaponSO weapon;
+
         #region Slots
 
         [Header("Slots")]
@@ -31,7 +33,7 @@ namespace Battle.UI
         }
 
         #endregion
-        
+
         private int selectedTarget = -1;
 
         public EnemySlot GetSelectedSlot() => GetSlot(selectedTarget);
@@ -55,7 +57,7 @@ namespace Battle.UI
 
             if (selectedTarget < 0)
             {
-                for (int i = slots.Length - 1; i >= 0 ; i--)
+                for (int i = slots.Length - 1; i >= 0; i--)
                 {
                     if (GetSlot(i) != null)
                     {
@@ -76,7 +78,13 @@ namespace Battle.UI
                 }
             }
 
-            GetSlot(selectedTarget)?.TargetSlot();
+            var slot = GetSlot(selectedTarget);
+
+            if (slot == null)
+                return;
+
+            slot.TargetSlot();
+            slot.SetEffectiveness(selectedTarget / 2f * 250f, weapon);
         }
     }
 }

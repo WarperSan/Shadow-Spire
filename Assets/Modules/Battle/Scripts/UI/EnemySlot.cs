@@ -1,8 +1,8 @@
-using System.Collections;
 using Enemies;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Weapons;
 
 namespace Battle.UI
 {
@@ -16,9 +16,6 @@ namespace Battle.UI
 
         [SerializeField]
         private Image shadow;
-
-        [SerializeField]
-        private GameObject target;
 
         [SerializeField]
         private TextMeshProUGUI health;
@@ -70,13 +67,56 @@ namespace Battle.UI
             animator.SetTrigger("hit");
             healthPopup.text = string.Format("-{0}", damage);
         }
-        
+
         #endregion
 
         #region Target
 
-        public void TargetSlot() => target.SetActive(true);
-        public void UnTargetSlot() => target.SetActive(false);
+        [Header("Target")]
+        [SerializeField]
+        private GameObject target;
+
+        [SerializeField]
+        private TextMeshProUGUI targetEffectiveness;
+
+        private void SetTargetted(bool isTarget)
+        {
+            target.SetActive(isTarget);
+            animator.SetBool("targetted", isTarget);
+        }
+
+        public void TargetSlot() => SetTargetted(true);
+        public void UnTargetSlot() => SetTargetted(false);
+
+        public void SetEffectiveness(float percent, WeaponSO weapon)
+        {
+            targetEffectiveness.text = string.Format(
+                "<sprite name={0}> <color={1}>{2}</color>%",
+                weapon.Icon.name,
+                GetEffectivenessColor(percent),
+                percent
+            );
+        }
+
+        private string GetEffectivenessColor(float percent)
+        {
+            if (percent >= 250)
+                return "orange";
+
+            if (percent >= 150)
+                return "purple";
+
+            if (percent > 100)
+                return "green";
+
+            if (percent == 100)
+                return "white";
+
+            if (percent >= 75)
+                return "#A0A0A0";
+
+            return "#505050";
+        }
 
         #endregion
 

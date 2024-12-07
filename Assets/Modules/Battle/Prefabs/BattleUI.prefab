@@ -330,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsSelected: 0
+  weapon: {fileID: 11400000, guid: 9bc5cd4f776a00ad890a864a1f33f702, type: 2}
   slots:
   - {fileID: 588069850407124740}
   - {fileID: 12076343842754210}
@@ -952,6 +953,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342651778282307090}
     m_Modifications:
+    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4706756283085983659, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -966,19 +971,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.2
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.57
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.2
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.57
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1190,6 +1195,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342651778282307090}
     m_Modifications:
+    - target: {fileID: 1181295252983149476, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4706756283085983659, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1204,19 +1213,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.8
+      value: 0.83
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.57
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.8
+      value: 0.83
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.57
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 5247419444579255321, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1277,6 +1286,14 @@ PrefabInstance:
     - target: {fileID: 5564065067049414220, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Name
       value: EnemySlot-Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898504773107672355, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
+      propertyPath: m_text
+      value: '- TARGET -'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937178944237886429, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9095753318282948066, guid: de45f6c7de7f84b5d91cafc09783c030, type: 3}
       propertyPath: m_Sprite
