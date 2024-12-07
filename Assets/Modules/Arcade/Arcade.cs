@@ -2,27 +2,32 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Arcade : MonoBehaviour, IInteractable
+namespace Arcade
 {
-    [SerializeField] Camera ArcadeCamera;
-    [SerializeField] AudioLowPassFilter AudioFilter;
-
-    /// <inheritdoc/>
-    public void OnClick() => StartCoroutine(Start2DGame());
-
-    public IEnumerator Start2DGame()
+    /// <summary>
+    /// Script for the interaction between the player and the arcade
+    /// </summary>
+    public class Arcade : MonoBehaviour, IInteractable
     {
-        Debug.Log("activated");
-        //AudioFilter.enabled = true;
-        var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
+        [SerializeField] Camera ArcadeCamera;
+        [SerializeField] AudioLowPassFilter AudioFilter;
 
-        while (!loadScene.isDone)
-            yield return null;
-    }
+        /// <inheritdoc/>
+        public void OnClick() => StartCoroutine(Start2DGame());
 
-    private void Start()
-    {
-        CameraUtils.Camera2D.IsIn3D = true;
-        OnClick();
+        public IEnumerator Start2DGame()
+        {
+            Debug.Log("activated");
+            //AudioFilter.enabled = true;
+            var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
+
+            while (!loadScene.isDone)
+                yield return null;
+        }
+
+        private void Start()
+        {
+            OnClick();
+        }
     }
 }

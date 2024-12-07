@@ -10,7 +10,11 @@ public class PlayerController : Controller
     private Vector2 movementDirection;
 
     /// <inheritdoc/>
-    protected override void OnStart() => ControllerManager.SwitchTo(this);
+    protected override void OnStart()
+    {
+        ControllerManager.SwitchTo(this);
+        CameraUtils.Camera2D.IsIn3D = true;
+    }
 
     /// <inheritdoc/>
     protected override void OnSwitchIn() => SetCursorLock(true);

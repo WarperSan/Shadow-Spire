@@ -17,4 +17,4 @@ MonoBehaviour:
   FightShadowSprite: {fileID: -1727956127, guid: dd7eb1e0ab004e814ae18440780176a7, type: 3}
   BaseHealth: 1
   BaseAttack: 1
-  Type: 2
+  Type: 8

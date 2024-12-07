@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace UtilsModule
 {
+    /// <summary>
+    /// Calls a coroutine and waits for a result
+    /// </summary>
     public class CoroutineWithData
     {
         public Coroutine coroutine { get; private set; }
