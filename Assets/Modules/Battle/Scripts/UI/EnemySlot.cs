@@ -1,5 +1,6 @@
 using System.Collections;
 using Enemies;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,6 @@ namespace Battle.UI
 
         [Header("Fields")]
         [SerializeField]
-        private RectTransform enemy;
-
-        [SerializeField]
         private Image sprite;
 
         [SerializeField]
@@ -21,6 +19,12 @@ namespace Battle.UI
 
         [SerializeField]
         private GameObject target;
+
+        [SerializeField]
+        private TextMeshProUGUI health;
+
+        [SerializeField]
+        private TextMeshProUGUI healthPopup;
 
         #endregion
 
@@ -56,41 +60,29 @@ namespace Battle.UI
 
         #region Animations
 
-        public IEnumerator SpawnAnimation()
+        [Header("Animations")]
+        [SerializeField]
+        private Animator animator;
+
+        public void SpawnAnimation() => animator.SetTrigger("spawnIn");
+        public void HitAnimation(int damage)
         {
-            const float DURATION = 1.5f;
-            const float TICKS = 8;
-            const float START_Y = 80f;
-            const float ALPHA_SPRITE = 1f;
-            const float ALPHA_SHADOW = 26f / 255f;
-
-            var pos = enemy.anchoredPosition;
-            var spriteColor = Color.black;
-            var shadowColor = Color.black;
-            pos.y = START_Y;
-
-            yield return null; // Wait 1 frame
-
-            for (int i = 0; i <= TICKS; i++)
-            {
-                pos.y = START_Y - START_Y / TICKS * i;
-
-                spriteColor.r = spriteColor.g = spriteColor.b = ALPHA_SPRITE / TICKS * i;
-                shadowColor.r = shadowColor.g = shadowColor.b = ALPHA_SHADOW / TICKS * i;
-
-                enemy.anchoredPosition = pos;
-                sprite.color = spriteColor;
-                shadow.color = shadowColor;
-                yield return new WaitForSeconds(DURATION / TICKS);
-            }
+            animator.SetTrigger("hit");
+            healthPopup.text = string.Format("-{0}", damage);
         }
-
+        
         #endregion
 
         #region Target
 
         public void TargetSlot() => target.SetActive(true);
         public void UnTargetSlot() => target.SetActive(false);
+
+        #endregion
+
+        #region Health
+
+        public void SetHealth(int health) => this.health.text = string.Format("<sprite name=icon_heart> {0}", health);
 
         #endregion
     }

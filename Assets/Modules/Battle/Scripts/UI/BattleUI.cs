@@ -44,6 +44,13 @@ namespace Battle.UI
 
                 return;
             }
+
+            if (enemyOptions.IsSelected)
+            {
+                enemyOptions.GetSelectedSlot()?.UnTargetSlot();
+                enemyOptions.GetSelectedSlot()?.HitAnimation(2);
+                return;
+            }
         }
 
         public void Escape()
@@ -83,8 +90,11 @@ namespace Battle.UI
                 return;
 
             enemyOptions.SetSlot(left, 0);
+            enemyOptions.GetSlot(0).SetHealth(20);
             enemyOptions.SetSlot(middle, 1);
+            enemyOptions.GetSlot(1).SetHealth(10);
             enemyOptions.SetSlot(right, 2);
+            enemyOptions.GetSlot(2).SetHealth(25);
 
             for (int i = 0; i < 3; i++)
             {
@@ -93,7 +103,7 @@ namespace Battle.UI
                 if (slot == null)
                     return;
 
-                StartCoroutine(slot.SpawnAnimation());
+                slot.SpawnAnimation();
             }
         }
 

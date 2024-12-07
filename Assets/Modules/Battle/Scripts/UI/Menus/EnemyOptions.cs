@@ -34,6 +34,8 @@ namespace Battle.UI
         
         private int selectedTarget = -1;
 
+        public EnemySlot GetSelectedSlot() => GetSlot(selectedTarget);
+
         public override void Clear()
         {
             foreach (var item in slots)
