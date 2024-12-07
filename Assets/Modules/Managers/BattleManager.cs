@@ -1,5 +1,5 @@
 using System.Collections;
-using Battle;
+using Battle.UI;
 using Enemies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -43,17 +43,11 @@ namespace Managers
             yield return new WaitForSeconds(1f);
 
             battleUI = FindObjectOfType<BattleUI>();
-            battleUI.ClearAllSlots();
-            battleUI.LoadActions(new string[] { "ATTACK", "HEAL" });
+            battleUI.SetBattleOptions("ATTACK", "HEAL");
 
             yield return null; // Wait for everything to set up
 
-            battleUI.SetSlot(enemyTemp1, 0);
-            battleUI.SetSlot(enemyTemp2, 1);
-            battleUI.SetSlot(enemyTemp3, 2);
-
-            for (int i = 0; i < 3; i++)
-                StartCoroutine(battleUI.GetSlot(i).SpawnAnimation());
+            battleUI.StartBattle(enemyTemp1, enemyTemp2, enemyTemp3);
 
             yield return null;
 
@@ -112,6 +106,7 @@ namespace Managers
 
         #region Inputs
 
+
         private void AddInputs()
         {
             InputManager.Instance.OnMoveUI.AddListener(Move);
@@ -126,23 +121,9 @@ namespace Managers
             InputManager.Instance.OnEscapeUI.RemoveListener(Escape);
         }
 
-        private void Move(Vector2 dir)
-        {
-            if (battleUI == null)
-                return;
-
-            battleUI.MoveActionCursor(dir);
-        }
-
-        private void Enter()
-        {
-            Debug.Log(battleUI.GetAction());
-        }
-
-        private void Escape()
-        {
-
-        }
+        private void Move(Vector2 dir) => battleUI?.Move(dir);
+        private void Enter() => battleUI?.Enter();
+        private void Escape() => battleUI?.Escape();
 
         #endregion
 

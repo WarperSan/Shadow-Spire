@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a63ea841d8469d1eeb85bd5fd06fdc20
+guid: 735dc951043e53034b55177e60b6296d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -110,22 +110,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_sword_small
+      name: top_divider
       rect:
         serializedVersion: 2
-        x: 32
-        y: 48
+        x: 0
+        y: 8
         width: 16
-        height: 16
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 7, y: 0, z: 7, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d2ffc5c803e361ae78d3f0c9026dd426
-      internalID: -852831718
+      spriteID: d69954e0ab12d2cb48f04bd69b8ad20e
+      internalID: 1311858894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bottom_divider
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 7, y: 0, z: 7, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02bc182cb3204771eb5e37ad9a6f6975
+      internalID: -294909628
       vertices: []
       indices: 
       edges: []
@@ -133,7 +154,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c50bf754a6caf4b148155ec52a459143
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -141,7 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      icon_sword_small: -852831718
+      bottom_divider: -294909628
+      top_divider: 1311858894
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

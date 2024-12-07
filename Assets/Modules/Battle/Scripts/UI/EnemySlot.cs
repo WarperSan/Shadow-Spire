@@ -3,7 +3,7 @@ using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Battle
+namespace Battle.UI
 {
     public class EnemySlot : MonoBehaviour
     {
