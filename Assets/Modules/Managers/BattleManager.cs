@@ -1,8 +1,9 @@
 using System.Collections;
-using Battle.UI;
+using Battle;
+using Battle.Options;
+using BattleEntity;
 using Enemies;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Weapons;
 
 namespace Managers
@@ -10,114 +11,210 @@ namespace Managers
     public class BattleManager : MonoBehaviour
     {
         public WeaponSO weapon;
+        public EnemySO enemy1;
+        public EnemySO enemy2;
+        public EnemySO enemy3;
 
-        public void StartBattle()
+        public IEnumerator StartBattle()
         {
-            StartCoroutine(StartBattleTransition());
+            yield return StartBattleTransition();
+            yield return FindBattleUI();
+            LoadBattleOptions();
+
+            var entities = new BattleEnemyEntity[3]
+            {
+                new(enemy1),
+                new(enemy2),
+                new(enemy3),
+            };
+
+            LoadEnemyOptions(weapon, entities);
+
+            yield return battleUI.DisableSpoiler();
+
+            EnableBattleOption();
+            AddInputs();
         }
 
-        public void EndBattle()
-        {
+        #region Battle UI
 
+        private BattleUI battleUI;
+
+        private IEnumerator FindBattleUI()
+        {
+            do
+            {
+                battleUI = FindObjectOfType<BattleUI>();
+                yield return null;
+            } while (battleUI == null);
         }
 
-        public BattleUI battleUI;
+        #endregion
+
+        #region Battle Options
+
+        private bool isSelectingBattleOption;
+
+        private void LoadBattleOptions()
+        {
+            battleUI.Load(new BattleOptionData[] {
+                new() {
+                    Text = "Attack",
+                    OnEnter = OnAttackPressed
+                },
+                new() {
+                    Text = "Heal"
+                }
+            });
+        }
+
+        private void OnAttackPressed()
+        {
+            DisableBattleOption();
+            EnableEnemyOption();
+        }
+
+        private void EnableBattleOption()
+        {
+            isSelectingBattleOption = true;
+            battleUI.ShowSelection<BattleOptionData>();
+        }
+
+        private void DisableBattleOption()
+        {
+            isSelectingBattleOption = false;
+            battleUI.HideSelection<BattleOptionData>();
+        }
+
+        #endregion
+
+        #region Enemy Options
+
+        private bool isSelectingEnemyOption;
+
+        private void LoadEnemyOptions(WeaponSO weapon, params BattleEnemyEntity[] entities)
+        {
+            var options = new EnemyOptionData[entities.Length];
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                options[i] = new EnemyOptionData()
+                {
+                    Weapon = weapon,
+                    Entity = entities[i],
+                    OnEnter = OnEnemyConfirmed,
+                    OnEscape = OnEnemyEscape
+                };
+            }
+
+            battleUI.Load(options);
+        }
+
+        private void OnEnemyConfirmed()
+        {
+            RemoveInputs();
+            DisableEnemyOption();
+
+            var enemyOption = battleUI.GetSelection<EnemyOptionData, EnemyOption>();
+            var enemy = enemyOption.GetOption();
+
+            int damage = Mathf.RoundToInt(2 * enemy.Entity.CalculateEffectiveness(enemy.Weapon.AttackType) / 100f);
+            enemyOption.HitAnimation(damage);
+
+            EnableBattleOption();
+            AddInputs();
+        }
+
+        private void OnEnemyEscape()
+        {
+            isSelectingEnemyOption = false;
+            battleUI.HideSelection<EnemyOptionData>();
+
+            EnableBattleOption();
+        }
+
+        private void EnableEnemyOption()
+        {
+            isSelectingEnemyOption = true;
+            battleUI.ShowSelection<EnemyOptionData>();
+        }
+
+        private void DisableEnemyOption()
+        {
+            isSelectingEnemyOption = false;
+            battleUI.HideSelection<EnemyOptionData>();
+        }
+
+        #endregion
 
         #region Battle Transition
 
         [Header("Battle Transition")]
-        [SerializeField] Material transitionMat;
-        [SerializeField] Texture[] transitionTextures;
+        [SerializeField]
+        private Material transitionMaterial;
 
-        public EnemySO enemyTemp1;
-        public EnemySO enemyTemp2;
-        public EnemySO enemyTemp3;
+        [SerializeField]
+        private Texture[] transitionTextures;
 
-        private IEnumerator StartBattleTransition()
-        {
-            yield return LoadRandomTransition();
-            yield return TransitionFadeIn(0.9f);
+        private IEnumerator StartBattleTransition() => BattleTransition.ExecuteTransition(transitionMaterial, transitionTextures, 0.9f);
 
-            var loadScene = SceneManager.LoadSceneAsync("BattleScene", LoadSceneMode.Additive);
-
-            while (!loadScene.isDone)
-                yield return null;
-
-            yield return new WaitForSeconds(1f);
-
-            battleUI = FindObjectOfType<BattleUI>();
-            battleUI.battleManager = this;
-            battleUI.SetBattleOptions("ATTACK", "HEAL");
-
-            yield return null; // Wait for everything to set up
-
-            battleUI.StartBattle(enemyTemp1, enemyTemp2, enemyTemp3);
-
-            yield return null;
-
-            battleUI.SPOILER.SetActive(false);
-
-            yield return null; // Wait for spoiler to get removed
-
-            AddInputs();
-        }
-
-        private IEnumerator EndBattleTransition()
-        {
-            battleUI = null;
-            yield return null;
-        }
-
-        #endregion
-
-        #region Transition Material
-
-        private void SetTransitionTexture(Texture texture) => transitionMat.SetTexture("_TransitionTex", texture);
-        private void SetTransitionCutoff(float cutoff) => transitionMat.SetFloat("_Cutoff", cutoff);
-
-        private IEnumerator LoadRandomTransition()
-        {
-            int rdmIndex = Random.Range(0, transitionTextures.Length);
-            SetTransitionTexture(transitionTextures[rdmIndex]);
-
-            yield return null; // Wait for load texture
-        }
-
-        private IEnumerator TransitionFadeIn(float duration)
-        {
-            float time = 0;
-
-            while (time < duration)
-            {
-                SetTransitionCutoff(Mathf.Lerp(0, 1, time / duration));
-
-                yield return null; // Wait 1 frame
-
-                time += Time.deltaTime;
-            }
-
-            SetTransitionCutoff(1f);
-            yield return null; // Wait 1 frame
-        }
-
-        private void ResetTransitionMaterial()
-        {
-            SetTransitionTexture(null);
-            SetTransitionCutoff(0);
-        }
-
-        #endregion
-
-        #region Weapon
-
-        public WeaponSO GetWeapon() => weapon;
-
-        public float GetEffectiveness(BattleEntity.BattleEntity entity) => entity.CalculateEffectiveness(GetWeapon().AttackType);
+#if UNITY_EDITOR
+        // For keeping consistency in editor
+        private void OnApplicationQuit() => BattleTransition.ResetMaterial(transitionMaterial);
+#endif
 
         #endregion
 
         #region Inputs
 
+        private void Move(Vector2 dir)
+        {
+            if (isSelectingBattleOption)
+            {
+                battleUI.Move<BattleOptionData>(dir);
+                return;
+            }
+
+            if (isSelectingEnemyOption)
+            {
+                battleUI.Move<EnemyOptionData>(dir);
+                return;
+            }
+        }
+
+        private void Enter()
+        {
+            if (isSelectingBattleOption)
+            {
+                battleUI.Enter<BattleOptionData>();
+                return;
+            }
+
+            if (isSelectingEnemyOption)
+            {
+                battleUI.Enter<EnemyOptionData>();
+                return;
+            }
+        }
+
+        private void Escape()
+        {
+            if (isSelectingBattleOption)
+            {
+                battleUI.Escape<BattleOptionData>();
+                return;
+            }
+
+            if (isSelectingEnemyOption)
+            {
+                battleUI.Escape<EnemyOptionData>();
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Adds the inputs for this object
+        /// </summary>
         private void AddInputs()
         {
             InputManager.Instance.OnMoveUI.AddListener(Move);
@@ -125,6 +222,9 @@ namespace Managers
             InputManager.Instance.OnEscapeUI.AddListener(Escape);
         }
 
+        /// <summary>
+        /// Removes the inputs for this object
+        /// </summary>
         private void RemoveInputs()
         {
             InputManager.Instance.OnMoveUI.RemoveListener(Move);
@@ -132,16 +232,6 @@ namespace Managers
             InputManager.Instance.OnEscapeUI.RemoveListener(Escape);
         }
 
-        private void Move(Vector2 dir) => battleUI?.Move(dir);
-        private void Enter() => battleUI?.Enter();
-        private void Escape() => battleUI?.Escape();
-
         #endregion
-
-#if UNITY_EDITOR
-        // For keeping consistency in editor
-        private void OnApplicationQuit() => ResetTransitionMaterial();
-#endif
     }
-
 }

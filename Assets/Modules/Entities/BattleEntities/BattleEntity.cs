@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace BattleEntity
 {
@@ -17,15 +18,17 @@ namespace BattleEntity
     {
         public int Health { get; protected set; }
         public int Attack { get; protected set; }
-        public BattleEntityType Type { get; protected set; }
 
-        #region Effectiveness
+        #region Type
+
+        public BattleEntityType Type { get; protected set; }
 
         // x0   = IMMUNE
         // x0.5 = NOT EFFECTIVE
         // x1   = NORMAL
         // x1.5 = VERY EFFECTIVE
         // x3   = SUPER EFFECTIVE
+
         private static float[,] TYPE_CHART = {
             // ATK \ DEF   NONE NORMAL UNDEAD GHOST GIANT ANIMAL
             /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f },
@@ -38,20 +41,39 @@ namespace BattleEntity
 
         public float CalculateEffectiveness(BattleEntityType attackType)
         {
-            var types = Enum.GetValues(typeof(BattleEntityType));
-
             // Find index of attack type
-            int attackIndex = Array.IndexOf(types, attackType);
+            int[] attackIndexes = GetTypeIndexes(attackType);
 
             // Find index of defence type
-            int defenceIndex = Array.IndexOf(types, Type);
+            int[] defenceIndexes = GetTypeIndexes(Type);
 
             // Get multiplier
             float percent = 100f;
 
-            percent *= TYPE_CHART[attackIndex, defenceIndex];
+            foreach (var attackIndex in attackIndexes)
+            {
+                foreach (var defenceIndex in defenceIndexes)
+                    percent *= TYPE_CHART[attackIndex, defenceIndex];
+            }
+
 
             return percent;
+        }
+
+        private static int[] GetTypeIndexes(BattleEntityType type)
+        {
+            var types = Enum.GetValues(typeof(BattleEntityType));
+            var indexes = new List<int>();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                BattleEntityType item = (BattleEntityType)types.GetValue(i);
+
+                if ((type & item) != 0)
+                    indexes.Add(i);
+            }
+
+            return indexes.ToArray();
         }
 
         #endregion

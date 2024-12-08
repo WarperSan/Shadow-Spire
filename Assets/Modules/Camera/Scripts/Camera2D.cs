@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace CameraUtils
 {
+    /// <summary>
+    /// Handles the cameras to allow to start as a primary or as an additive scene
+    /// </summary>
     [RequireComponent(typeof(Camera))]
     public class Camera2D : MonoBehaviour
     {

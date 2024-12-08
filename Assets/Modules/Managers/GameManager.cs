@@ -15,7 +15,6 @@ namespace Managers
 
         public PlayerEntity player;
 
-
         #region Dungeon
 
         [Header("Dungeon")]
@@ -75,7 +74,7 @@ namespace Managers
         [SerializeField]
         private BattleManager battleManager;
 
-        public bool IsInBattle;
+        public bool IsInBattle { get; private set; }
 
         public void StartBattle(EnemyEntity enemy)
         {
@@ -83,7 +82,8 @@ namespace Managers
                 return;
 
             IsInBattle = true;
-            battleManager.StartBattle();
+            StartCoroutine(battleManager.StartBattle());
+            //battleManager.StartBattle();
             InputManager.Instance.SwitchToUI();
         }
 
