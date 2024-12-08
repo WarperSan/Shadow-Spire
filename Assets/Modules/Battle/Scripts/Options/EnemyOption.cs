@@ -1,5 +1,4 @@
 using BattleEntity;
-using Enemies;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,13 +26,6 @@ namespace Battle.Options
         [SerializeField]
         private Image shadow;
 
-        [Header("Health")]
-        [SerializeField]
-        private TextMeshProUGUI health;
-
-        [SerializeField]
-        private TextMeshProUGUI healthPopup;
-
         #endregion
 
         #region API
@@ -41,7 +33,7 @@ namespace Battle.Options
         /// <inheritdoc/>
         protected override void OnLoadOption(EnemyOptionData option)
         {
-            SetData(option.Entity.Enemy);
+            SetEntity(option.Entity);
             SetEffectiveness(option.Weapon, option.Entity);
             SpawnAnimation();
         }
@@ -60,13 +52,49 @@ namespace Battle.Options
 
         #endregion
 
-        #region Data
+        #region Entity
 
-        private void SetData(EnemySO enemy)
+        private void SetEntity(BattleEnemyEntity entity)
         {
+            entity.Hit.AddListener(OnHit);
+            entity.Death.AddListener(OnDeath);
+
+            SetHealth(entity.Health);
+
+            var enemy = entity.Enemy;
             sprite.sprite = enemy.FightSprite;
             shadow.sprite = enemy.FightShadowSprite;
         }
+
+        private void OnHit(int damage)
+        {
+            SetDamage(damage);
+            SetHealth(loadedOption.Entity.Health);
+            HitAnimation();
+        }
+
+        private void OnDeath(int damage)
+        {
+            SetDamage(damage);
+            SetHealth(0);
+            DeathAnimation();
+
+            (parent as EnemyOptions)?.FindNextValid(Vector2.right);
+        }
+
+        #endregion
+
+        #region Health
+
+        [Header("Health")]
+        [SerializeField]
+        private TextMeshProUGUI health;
+
+        [SerializeField]
+        private TextMeshProUGUI healthPopup;
+
+        private void SetHealth(int health) => this.health.text = string.Format("<sprite name=icon_heart> {0}", health);
+        private void SetDamage(int damage) => healthPopup.text = string.Format("-{0}", damage);
 
         #endregion
 
@@ -77,12 +105,9 @@ namespace Battle.Options
         private Animator animator;
 
         private void SpawnAnimation() => animator.SetTrigger("spawnIn");
-        public void HitAnimation(int damage)
-        {
-            animator.SetTrigger("hit");
-            healthPopup.text = string.Format("-{0}", damage);
-        }
         private void SetTargetAnimation(bool isTargetted) => animator.SetBool("targetted", isTargetted);
+        private void HitAnimation() => animator.SetTrigger("hit");
+        private void DeathAnimation() => animator.SetTrigger("death");
 
         #endregion
 

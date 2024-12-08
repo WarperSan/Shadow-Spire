@@ -118,8 +118,7 @@ namespace Managers
             var enemyOption = battleUI.GetSelection<EnemyOptionData, EnemyOption>();
             var enemy = enemyOption.GetOption();
 
-            int damage = Mathf.RoundToInt(2 * enemy.Entity.CalculateEffectiveness(enemy.Weapon.AttackType) / 100f);
-            enemyOption.HitAnimation(damage);
+            enemy.Entity.TakeAttack(enemy.Weapon);
 
             EnableBattleOption();
             AddInputs();

@@ -1,17 +1,26 @@
 ﻿using Enemies;
+using UnityEngine.Events;
 
 namespace BattleEntity
 {
     public class BattleEnemyEntity : BattleEntity
     {
         public EnemySO Enemy { get; private set; }
+        public UnityEvent<int> Hit { get; private set; } = new();
+        public UnityEvent<int> Death { get; private set; } = new();
 
         public BattleEnemyEntity(EnemySO enemy)
         {
-            this.Enemy = enemy;
-            this.Health = enemy.BaseHealth;
-            this.Attack = enemy.BaseAttack;
-            this.Type = enemy.Type;
+            Enemy = enemy;
+            Health = enemy.BaseHealth;
+            Attack = enemy.BaseAttack;
+            Type = enemy.Type;
         }
+
+        /// <inheritdoc/>
+        protected override void OnHit(int damage) => Hit?.Invoke(damage);
+
+        /// <inheritdoc/>
+        protected override void OnDeath(int damage) => Death?.Invoke(damage);
     }
 }

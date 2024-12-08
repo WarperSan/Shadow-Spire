@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using Weapons;
 
 namespace BattleEntity
 {
@@ -16,8 +18,44 @@ namespace BattleEntity
 
     public abstract class BattleEntity
     {
-        public int Health { get; protected set; }
         public int Attack { get; protected set; }
+        
+        #region Health
+
+        public int Health { get; protected set; }
+        public bool IsDead { get; private set; }
+        
+        public void TakeAttack(WeaponSO weapon)
+        {
+            int damage = Mathf.RoundToInt(2 * CalculateEffectiveness(weapon.AttackType) / 100f);
+            TakeDamage(damage);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+
+            if (Health <= 0)
+            {
+                IsDead = true;
+                OnDeath(damage);
+                return;
+            }
+
+            OnHit(damage);
+        }
+
+        /// <summary>
+        /// Called when this entity gets hit
+        /// </summary>
+        protected virtual void OnHit(int damage) { }
+
+        /// <summary>
+        /// Called when this entity dies
+        /// </summary>
+        protected virtual void OnDeath(int damage) { }
+
+        #endregion
 
         #region Type
 

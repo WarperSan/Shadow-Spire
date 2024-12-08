@@ -104,6 +104,7 @@ namespace Battle.Options
 
                 if (newOption.TryGetComponent(out T battleOption))
                 {
+                    battleOption.SetParent(this);
                     battleOption.LoadOption(options[i]);
                     loadedOptions[i] = battleOption;
                 }
