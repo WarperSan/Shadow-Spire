@@ -26,6 +26,9 @@ namespace Battle.Options
         [SerializeField]
         private Image shadow;
 
+        [SerializeField]
+        private TextMeshProUGUI types;
+
         #endregion
 
         #region API
@@ -58,6 +61,8 @@ namespace Battle.Options
         {
             entity.Hit.AddListener(OnHit);
             entity.Death.AddListener(OnDeath);
+
+            types.text = BattleEntity.BattleEntity.GetIcons(entity.Type);
 
             SetHealth(entity.Health);
 

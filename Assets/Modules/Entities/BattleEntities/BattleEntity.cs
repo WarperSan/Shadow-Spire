@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Weapons;
 
 namespace BattleEntity
@@ -19,12 +21,12 @@ namespace BattleEntity
     public abstract class BattleEntity
     {
         public int Attack { get; protected set; }
-        
+
         #region Health
 
         public int Health { get; protected set; }
         public bool IsDead { get; private set; }
-        
+
         public void TakeAttack(WeaponSO weapon)
         {
             int damage = Mathf.RoundToInt(2 * CalculateEffectiveness(weapon.AttackType) / 100f);
@@ -113,6 +115,40 @@ namespace BattleEntity
 
             return indexes.ToArray();
         }
+
+        public static string GetIcons(BattleEntityType type)
+        {
+            StringBuilder builder = new();
+
+            var types = Enum.GetValues(typeof(BattleEntityType));
+            foreach (BattleEntityType item in types)
+            {
+                if ((type & item) != 0)
+                {
+                    builder.Append(
+                        string.Format(
+                            "<sprite name=\"icon_type_{0}\" color={1}>",
+                            item.ToString().ToLower(),
+                            GetIconColor(item)
+                        )
+                    );
+                }
+            }
+
+
+            return builder.ToString();
+        }
+
+        private static string GetIconColor(BattleEntityType uniqueType) => uniqueType switch
+        {
+            BattleEntityType.NONE => "#D3D3D3",
+            BattleEntityType.NORMAL => "#1E90FF",
+            BattleEntityType.UNDEAD => "#228B22",
+            BattleEntityType.GHOST => "#ADD8E6",
+            BattleEntityType.GIANT => "#FF4500",
+            BattleEntityType.ANIMAL => "#8B4513",
+            _ => "white"
+        };
 
         #endregion
     }
