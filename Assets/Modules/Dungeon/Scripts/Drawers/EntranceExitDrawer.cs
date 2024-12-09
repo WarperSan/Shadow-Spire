@@ -123,7 +123,7 @@ namespace Dungeon.Drawers
             {
                 for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
                 {
-                    if (Level.HasWall(entrance.X - 1, y))
+                    if (!Level.HasDoor(entrance.X - 1, y))
                     {
                         Level.Add(entrance.X, y, Tile.ENTRANCE);
                         return;
@@ -153,7 +153,7 @@ namespace Dungeon.Drawers
             {
                 for (int y = exit.Y; y < exit.Y + exit.Height; y++)
                 {
-                    if (Level.HasWall(exit.X - 1, y))
+                    if (!Level.HasDoor(exit.X - 1, y))
                     {
                         Level.Add(exit.X, y, Tile.EXIT);
                         return;
