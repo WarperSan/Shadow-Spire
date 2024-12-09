@@ -27,6 +27,8 @@ namespace Dungeon.Generation
 
     public class DungeonResult
     {
+        #region Rooms
+
         /// <summary>
         /// All the final rooms in the dungeon
         /// </summary>
@@ -36,6 +38,18 @@ namespace Dungeon.Generation
         /// Every rooms that is adjacent to a room
         /// </summary>
         public Dictionary<Room, List<Room>> AdjacentRooms;
+
+        /// <summary>
+        /// Room that serves as the entrance of the dungeon
+        /// </summary>
+        public Room Entrance;
+
+        /// <summary>
+        /// Room that serves as the exit of the dungeon
+        /// </summary>
+        public Room Exit;
+
+        #endregion
 
         /// <summary>
         /// The element used for random generation

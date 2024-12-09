@@ -11,8 +11,9 @@ namespace Dungeon.Generation
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public int Depth { get; set; }
+
         public Room[] Children { get; private set; }
-        public bool FromVerticalSlice { get; private set; }
 
         public bool Split(System.Random rand, int minWidth, int minHeight)
         {
@@ -66,9 +67,6 @@ namespace Dungeon.Generation
 
             if (!hasSplitted)
                 return false;
-
-            roomA.FromVerticalSlice = splitVertical;
-            roomB.FromVerticalSlice = splitVertical;
 
             Children = new Room[] { roomA, roomB };
 

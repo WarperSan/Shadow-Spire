@@ -37,6 +37,49 @@ namespace Dungeon.Drawers
             exit.FlipByMovement(direction);
         }
 
+        public static Room FindEntrance(Room[] rooms)
+        {
+            // Find smallest room
+            Room smallest = rooms[0];
+            int smallestSize = smallest.Width * smallest.Height;
+
+            for (int i = 1; i < rooms.Length; i++)
+            {
+                int size = rooms[i].Width * rooms[i].Height;
+
+                if (smallestSize > size)
+                {
+                    smallest = rooms[i];
+                    smallestSize = size;
+                }
+            }
+
+            return smallest;
+        }
+
+        public static Room FindExit(Room[] rooms, Room entrance)
+        {
+            Room exit = null;
+            var entrancePosition = new Vector2Int(entrance.X, entrance.Y + (entrance.Height - 1) / 2);
+
+            // Find furthest from entrance
+            float distance = float.MinValue;
+
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                var newExit = new Vector2Int(rooms[i].X + (rooms[i].Width - 1) / 2, rooms[i].Y);
+                float newDistance = Vector2.Distance(entrancePosition, newExit);
+
+                if (newDistance > distance)
+                {
+                    distance = newDistance;
+                    exit = rooms[i];
+                }
+            }
+
+            return exit;
+        }
+
         #region Drawer
 
         public EntranceExitDrawer(DungeonResult level, EntranceEntity entrance, ExitEntity exit, PlayerEntity player) : base(level)
@@ -67,38 +110,8 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            // Find smallest
-            Room smallest = rooms[0];
-            int smallestSize = smallest.Width * smallest.Height;
-
-            for (int i = 1; i < rooms.Length; i++)
-            {
-                int size = rooms[i].Width * rooms[i].Height;
-
-                if (smallestSize > size)
-                {
-                    smallest = rooms[i];
-                    smallestSize = size;
-                }
-            }
-
-            var entrancePosition = new Vector2Int(smallest.X, smallest.Y + smallest.Height - 1);
-
-            // Find biggest
-            var exitPosition = new Vector2Int(0, 0);
-            float distance = float.MinValue;
-
-            for (int i = 0; i < rooms.Length; i++)
-            {
-                var newExit = new Vector2Int(rooms[i].X + rooms[i].Width - 1, rooms[i].Y);
-                float newDistance = Vector2.Distance(entrancePosition, newExit);
-
-                if (newDistance > distance)
-                {
-                    distance = newDistance;
-                    exitPosition = newExit;
-                }
-            }
+            var entrancePosition = new Vector2Int(Level.Entrance.X, Level.Entrance.Y + Level.Entrance.Height - 1);
+            var exitPosition = new Vector2Int(Level.Exit.X + Level.Exit.Width - 1, Level.Exit.Y);
 
             Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
