@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dungeon.Drawers;
 using UnityEngine;
@@ -8,24 +9,31 @@ namespace Dungeon.Generation
     public class DungeonGenerator
     {
         private Random random;
+        private DungeonSettings settings;
 
-        public DungeonGenerator(Random random)
+        private DungeonGenerator(Random random, DungeonSettings settings)
         {
             this.random = random;
+            this.settings = settings;
+            this.settings.MinimumRoomWidth++; // Add right wall
+            this.settings.MinimumRoomHeight++; // Add down wall
         }
 
         #region Rooms
 
-        public DungeonResult Generate(int width, int height, int sliceCount, int minRoomWidth, int minRoomHeight)
+        public static DungeonResult Generate(Random random, DungeonSettings settings)
+            => new DungeonGenerator(random, settings).Generate();
+
+        private DungeonResult Generate()
         {
             var root = new Room
             {
-                Width = width,
-                Height = height
+                Width = settings.Width,
+                Height = settings.Height
             };
 
             // Slices the root into smaller rooms
-            SlicesRooms(root, sliceCount, minRoomWidth, minRoomHeight);
+            SlicesRooms(root, settings.SliceCount, settings.MinimumRoomWidth, settings.MinimumRoomHeight);
 
             // Compile all the rooms
             Room[] rooms = CompileRooms(root);
@@ -43,8 +51,8 @@ namespace Dungeon.Generation
                 AdjacentRooms = adjacentRooms,
                 Entrance = entrance,
                 Exit = exit,
-                Width = width,
-                Height = height,
+                Width = settings.Width,
+                Height = settings.Height,
             };
         }
 
@@ -183,24 +191,19 @@ namespace Dungeon.Generation
                 roomsToExplore.Push(nextRoom);
             }
 
-            // Find the room with the highest depth
-            Room furthestRoom = rooms[0];
+            var highLoop = CreateLoop(
+                rooms,
+                adjacentRooms,
+                (c, f) => c.Depth > f.Depth,
+                (c, f) => c.Depth < f.Depth
+            );
 
-            for (int i = 1; i < rooms.Length; i++)
-            {
-                if (rooms[i].Depth > furthestRoom.Depth)
-                    furthestRoom = rooms[i];
-            }
-
-            // Find the neighbor with the lowest depth
-            List<Room> furthestRoomNeighbors = adjacentRooms[furthestRoom];
-            Room lowestNeighbor = furthestRoomNeighbors[0];
-
-            for (int i = 1; i < furthestRoomNeighbors.Count; i++)
-            {
-                if (furthestRoomNeighbors[i].Depth < lowestNeighbor.Depth)
-                    lowestNeighbor = furthestRoomNeighbors[i];
-            }
+            var lowLoop = CreateLoop(
+                rooms,
+                adjacentRooms,
+                (c, f) => c.Depth < f.Depth,
+                (c, f) => c.Depth > f.Depth
+            );
 
             // Remove extra doors
             foreach (var (room, otherRooms) in adjacentRooms)
@@ -213,9 +216,47 @@ namespace Dungeon.Generation
                 }
             }
 
-            // Create a door between them
-            adjacentRooms[furthestRoom].Add(lowestNeighbor);
-            adjacentRooms[lowestNeighbor].Add(furthestRoom);
+            // Create the door between the loops
+            if (settings.AddHighLoop)
+            {
+                adjacentRooms[highLoop.Item1].Add(highLoop.Item2);
+                adjacentRooms[highLoop.Item2].Add(highLoop.Item1);
+            }
+
+            if (settings.AddLowLoop)
+            {
+                adjacentRooms[lowLoop.Item1].Add(lowLoop.Item2);
+                adjacentRooms[lowLoop.Item2].Add(lowLoop.Item1);
+            }
+        }
+
+        private (Room, Room) CreateLoop(
+            Room[] rooms,
+            Dictionary<Room, List<Room>> adjacentRooms,
+            Func<Room, Room, bool> roomToStartFrom,
+            Func<Room, Room, bool> neighborToChoose
+        )
+        {
+            // Find the room with the highest depth
+            Room furthestRoom = rooms[0];
+
+            for (int i = 1; i < rooms.Length; i++)
+            {
+                if (roomToStartFrom.Invoke(rooms[i], furthestRoom))
+                    furthestRoom = rooms[i];
+            }
+
+            // Find the neighbor with the lowest depth
+            List<Room> furthestRoomNeighbors = adjacentRooms[furthestRoom];
+            Room lowestNeighbor = furthestRoomNeighbors[0];
+
+            for (int i = 1; i < furthestRoomNeighbors.Count; i++)
+            {
+                if (neighborToChoose.Invoke(furthestRoomNeighbors[i], lowestNeighbor))
+                    lowestNeighbor = furthestRoomNeighbors[i];
+            }
+
+            return (furthestRoom, lowestNeighbor);
         }
 
         #endregion

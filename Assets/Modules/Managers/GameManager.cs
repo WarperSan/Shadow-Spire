@@ -46,7 +46,9 @@ namespace Managers
                 Height = 12,
                 MinimumRoomHeight = 3,
                 MinimumRoomWidth = 3,
-                SliceCount = 7
+                SliceCount = 7,
+                AddHighLoop = true,
+                AddLowLoop = true
             };
 
             Debug.Log("Seed: " + seed);

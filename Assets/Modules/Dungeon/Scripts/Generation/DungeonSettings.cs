@@ -31,5 +31,15 @@ namespace Dungeon.Generation
         /// Maximum amount of slices of the dungeon
         /// </summary>
         public int SliceCount;
+
+        /// <summary>
+        /// Determines if the deepest room must have a loop
+        /// </summary>
+        public bool AddHighLoop;
+
+        /// <summary>
+        /// Determines if the shallowest room must have a loop
+        /// </summary>
+        public bool AddLowLoop;
     }
 }

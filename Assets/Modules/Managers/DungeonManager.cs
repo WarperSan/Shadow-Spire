@@ -111,13 +111,7 @@ namespace Managers
         {
             // Generate level
             var random = new System.Random(settings.Seed);
-            var lvl = new DungeonGenerator(random).Generate(
-                settings.Width, 
-                settings.Height, 
-                settings.SliceCount,
-                settings.MinimumRoomWidth + 1, // Add right wall
-                settings.MinimumRoomHeight + 1 // Add down wall
-            );
+            var lvl = DungeonGenerator.Generate(random, settings);
 
             // Create drawers
             DrawerPipeline = new Drawer[]
