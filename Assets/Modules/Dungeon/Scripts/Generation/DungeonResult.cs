@@ -37,7 +37,7 @@ namespace Dungeon.Generation
         /// <summary>
         /// Every rooms that is adjacent to a room
         /// </summary>
-        public Dictionary<Room, List<Room>> AdjacentRooms;
+        public Dictionary<Room, HashSet<Room>> AdjacentRooms;
 
         /// <summary>
         /// Room that serves as the entrance of the dungeon

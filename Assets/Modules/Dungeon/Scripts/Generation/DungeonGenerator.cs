@@ -41,7 +41,7 @@ namespace Dungeon.Generation
             Room exit = EntranceExitDrawer.FindExit(rooms, entrance);
 
             // Find adjacent rooms
-            Dictionary<Room, List<Room>> adjacentRooms = FindAdjacentRooms(rooms);
+            Dictionary<Room, HashSet<Room>> adjacentRooms = FindAdjacentRooms(rooms);
             CutConnections(rooms, adjacentRooms, entrance);
 
             // Package results
@@ -115,9 +115,9 @@ namespace Dungeon.Generation
         /// <summary>
         /// Creates a map of all the rooms and all the rooms they are connected to
         /// </summary>
-        private Dictionary<Room, List<Room>> FindAdjacentRooms(Room[] rooms)
+        private Dictionary<Room, HashSet<Room>> FindAdjacentRooms(Room[] rooms)
         {
-            var roomLinks = new Dictionary<Room, List<Room>>();
+            var roomLinks = new Dictionary<Room, HashSet<Room>>();
 
             foreach (var firstRoom in rooms)
             {
@@ -147,7 +147,7 @@ namespace Dungeon.Generation
         /// <summary>
         /// Removes some doors to make a path of rooms
         /// </summary>
-        private void CutConnections(Room[] rooms, Dictionary<Room, List<Room>> adjacentRooms, Room entrance)
+        private void CutConnections(Room[] rooms, Dictionary<Room, HashSet<Room>> adjacentRooms, Room entrance)
         {
             // Initialize all the depths to -1
             foreach (var room in rooms)
@@ -208,12 +208,19 @@ namespace Dungeon.Generation
             // Remove extra doors
             foreach (var (room, otherRooms) in adjacentRooms)
             {
-                for (int i = otherRooms.Count - 1; i >= 0; i--)
+                IEnumerator<Room> _rooms = otherRooms.GetEnumerator();
+                List<Room> roomsToRemove = new();
+
+                while (_rooms.MoveNext())
                 {
                     // If the difference is higher than 1
-                    if (Mathf.Abs(room.Depth - otherRooms[i].Depth) > 1)
-                        otherRooms.RemoveAt(i);
+                    if (Mathf.Abs(room.Depth - _rooms.Current.Depth) > 1)
+                        roomsToRemove.Add(_rooms.Current);
                 }
+                _rooms.Dispose();
+
+                foreach (var item in roomsToRemove)
+                    otherRooms.Remove(item);
             }
 
             // Create the door between the loops
@@ -232,7 +239,7 @@ namespace Dungeon.Generation
 
         private (Room, Room) CreateLoop(
             Room[] rooms,
-            Dictionary<Room, List<Room>> adjacentRooms,
+            Dictionary<Room, HashSet<Room>> adjacentRooms,
             Func<Room, Room, bool> roomToStartFrom,
             Func<Room, Room, bool> neighborToChoose
         )
@@ -247,14 +254,17 @@ namespace Dungeon.Generation
             }
 
             // Find the neighbor with the lowest depth
-            List<Room> furthestRoomNeighbors = adjacentRooms[furthestRoom];
-            Room lowestNeighbor = furthestRoomNeighbors[0];
+            IEnumerator<Room> furthestRoomNeighbors = adjacentRooms.GetValueOrDefault(furthestRoom).GetEnumerator();
+            furthestRoomNeighbors.MoveNext();
 
-            for (int i = 1; i < furthestRoomNeighbors.Count; i++)
+            Room lowestNeighbor = furthestRoomNeighbors.Current;
+
+            while (furthestRoomNeighbors.MoveNext())
             {
-                if (neighborToChoose.Invoke(furthestRoomNeighbors[i], lowestNeighbor))
-                    lowestNeighbor = furthestRoomNeighbors[i];
+                if (neighborToChoose.Invoke(furthestRoomNeighbors.Current, lowestNeighbor))
+                    lowestNeighbor = furthestRoomNeighbors.Current;
             }
+            furthestRoomNeighbors.Dispose();
 
             return (furthestRoom, lowestNeighbor);
         }
