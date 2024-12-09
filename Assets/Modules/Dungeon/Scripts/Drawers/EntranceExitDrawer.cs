@@ -110,11 +110,68 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            var entrancePosition = new Vector2Int(Level.Entrance.X, Level.Entrance.Y + Level.Entrance.Height - 1);
-            var exitPosition = new Vector2Int(Level.Exit.X + Level.Exit.Width - 1, Level.Exit.Y);
+            ProcessEntrance(Level.Entrance);
+            ProcessExit(Level.Exit);
+        }
 
-            Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
-            Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
+        private void ProcessEntrance(Room entrance)
+        {
+            var placeLeft = Level.Random.Next(0, 2) == 0;
+
+            // Try placing on left
+            if (placeLeft)
+            {
+                for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
+                {
+                    if (Level.HasWall(entrance.X - 1, y))
+                    {
+                        Level.Add(entrance.X, y, Tile.ENTRANCE);
+                        return;
+                    }
+                }
+            }
+            // Try placing on right
+            else
+            {
+                for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
+                {
+                    if (!Level.HasDoor(entrance.X + entrance.Width, y))
+                    {
+                        Level.Add(entrance.X + entrance.Width - 1, y, Tile.ENTRANCE);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void ProcessExit(Room exit)
+        {
+            var placeLeft = Level.Random.Next(0, 2) == 0;
+
+            // Try placing on left
+            if (placeLeft)
+            {
+                for (int y = exit.Y; y < exit.Y + exit.Height; y++)
+                {
+                    if (Level.HasWall(exit.X - 1, y))
+                    {
+                        Level.Add(exit.X, y, Tile.EXIT);
+                        return;
+                    }
+                }
+            }
+            // Try placing on right
+            else
+            {
+                for (int y = exit.Y; y < exit.Y + exit.Height; y++)
+                {
+                    if (!Level.HasDoor(exit.X + exit.Width, y))
+                    {
+                        Level.Add(exit.X + exit.Width - 1, y, Tile.EXIT);
+                        return;
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
