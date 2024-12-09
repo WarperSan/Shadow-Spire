@@ -140,7 +140,9 @@ namespace Managers
             return movements;
         }
 
-        public static int[] FindPath(GridEntity origin, GridEntity target)
+        public static int[] FindPath(GridEntity origin, GridEntity target) => FindPath(origin, target.Position);
+
+        public static int[] FindPath(GridEntity origin, Vector2Int target)
         {
             var graph = GetTileGraph();
 
@@ -152,8 +154,7 @@ namespace Managers
                 return null;
 
             // Get end ID
-            var targetPos = target.Position;
-            var end = graph.GetID(targetPos.x, -targetPos.y);
+            var end = graph.GetID(target.x, -target.y);
 
             if (end == NO_NODE_ID)
                 return null;

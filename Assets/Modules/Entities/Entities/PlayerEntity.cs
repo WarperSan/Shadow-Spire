@@ -12,6 +12,8 @@ namespace Entities
             InputManager.Instance.OnMovePlayer.AddListener(Move);
         }
 
+        public GameObject icon;
+
         #region Inputs
 
         private Movement? requestMove = null;
@@ -42,6 +44,7 @@ namespace Entities
         public void OnTurnStarted()
         {
             requestMove = null; // Clear previous moves
+            icon.SetActive(true);
         }
 
         /// <inheritdoc/>
@@ -50,6 +53,7 @@ namespace Entities
             while (requestMove == null)
                 yield return null;
 
+            icon.SetActive(false);
             yield return requestMove.Value;
         }
 

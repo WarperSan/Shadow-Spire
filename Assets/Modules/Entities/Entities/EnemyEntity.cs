@@ -57,7 +57,7 @@ namespace Entities
         {
             turnsRemaining--;
 
-            if (turnsRemaining > 0)
+            if (turnsRemaining >= 0)
             {
                 yield return null;
                 yield break;
@@ -85,7 +85,10 @@ namespace Entities
         private int[] path;
         private Movement[] movements;
 
-        protected virtual GridEntity GetPathFindingTarget() => GameManager.Instance.player;
+        protected virtual Vector2Int GetPathFindingTarget()
+        {
+            return GameManager.Instance.player.Position;
+        }
 
         #endregion
 

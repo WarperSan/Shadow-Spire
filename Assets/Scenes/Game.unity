@@ -1374,6 +1374,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1839656115}
     m_Modifications:
+    - target: {fileID: 2441235539879511821, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 5877184638961969174}
     - target: {fileID: 5204009231057049463, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: m_Layer
       value: 29
@@ -1804,6 +1808,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5877184638961969174 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5270920595579297882, guid: e331d902e74a4bc9e957ba0eaf7b83ab, type: 3}
+  m_PrefabInstance: {fileID: 5877184638961969172}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
