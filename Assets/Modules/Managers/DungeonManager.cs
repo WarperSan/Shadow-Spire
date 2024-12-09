@@ -70,7 +70,8 @@ namespace Managers
 
         private IEnumerator BlackoutFadeIn(int transitionTicks)
         {
-            var blackoutColor = new Color(0, 0, 0, 0);
+            var blackoutColor = blackout.color;
+            blackoutColor.a = 0;
 
             blackout.color = blackoutColor;
             blackout.gameObject.SetActive(true);
@@ -85,7 +86,8 @@ namespace Managers
 
         private IEnumerator BlackoutFadeOut(int transitionTicks)
         {
-            var blackoutColor = new Color(0, 0, 0, 1);
+            var blackoutColor = blackout.color;
+            blackoutColor.a = 1;
 
             blackout.color = blackoutColor;
             blackout.gameObject.SetActive(true);

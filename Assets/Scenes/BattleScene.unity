@@ -204,7 +204,7 @@ Canvas:
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1000
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
 --- !u!224 &1006860839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -233,6 +233,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1006860839}
     m_Modifications:
+    - target: {fileID: 2153804565650787420, guid: 36942084367c316498e85024c792e4ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2496996361270868831, guid: 36942084367c316498e85024c792e4ca, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2915240662006265275, guid: 36942084367c316498e85024c792e4ca, type: 3}
       propertyPath: m_IsActive
       value: 1

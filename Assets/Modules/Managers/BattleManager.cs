@@ -10,7 +10,6 @@ namespace Managers
 {
     public class BattleManager : MonoBehaviour
     {
-        public WeaponSO weapon;
         public EnemySO enemy1;
         public EnemySO enemy2;
         public EnemySO enemy3;
@@ -19,6 +18,8 @@ namespace Managers
         {
             yield return StartBattleTransition();
             yield return FindBattleUI();
+
+            var weapon = GameManager.Instance.player.GetWeapon();
             LoadBattleOptions();
 
             var entities = new BattleEnemyEntity[3]

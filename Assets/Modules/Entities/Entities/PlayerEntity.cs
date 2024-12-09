@@ -1,7 +1,11 @@
 using System.Collections;
+using System.Net;
 using Entities.Interfaces;
 using Managers;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Weapons;
 
 namespace Entities
 {
@@ -10,6 +14,7 @@ namespace Entities
         private void Start()
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
+            SetWeapon(weapon); // Update UI
         }
 
         public GameObject icon;
@@ -65,6 +70,29 @@ namespace Entities
         void IMovable.OnMoveStart(Movement movement)
         {
             FlipByMovement(movement);
+        }
+
+        #endregion
+    
+        #region Weapon
+
+        [Header("Weapon")]
+        [SerializeField]
+        private WeaponSO weapon;
+
+        [SerializeField]
+        private Image weaponIcon;
+
+        [SerializeField]
+        private TextMeshProUGUI weaponType;
+
+        public WeaponSO GetWeapon() => weapon;
+
+        public void SetWeapon(WeaponSO weapon)
+        {
+            this.weapon = weapon;
+            weaponIcon.sprite = weapon.Icon;
+            weaponType.text = BattleEntity.BattleEntity.GetIcons(weapon.AttackType);
         }
 
         #endregion
