@@ -36,7 +36,7 @@ namespace Managers
             IsLevelOver = false;
             levelIndex++;
 
-            int seed = useSeed ? overSeed : UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+            int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
             overSeed = seed;
 
             var settings = new DungeonSettings

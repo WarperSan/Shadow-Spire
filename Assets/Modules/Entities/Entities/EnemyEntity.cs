@@ -28,6 +28,19 @@ namespace Entities
         private void SetData(EnemySO data)
         {
             spriteRenderer.sprite = data.OverworldSprite;
+            turnsRemaining = waitTurns = data.MovementSpeed switch
+            {
+                EnemyMovementSpeed.VERY_SLOW => 3,
+                EnemyMovementSpeed.SLOW => 1,
+                _ => 0
+            };
+            movesPerTurn = data.MovementSpeed switch
+            {
+                EnemyMovementSpeed.FAST => 2,
+                EnemyMovementSpeed.VERY_FAST => 3,
+                _ => 1
+            };
+
             _data = data;
         }
 
@@ -35,17 +48,34 @@ namespace Entities
 
         #region ITurnable
 
+        private int waitTurns;
+        private int movesPerTurn;
+        private int turnsRemaining;
+
         /// <inheritdoc/>
         IEnumerator ITurnable.Think()
         {
+            turnsRemaining--;
+
+            if (turnsRemaining > 0)
+            {
+                yield return null;
+                yield break;
+            }
+
+            turnsRemaining = waitTurns;
+
             path = PathFindingManager.FindPath(this, GetPathFindingTarget());
             movements = PathFindingManager.GetDirections(path);
 
             // If no path found or on the same tile
             if (movements == null || movements.Length == 0)
+            {
                 yield return null;
-            else
-                yield return movements[0];
+                yield break;
+            }
+
+            yield return movements[0..movesPerTurn];
         }
 
         #endregion
