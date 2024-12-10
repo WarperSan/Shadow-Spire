@@ -84,7 +84,7 @@ namespace Battle.Options
             LoadOptions(typedOptions);
         }
 
-        private void LoadOptions(U[] options)
+        protected virtual void LoadOptions(U[] options)
         {
             // Destroy all options
             foreach (Transform option in transform)
