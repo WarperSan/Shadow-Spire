@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Dungeon.Generation;
 using Entities;
 using UnityEngine;
@@ -116,62 +117,54 @@ namespace Dungeon.Drawers
 
         private void ProcessEntrance(Room entrance)
         {
-            var placeLeft = Level.Random.Next(0, 2) == 0;
+            var possiblePoints = new List<Vector2Int>();
 
-            // Try placing on left
-            if (placeLeft)
+            for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
             {
-                for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
-                {
-                    if (!Level.HasDoor(entrance.X - 1, y))
-                    {
-                        Level.Add(entrance.X, y, Tile.ENTRANCE);
-                        return;
-                    }
-                }
+                var leftX = entrance.X;
+                var rightX = entrance.X + entrance.Width - 1;
+
+                if (!Level.HasDoor(leftX - 1, y) && !Level.HasDoor(leftX, y - 1) && !Level.HasDoor(leftX, y + 1))
+                    possiblePoints.Add(new Vector2Int(leftX, y));
+
+                if (!Level.HasDoor(rightX + 1, y) && !Level.HasDoor(rightX, y - 1) && !Level.HasDoor(rightX, y + 1))
+                    possiblePoints.Add(new Vector2Int(rightX, y));
             }
-            // Try placing on right
-            else
+
+            if (possiblePoints.Count == 0)
             {
-                for (int y = entrance.Y; y < entrance.Y + entrance.Height; y++)
-                {
-                    if (!Level.HasDoor(entrance.X + entrance.Width, y))
-                    {
-                        Level.Add(entrance.X + entrance.Width - 1, y, Tile.ENTRANCE);
-                        return;
-                    }
-                }
+                Debug.LogWarning("Could not find a valid position to place the entrance.");
+                return;
             }
+
+            var rdmPos = possiblePoints[Level.Random.Next(0, possiblePoints.Count)];
+            Level.Add(rdmPos.x, rdmPos.y, Tile.ENTRANCE);
         }
 
         private void ProcessExit(Room exit)
         {
-            var placeLeft = Level.Random.Next(0, 2) == 0;
+            var possiblePoints = new List<Vector2Int>();
 
-            // Try placing on left
-            if (placeLeft)
+            for (int y = exit.Y; y < exit.Y + exit.Height; y++)
             {
-                for (int y = exit.Y; y < exit.Y + exit.Height; y++)
-                {
-                    if (!Level.HasDoor(exit.X - 1, y))
-                    {
-                        Level.Add(exit.X, y, Tile.EXIT);
-                        return;
-                    }
-                }
+                var leftX = exit.X;
+                var rightX = exit.X + exit.Width - 1;
+
+                if (!Level.HasDoor(leftX - 1, y) && !Level.HasDoor(leftX, y - 1) && !Level.HasDoor(leftX, y + 1))
+                    possiblePoints.Add(new Vector2Int(leftX, y));
+
+                if (!Level.HasDoor(rightX + 1, y) && !Level.HasDoor(rightX, y - 1) && !Level.HasDoor(rightX, y + 1))
+                    possiblePoints.Add(new Vector2Int(rightX, y));
             }
-            // Try placing on right
-            else
+
+            if (possiblePoints.Count == 0)
             {
-                for (int y = exit.Y; y < exit.Y + exit.Height; y++)
-                {
-                    if (!Level.HasDoor(exit.X + exit.Width, y))
-                    {
-                        Level.Add(exit.X + exit.Width - 1, y, Tile.EXIT);
-                        return;
-                    }
-                }
+                Debug.LogWarning("Could not find a valid position to place the exit.");
+                return;
             }
+
+            var rdmPos = possiblePoints[Level.Random.Next(0, possiblePoints.Count)];
+            Level.Add(rdmPos.x, rdmPos.y, Tile.EXIT);
         }
 
         /// <inheritdoc/>
