@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 namespace Arcade
 {
@@ -9,7 +10,8 @@ namespace Arcade
     /// </summary>
     public class Arcade : MonoBehaviour, IInteractable
     {
-        [SerializeField] Camera ArcadeCamera;
+        [SerializeField] CinemachineVirtualCamera ArcadeCamera;
+        [SerializeField] PlayerController player;
         [SerializeField] AudioLowPassFilter AudioFilter;
 
         /// <inheritdoc/>
@@ -17,17 +19,16 @@ namespace Arcade
 
         public IEnumerator Start2DGame()
         {
-            Debug.Log("activated");
-            //AudioFilter.enabled = true;
+            player.enabled = false;
+
+            var camPlayer = player.GetComponentInChildren<CinemachineVirtualCamera>();
+            ArcadeCamera.Priority = camPlayer.Priority + 1;
+
+            AudioFilter.enabled = true;
             var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
 
             while (!loadScene.isDone)
                 yield return null;
-        }
-
-        private void Start()
-        {
-            OnClick();
         }
     }
 }

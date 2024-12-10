@@ -42,13 +42,13 @@ namespace Managers
             var settings = new DungeonSettings
             {
                 Seed = seed,
-                Width = 18,
-                Height = 12,
-                MinimumRoomHeight = 3,
-                MinimumRoomWidth = 3,
-                SliceCount = 7,
-                AddHighLoop = true,
-                AddLowLoop = true
+                Width = Mathf.Min(4 + (levelIndex - 1) * 2, 18),
+                Height = Mathf.Min(4 + (levelIndex - 1) * 2, 12),
+                MinimumRoomHeight = levelIndex < 3 ? 2 : 3,
+                MinimumRoomWidth = levelIndex < 3 ? 2 : 3,
+                SliceCount = levelIndex * 2,
+                AddHighLoop = levelIndex >= 6,
+                AddLowLoop = levelIndex >= 6
             };
 
             Debug.Log("Seed: " + seed);

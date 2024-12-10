@@ -42,7 +42,9 @@ namespace Dungeon.Generation
 
             // Find adjacent rooms
             Dictionary<Room, HashSet<Room>> adjacentRooms = FindAdjacentRooms(rooms);
-            CutConnections(rooms, adjacentRooms, entrance);
+
+            if (rooms.Length > 1)
+                CutConnections(rooms, adjacentRooms, entrance);
 
             // Package results
             return new DungeonResult

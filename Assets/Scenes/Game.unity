@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37312585, g: 0.3807451, b: 0.358728, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -512,7 +512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8825905050529268576, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1154,7 +1154,7 @@ MonoBehaviour:
   dungeonManager: {fileID: 366401024}
   levelIndex: 0
   overSeed: 2068972444
-  useSeed: 1
+  useSeed: 0
   battleManager: {fileID: 75914958}
 --- !u!1 &1005352961
 GameObject:
@@ -1783,11 +1783,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: b2b421885d196130ab1bcb37480776e2, type: 2}
     - target: {fileID: 5209748686242371978, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5209748686242371978, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 5209748686242371978, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
       propertyPath: m_LocalPosition.z

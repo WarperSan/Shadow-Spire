@@ -36,4 +36,9 @@ public class PlayerController : Controller
         this.playerMovement.ProcessGravity(elapsed);
         this.playerInteraction.UpdateCursor();
     }
+
+    private void OnDisable()
+    {
+        SwitchOut();
+    }
 }
