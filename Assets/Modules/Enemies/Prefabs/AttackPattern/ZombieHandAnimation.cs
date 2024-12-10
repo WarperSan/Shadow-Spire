@@ -6,23 +6,21 @@ public class ZombieHandAnimation : MonoBehaviour
 {
     bool isRotating = false;
     bool isMoving = false;
-    float zRotationMax = 5;
-    float zRotationMin = -5;
-    float yPositionMaxOffset = 0.01f; // Déplacement maximum en Y
-    float yPositionMinOffset = -0.01f; // Déplacement minimum en Y
-    float movementSpeed = 2f; // Vitesse du mouvement en Y
-    float initialYPosition; // Position de départ en Y
-    float rotationSpeed; // Vitesse de la rotation
+    float zRotationMax = 7;
+    float zRotationMin = -7;
+    float yPositionMaxOffset = 0.01f; 
+    float yPositionMinOffset = -0.01f; 
+    float movementSpeed = 3f;
+    float initialYPosition;
+    float rotationSpeed; 
     private void Start()
     {
         isRotating = Random.Range(0, 2) == 0;
         isMoving = Random.Range(0, 2) == 0;
 
-        // Enregistrer la position initiale en Y
-        initialYPosition = transform.position.y;
-        rotationSpeed = Random.Range(0, 5);
+        initialYPosition = transform.localPosition.y;
+        rotationSpeed = Random.Range(2, 5);
     }
-    // Update is called once per frame
     void Update()
     {
         if (isRotating)
@@ -34,7 +32,7 @@ public class ZombieHandAnimation : MonoBehaviour
         if (isMoving)
         {
             float yOffset = Mathf.Lerp(yPositionMinOffset, yPositionMaxOffset, Mathf.PingPong(Time.time * movementSpeed, 1));
-            transform.position = new Vector3(transform.position.x, initialYPosition + yOffset, transform.position.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, initialYPosition + yOffset, transform.localPosition.z);
         }
     }
 }
