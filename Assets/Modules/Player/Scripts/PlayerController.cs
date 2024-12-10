@@ -40,5 +40,6 @@ public class PlayerController : Controller
     private void OnDisable()
     {
         SwitchOut();
+        playerInteraction.enabled = false;
     }
 }

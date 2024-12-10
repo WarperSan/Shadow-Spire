@@ -1246,18 +1246,6 @@ PrefabInstance:
       value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.02745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.011764706
-      objectReference: {fileID: 0}
-    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.019607844
-      objectReference: {fileID: 0}
-    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 536871968
       objectReference: {fileID: 0}

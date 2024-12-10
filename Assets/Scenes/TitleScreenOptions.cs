@@ -1,4 +1,5 @@
 using Battle.Options;
+using CameraUtils;
 using Managers;
 using System.Collections;
 using UnityEngine;
@@ -11,11 +12,14 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
         LoadOptions(new TitleScreenOptionData[] { 
             new() { 
                 text = "Play",
+                OnEnter = OnPlay
             },
             new() {
                 text = "Quit"
             }
         });
+
+        ShowSelection();
 
         InputManager.Instance.OnMoveUI.AddListener(Move);
         InputManager.Instance.OnEnterUI.AddListener(Enter);
@@ -30,7 +34,7 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
 
         loadedOptions = new TitleScreenOption[options.Length];
 
-        float singleY = rectTransform.rect.size.y / options.Length;
+        float singleY = -rectTransform.rect.size.y / options.Length;
         float startY = (options.Length - 1) / 2f * -singleY;
 
         for (int i = 0; i < options.Length; i++)
@@ -50,12 +54,23 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
 
         selectedIndex = 0;
     }
-
-    public IEnumerator OnPlay()
+    protected override void OnMoveSelected(Vector2 dir)
     {
-       var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
-        while (!loadScene.isDone)
-            yield return null;
+        dir = dir.normalized;
+
+        if (dir.y < 0)
+            selectedIndex++;
+        else if (dir.y > 0)
+            selectedIndex--;
+    }
+
+    public void OnPlay()
+    {
+        if (Camera2D.IsIn3D)
+        {
+            SceneManager.UnloadScene("TitleScreen");
+        }
+        SceneManager.LoadScene("Game", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
 
     public IEnumerator OnQuit()

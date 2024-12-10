@@ -135,6 +135,13 @@ namespace Battle.Options
         {
             HideSelection();
             OnMoveSelected(dir);
+
+            if (selectedIndex < 0)
+                selectedIndex = loadedOptions.Length - 1;
+
+            if (selectedIndex >= loadedOptions.Length)
+                selectedIndex = 0;
+
             ShowSelection();
         }
 
@@ -143,19 +150,9 @@ namespace Battle.Options
             dir = dir.normalized;
 
             if (dir.x < 0)
-            {
                 selectedIndex--;
-
-                if (selectedIndex < 0)
-                    selectedIndex = loadedOptions.Length - 1;
-            }
             else if (dir.x > 0)
-            {
                 selectedIndex++;
-
-                if (selectedIndex >= loadedOptions.Length)
-                    selectedIndex = 0;
-            }
         }
 
         /// <inheritdoc/>

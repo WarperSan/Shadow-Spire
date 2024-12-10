@@ -36,7 +36,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             this.cursor.sprite = this.interactCursor;
             this.cursor.rectTransform.sizeDelta = new Vector2(100, 100);
-            this.cursor.color = Color.red;
+            this.cursor.color = Color.white;
         }
         else
         {
@@ -53,5 +53,10 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
+    }
+
+    private void OnDisable()
+    {
+        this.cursor.enabled = false;
     }
 }

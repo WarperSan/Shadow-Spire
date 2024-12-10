@@ -2129,6 +2129,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 3D-Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6034645775017829087, guid: 05b4b110f76370b46812a870fb5170cf, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034645775017829087, guid: 05b4b110f76370b46812a870fb5170cf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8373553867662691870, guid: 05b4b110f76370b46812a870fb5170cf, type: 3}
       propertyPath: m_NotificationBehavior
       value: 0

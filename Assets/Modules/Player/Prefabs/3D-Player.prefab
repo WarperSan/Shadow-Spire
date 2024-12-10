@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Eyes: {fileID: 4328810396994211223}
-  interactCursor: {fileID: 21300000, guid: 281060229191f50e28d6ed17d8d7c47d, type: 3}
+  interactCursor: {fileID: 2131353515, guid: be4e1cba92600962ebcf462a4aa7ad85, type: 3}
   normalCursor: {fileID: 21300000, guid: 3debec8c57cbd1085b6cd5aa49e38886, type: 3}
   cursor: {fileID: 4954842361546934717}
   interactRange: 1
