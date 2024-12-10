@@ -25,7 +25,7 @@ namespace Arcade
             ArcadeCamera.Priority = camPlayer.Priority + 1;
 
             AudioFilter.enabled = true;
-            var loadScene = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
+            var loadScene = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Additive);
 
             while (!loadScene.isDone)
                 yield return null;
