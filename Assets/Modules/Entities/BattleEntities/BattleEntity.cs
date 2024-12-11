@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Weapons;
 
 namespace BattleEntity

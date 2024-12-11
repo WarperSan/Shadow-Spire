@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37312585, g: 0.3807451, b: 0.358728, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -20164,12 +20164,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+      propertyPath: m_ForceIntoRT
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
       propertyPath: far clip plane
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 1073741856
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8069985642260962882, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
       propertyPath: m_Name
@@ -20179,8 +20199,7 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1006860838}
-    m_RemovedComponents:
-    - {fileID: 3485065944466520330, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

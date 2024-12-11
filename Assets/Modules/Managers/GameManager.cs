@@ -24,6 +24,9 @@ namespace Managers
         [SerializeField]
         private int levelIndex = 0;
 
+        [SerializeField]
+        private Camera dungeonCamera;
+
         public int overSeed;
         public bool useSeed;
 
@@ -46,7 +49,7 @@ namespace Managers
                 Height = Mathf.Min(4 + (levelIndex - 1) * 2, 12),
                 MinimumRoomHeight = levelIndex < 3 ? 2 : 3,
                 MinimumRoomWidth = levelIndex < 3 ? 2 : 3,
-                SliceCount = levelIndex * 2,
+                SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
                 AddHighLoop = levelIndex >= 6,
                 AddLowLoop = levelIndex >= 6
             };
@@ -54,6 +57,11 @@ namespace Managers
             Debug.Log("Seed: " + seed);
 
             Level = dungeonManager.StartLevel(settings, player);
+            dungeonCamera.transform.position = new Vector3(
+                Level.Width / 2f + 0.5f,
+                -(Level.Height / 2f + 0.5f),
+                dungeonCamera.transform.position.z
+            );
         }
 
         public void EndLevel()
@@ -85,7 +93,6 @@ namespace Managers
 
             IsInBattle = true;
             StartCoroutine(battleManager.StartBattle());
-            //battleManager.StartBattle();
             InputManager.Instance.SwitchToUI();
         }
 
