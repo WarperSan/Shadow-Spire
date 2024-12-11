@@ -15,7 +15,8 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
                 OnEnter = OnPlay
             },
             new() {
-                text = "Quit"
+                text = "Quit",
+                OnEnter = OnQuit
             }
         });
 
@@ -68,15 +69,20 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
     {
         if (Camera2D.IsIn3D)
         {
+            Arcade.Arcade.QuitUnload = false;
             SceneManager.UnloadScene("TitleScreen");
         }
         SceneManager.LoadScene("Game", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
 
-    public IEnumerator OnQuit()
+    public void OnQuit()
     {
-        var unloadScene = SceneManager.UnloadSceneAsync("TitleScreen");
-        while (!unloadScene.isDone)
-            yield return null;
+        if (Camera2D.IsIn3D)
+        {
+            Arcade.Arcade.QuitUnload = true;
+            SceneManager.UnloadSceneAsync("TitleScreen");
+        }
+        else
+            Application.Quit();
     }
 }

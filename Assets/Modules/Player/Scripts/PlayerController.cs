@@ -42,4 +42,10 @@ public class PlayerController : Controller
         SwitchOut();
         playerInteraction.enabled = false;
     }
+
+    private void OnEnable()
+    {
+        SwitchIn();
+        playerInteraction.enabled = true;
+    }
 }
