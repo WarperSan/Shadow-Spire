@@ -55,15 +55,8 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
 
         selectedIndex = 0;
     }
-    protected override void OnMoveSelected(Vector2 dir)
-    {
-        dir = dir.normalized;
 
-        if (dir.y < 0)
-            selectedIndex++;
-        else if (dir.y > 0)
-            selectedIndex--;
-    }
+    protected override void OnMoveSelected(Vector2 dir) => base.OnMoveSelected(new(dir.y, dir.x));
 
     public void OnPlay()
     {
