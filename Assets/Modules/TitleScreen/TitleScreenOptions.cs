@@ -1,7 +1,7 @@
+using System.Collections;
 using Battle.Options;
 using CameraUtils;
 using Managers;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +9,8 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
 {
     private void Start()
     {
-        LoadOptions(new TitleScreenOptionData[] { 
-            new() { 
+        LoadOptions(new TitleScreenOptionData[] {
+            new() {
                 text = "Play",
                 OnEnter = OnPlay
             },
@@ -58,15 +58,33 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
 
     protected override void OnMoveSelected(Vector2 dir) => base.OnMoveSelected(new(dir.y, dir.x));
 
+    #region Play Sequence
+
+    private bool isRunningPlaySequence;
+
     public void OnPlay()
+    {
+        if (isRunningPlaySequence)
+            return;
+
+        StartCoroutine(PlaySequence());
+        isRunningPlaySequence = true;
+    }
+
+    private IEnumerator PlaySequence()
     {
         if (Camera2D.IsIn3D)
         {
             Arcade.Arcade.QuitUnload = false;
-            SceneManager.UnloadScene("TitleScreen");
+            yield return SceneManager.UnloadSceneAsync("TitleScreen");
         }
+
         SceneManager.LoadScene("Game", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
+
+    #endregion
+
+    #region Quit Sequence
 
     public void OnQuit()
     {
@@ -78,4 +96,6 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
         else
             Application.Quit();
     }
+
+    #endregion
 }
