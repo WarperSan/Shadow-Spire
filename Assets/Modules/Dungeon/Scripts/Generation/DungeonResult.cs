@@ -26,7 +26,7 @@ namespace Dungeon.Generation
         // 1 << 15
         // 1 << 16
         PLAYER = 1 << 17,
-        MONSTER = 1 << 18
+        ENEMY = 1 << 18
     }
 
     public class DungeonResult
