@@ -151,5 +151,10 @@ namespace BattleEntity
 
         #endregion
     }
-
 }
+
+// NORMAL: 3 (Copycat, Medusa, Goblin)
+// UNDEAD: 3 (Zombie, Parasite, Blob)
+// GHOST: 3 (Reaper, Prisoner, Dead Angel)
+// GIANT: 3 (Orc, Knight, Dragon)
+// ANIMAL: 3 (Spider, Kraken, Snail)
