@@ -21,6 +21,10 @@ namespace Entities
         private void SetData(EnemySO data)
         {
             spriteRenderer.sprite = data.OverworldSprite;
+
+            if (ColorUtility.TryParseHtmlString(BattleEntity.BattleEntity.GetTypeColor(data.Type), out Color color))
+                spriteRenderer.color = color;
+
             turnsRemaining = waitTurns = data.MovementSpeed switch
             {
                 EnemyMovementSpeed.VERY_SLOW => 3,

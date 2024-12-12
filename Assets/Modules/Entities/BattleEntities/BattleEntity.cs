@@ -128,7 +128,7 @@ namespace BattleEntity
                         string.Format(
                             "<sprite name=\"icon_type_{0}\" color={1}>",
                             item.ToString().ToLower(),
-                            GetIconColor(item)
+                            GetTypeColor(item)
                         )
                     );
                 }
@@ -138,18 +138,23 @@ namespace BattleEntity
             return builder.ToString();
         }
 
-        private static string GetIconColor(BattleEntityType uniqueType) => uniqueType switch
+        public static string GetTypeColor(BattleEntityType uniqueType) => uniqueType switch
         {
             BattleEntityType.NONE => "#D3D3D3",
-            BattleEntityType.NORMAL => "#1E90FF",
-            BattleEntityType.UNDEAD => "#228B22",
-            BattleEntityType.GHOST => "#ADD8E6",
-            BattleEntityType.GIANT => "#FF4500",
-            BattleEntityType.ANIMAL => "#8B4513",
+            BattleEntityType.NORMAL => "#B9E5EB",
+            BattleEntityType.UNDEAD => "#6BD36B",
+            BattleEntityType.GHOST => "#AA74FF",
+            BattleEntityType.GIANT => "#FF5E47",
+            BattleEntityType.ANIMAL => "#FF8B00",
             _ => "white"
         };
 
         #endregion
     }
-
 }
+
+// NORMAL: 3 (Copycat, Medusa, Goblin)
+// UNDEAD: 3 (Zombie, Parasite, Blob)
+// GHOST: 3 (Reaper, Prisoner, Dead Angel)
+// GIANT: 3 (Orc, Knight, Dragon)
+// ANIMAL: 3 (Spider, Kraken, Snail)

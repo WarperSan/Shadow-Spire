@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_0
+      name: fight_kraken
       rect:
         serializedVersion: 2
         x: 0
@@ -173,7 +173,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_3
+      name: fight_dragon
       rect:
         serializedVersion: 2
         x: 96
@@ -383,7 +383,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_13
+      name: fight_copycat
       rect:
         serializedVersion: 2
         x: 160
@@ -677,7 +677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_27
+      name: fight_knight
       rect:
         serializedVersion: 2
         x: 96
@@ -782,7 +782,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_32
+      name: fight_dead_angel
       rect:
         serializedVersion: 2
         x: 0
@@ -803,7 +803,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_33
+      name: fight_medusa
       rect:
         serializedVersion: 2
         x: 32
@@ -950,7 +950,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_40
+      name: fight_parasite
       rect:
         serializedVersion: 2
         x: 0
@@ -971,7 +971,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_41
+      name: fight_spider
       rect:
         serializedVersion: 2
         x: 32
@@ -1013,7 +1013,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_43
+      name: fight_snail
       rect:
         serializedVersion: 2
         x: 96
@@ -1076,7 +1076,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_46
+      name: fight_blob
       rect:
         serializedVersion: 2
         x: 192
@@ -1286,7 +1286,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_56
+      name: fight_goblin
       rect:
         serializedVersion: 2
         x: 0
@@ -1349,7 +1349,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_59
+      name: fight_prisoner
       rect:
         serializedVersion: 2
         x: 96
@@ -1464,15 +1464,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      fight_blob: -634774882
+      fight_copycat: 843628579
+      fight_dead_angel: 1549134744
+      fight_dragon: 639483551
+      fight_goblin: 1409078159
+      fight_knight: 1854031816
+      fight_kraken: -233166337
+      fight_medusa: 1705346344
       fight_orc: -620138874
+      fight_parasite: 645612079
+      fight_prisoner: 1316337788
       fight_reaper: 1976018159
+      fight_snail: 1724946670
+      fight_spider: -1154044961
       fight_zombie: 718047891
-      monochrome_32x32_transparent_0: -233166337
       monochrome_32x32_transparent_1: -631411837
       monochrome_32x32_transparent_10: 326059872
       monochrome_32x32_transparent_11: -137435345
       monochrome_32x32_transparent_12: 340294277
-      monochrome_32x32_transparent_13: 843628579
       monochrome_32x32_transparent_14: -402951233
       monochrome_32x32_transparent_15: 2037655182
       monochrome_32x32_transparent_16: 799326697
@@ -1485,27 +1495,19 @@ TextureImporter:
       monochrome_32x32_transparent_23: 1080712877
       monochrome_32x32_transparent_25: -1268546407
       monochrome_32x32_transparent_26: -431813863
-      monochrome_32x32_transparent_27: 1854031816
       monochrome_32x32_transparent_28: -1922338776
       monochrome_32x32_transparent_29: 1963270071
-      monochrome_32x32_transparent_3: 639483551
       monochrome_32x32_transparent_30: -1410867303
       monochrome_32x32_transparent_31: 1788289355
-      monochrome_32x32_transparent_32: 1549134744
-      monochrome_32x32_transparent_33: 1705346344
       monochrome_32x32_transparent_34: -348603638
       monochrome_32x32_transparent_36: 417967483
       monochrome_32x32_transparent_37: 594527533
       monochrome_32x32_transparent_38: -113047956
       monochrome_32x32_transparent_39: 648578551
       monochrome_32x32_transparent_4: -14808172
-      monochrome_32x32_transparent_40: 645612079
-      monochrome_32x32_transparent_41: -1154044961
       monochrome_32x32_transparent_42: 1552337428
-      monochrome_32x32_transparent_43: 1724946670
       monochrome_32x32_transparent_44: -426971867
       monochrome_32x32_transparent_45: -1251558421
-      monochrome_32x32_transparent_46: -634774882
       monochrome_32x32_transparent_47: -109000281
       monochrome_32x32_transparent_48: -1519886983
       monochrome_32x32_transparent_49: 246228208
@@ -1516,10 +1518,8 @@ TextureImporter:
       monochrome_32x32_transparent_53: -1321634316
       monochrome_32x32_transparent_54: 1231955899
       monochrome_32x32_transparent_55: -1417963819
-      monochrome_32x32_transparent_56: 1409078159
       monochrome_32x32_transparent_57: -205330527
       monochrome_32x32_transparent_58: 1146734709
-      monochrome_32x32_transparent_59: 1316337788
       monochrome_32x32_transparent_6: 442578754
       monochrome_32x32_transparent_60: -1195781418
       monochrome_32x32_transparent_61: -2137289587
