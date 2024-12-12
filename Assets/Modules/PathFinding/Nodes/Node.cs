@@ -19,7 +19,7 @@ namespace PathFinding.Nodes
         private readonly Dictionary<int, float> _links;
 
         /// <summary>Creates a link between this node and the given node</summary>
-        public void AddLink(int id, float cost) => this._links.Add(id, cost);
+        public void AddLink(int id, float cost) => this._links[id] = cost;
 
         /// <summary>Gets the neighbours of this node</summary>
         public int[] GetNeighbors() => this._links.Keys.ToArray();

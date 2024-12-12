@@ -47,9 +47,6 @@ namespace Dungeon.Drawers
 
             var exitPosition = ProcessExit(Level.Exit);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
-
-            Debug.Log(entrancePosition);
-            Debug.Log(exitPosition);
         }
 
         /// <inheritdoc/>
