@@ -34,7 +34,7 @@ namespace Dungeon.Generation
 
             // Compile all the rooms
             Room[] rooms = CompileRooms(root);
-            
+
             Room entrance = EntranceExitDrawer.FindEntrance(rooms);
             entrance.Type = RoomType.ENTRANCE;
 
@@ -47,9 +47,13 @@ namespace Dungeon.Generation
             if (rooms.Length > 1)
                 CutConnections(rooms, adjacentRooms, entrance);
 
+            // Find room types
+            FindEnemyRooms(rooms);
+
             // Package results
             return new DungeonResult
             {
+                Index = settings.Index,
                 Rooms = rooms,
                 AdjacentRooms = adjacentRooms,
                 Entrance = entrance,
@@ -279,8 +283,41 @@ namespace Dungeon.Generation
         }
 
         #endregion
-    
+
         #region Type
+
+        private void FindEnemyRooms(Room[] rooms)
+        {
+            // Don't spawn before level 4
+            if (settings.Index <= 2)
+                return;
+
+            var validRooms = new List<Room>();
+
+            foreach (var room in rooms)
+            {
+                // If too close from the entrance, skip
+                if (room.Depth <= 1)
+                    continue;
+
+                validRooms.Add(room);
+            }
+
+            // If not valid room, skip
+            if (validRooms.Count == 0)
+                return;
+
+            int count = rooms.Length / 3;
+
+            for (int i = 0; i < count; i++)
+            {
+                int rdmIndex = random.Next(0, validRooms.Count);
+                (validRooms[^1], validRooms[rdmIndex]) = (validRooms[rdmIndex], validRooms[^1]);
+            }
+
+            for (int i = 0; i < count; i++)
+                validRooms[^(count + 1)].Type = RoomType.ENEMY;
+        }
 
         //private void FindTreasureRooms(Room[] rooms,)
 

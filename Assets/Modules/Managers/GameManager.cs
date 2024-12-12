@@ -43,7 +43,7 @@ namespace Managers
 
             var settings = new DungeonSettings
             {
-                LevelIndex = levelIndex,
+                Index = levelIndex,
                 Seed = seed,
                 Width = Mathf.Min(4 + levelIndex * 2, 18),
                 Height = Mathf.Min(4 + levelIndex * 2, 12),

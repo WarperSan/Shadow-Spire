@@ -3,6 +3,11 @@ namespace Dungeon.Generation
     public struct DungeonSettings
     {
         /// <summary>
+        /// Current level of the dungeon
+        /// </summary>
+        public int Index;
+
+        /// <summary>
         /// Seed used for the random elements
         /// </summary>
         public int Seed;

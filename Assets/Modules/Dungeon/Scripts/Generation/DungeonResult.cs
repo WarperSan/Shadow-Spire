@@ -22,7 +22,11 @@ namespace Dungeon.Generation
         // 1 << 11
         // 1 << 12
         ENTRANCE = 1 << 13,
-        EXIT = 1 << 14
+        EXIT = 1 << 14,
+        // 1 << 15
+        // 1 << 16
+        PLAYER = 1 << 17,
+        MONSTER = 1 << 18
     }
 
     public class DungeonResult
@@ -51,6 +55,13 @@ namespace Dungeon.Generation
 
         #endregion
 
+        #region Level
+
+        /// <summary>
+        /// Current level of the dungeon
+        /// </summary>
+        public int Index;
+
         /// <summary>
         /// The element used for random generation
         /// </summary>
@@ -66,6 +77,10 @@ namespace Dungeon.Generation
         /// </summary>
         public int Height;
 
+        #endregion
+
+        #region Tiles
+
         /// <summary>
         /// Tiles for the dungeon
         /// </summary>
@@ -75,6 +90,8 @@ namespace Dungeon.Generation
         /// Graph of all the tiles for the dungeon
         /// </summary>
         public TileGraph TileGraph;
+
+        #endregion
 
         public PlayerEntity Player;
     }

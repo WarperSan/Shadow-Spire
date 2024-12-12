@@ -8,6 +8,7 @@ namespace Dungeon.Generation
         NORMAL,
         ENTRANCE, // Room that is the entrance
         EXIT, // Room that is the exit
+        ENEMY, // Room that spawns monsters
     }
 
     public class Room
