@@ -21,17 +21,14 @@ namespace Dungeon.Drawers
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            foreach (var room in rooms)
+            for (int y = 0; y < Level.Height; y++)
             {
-                for (int y = 0; y < room.Height; y++)
+                for (int x = 0; x < Level.Width; x++)
                 {
-                    for (int x = 0; x < room.Width; x++)
-                    {
-                        if (Level.HasObstacle(room.X + x, room.Y + y))
-                            continue;
+                    if (Level.HasWall(x, y) || Level.HasObstacle(x, y))
+                        continue;
 
-                        Level.Add(room.X + x, room.Y + y, Generation.Tile.GROUND);
-                    }
+                    Level.Add(x, y, Generation.Tile.GROUND);
                 }
             }
         }
