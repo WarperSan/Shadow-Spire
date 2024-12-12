@@ -90,7 +90,7 @@ namespace Dungeon.Drawers
 
             var topY = entrance.Y;
             var bottomY = entrance.Y + entrance.Height - 1;
-            
+
             // If can place top left, return
             if (CanPlaceEntrance(leftX, topY))
                 return new Vector2Int(leftX, topY);
@@ -199,21 +199,21 @@ namespace Dungeon.Drawers
             var topY = exit.Y;
             var bottomY = exit.Y + exit.Height - 1;
 
-            // If can place top left, return
-            if (CanPlaceExit(leftX, topY))
-                return new Vector2Int(leftX, topY);
-
-            // If can place top right, return
-            if (CanPlaceExit(rightX, topY))
-                return new Vector2Int(rightX, topY);
+            // If can place bottom right, return
+            if (CanPlaceExit(rightX, bottomY))
+                return new Vector2Int(rightX, bottomY);
 
             // If can place bottom left, return
             if (CanPlaceExit(leftX, bottomY))
                 return new Vector2Int(leftX, bottomY);
 
-            // If can place bottom right, return
-            if (CanPlaceExit(rightX, bottomY))
-                return new Vector2Int(rightX, bottomY);
+            // If can place top right, return
+            if (CanPlaceExit(rightX, topY))
+                return new Vector2Int(rightX, topY);
+
+            // If can place top left, return
+            if (CanPlaceExit(leftX, topY))
+                return new Vector2Int(leftX, topY);
 
             var possiblePoints = new List<Vector2Int>();
 
