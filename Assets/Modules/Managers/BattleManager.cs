@@ -3,6 +3,7 @@ using Battle;
 using Battle.Options;
 using BattleEntity;
 using Enemies;
+using Entities;
 using TMPro;
 using UnityEngine;
 using Weapons;
@@ -14,23 +15,26 @@ namespace Managers
         public EnemySO enemy1;
         public EnemySO enemy2;
         public EnemySO enemy3;
+        private EnemyEntity enemy;
+        private BattleEnemyEntity[] enemies;
 
-        public IEnumerator StartBattle()
+        public IEnumerator StartBattle(EnemyEntity enemy)
         {
+            this.enemy = enemy;
             yield return StartBattleTransition();
             yield return FindBattleUI();
 
             var weapon = GameManager.Instance.player.GetWeapon();
             LoadBattleOptions();
 
-            var entities = new BattleEnemyEntity[3]
+            enemies = new BattleEnemyEntity[3]
             {
                 new(enemy1),
                 new(enemy2),
                 new(enemy3),
             };
 
-            LoadEnemyOptions(weapon, entities);
+            LoadEnemyOptions(weapon, enemies);
 
             yield return battleUI.DisableSpoiler();
 
@@ -38,15 +42,15 @@ namespace Managers
             AddInputs();
         }
 
-        public void EndBattle(bool isVictory) // TRANSITION DE END BATTLE
+        public void EndBattle(bool isVictory)
         {
             StartCoroutine(EndBattleCoroutine(isVictory));
         }
 
-        private IEnumerator EndBattleCoroutine(bool isVictory) // TRANSITION DE END BATTLE
+        private IEnumerator EndBattleCoroutine(bool isVictory)
         {
             yield return battleUI.EnableSpoiler();
-            GameManager.Instance.EndBattle(isVictory);
+            GameManager.Instance.EndBattle(isVictory, enemy);
         }
 
         #region Battle UI
@@ -163,8 +167,17 @@ namespace Managers
 
             enemy.Entity.TakeAttack(enemy.Weapon);
 
-            EnableBattleOption();
-            AddInputs();
+            if (VerifyEnemiesState())
+            {
+                EnableBattleOption();
+                AddInputs();
+            }
+            else
+            {
+                // All enemies dead, victory
+                EndBattle(true);
+            }
+
         }
 
         private void OnEnemyEscape()
@@ -187,6 +200,18 @@ namespace Managers
             battleUI.HideSelection<EnemyOptionData>();
         }
 
+        private bool VerifyEnemiesState()
+        {
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                // If at least one enemy alive
+                if (!enemies[i].IsDead)
+                    return true;
+            }
+
+            // If all enemies dead
+            return false;
+        }
         #endregion
 
         #region Battle Transition

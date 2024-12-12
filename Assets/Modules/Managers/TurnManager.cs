@@ -27,11 +27,19 @@ namespace Managers
                         break;
                     }
 
+                    // If entity doesnt exist, skip
+                    if (entity == null)
+                        continue;
+
                     yield return entity.ExecuteTurn();
 
                     // Check for event
                     foreach (var item in foundEntities)
                     {
+                        // If entity doesnt exist, skip
+                        if(item == null)
+                            continue;
+
                         // If checking self, skip
                         if (item == entity)
                             continue;
@@ -49,6 +57,9 @@ namespace Managers
                 }
             }
         }
+
+
+        public void StartTurn() => StartCoroutine(ProcessTurn());
 
         #region IDungeonReceive
 
@@ -74,7 +85,7 @@ namespace Managers
                 turnEntities.Add(item);
             }
 
-            StartCoroutine(ProcessTurn());
+            StartTurn();
         }
 
         /// <inheritdoc/>

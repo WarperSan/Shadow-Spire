@@ -1083,6 +1083,7 @@ MonoBehaviour:
   dungeonCamera: {fileID: 1052180607}
   overSeed: -1172454459
   useSeed: 0
+  turnManager: {fileID: 1385701959}
   battleManager: {fileID: 75914958}
   endBattleBackground: {fileID: 2004717174}
   diedText: {fileID: 1334258073}

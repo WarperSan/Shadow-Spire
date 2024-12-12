@@ -83,6 +83,14 @@ namespace Managers
 
         #endregion
 
+        #region Turn
+
+        [Header("Turn")]
+        [SerializeField]
+        private TurnManager turnManager;
+        
+        #endregion
+
         #region Battle
 
         [Header("Battle")]
@@ -103,15 +111,20 @@ namespace Managers
                 return;
 
             IsInBattle = true;
-            StartCoroutine(battleManager.StartBattle());
+            StartCoroutine(battleManager.StartBattle(enemy));
             InputManager.Instance.SwitchToUI();
         }
 
-        public void EndBattle(bool isVictory) // S'OCCUPE DE GERER LE END BATTLE DEPENDEMENT DU SCENARIO
+        public void EndBattle(bool isVictory, EnemyEntity enemy) 
         {
             IsInBattle = false;
             
-            if(!isVictory)
+            if(isVictory)
+            {
+                Destroy(enemy.gameObject);
+                turnManager.StartTurn();
+            }
+            else
             {
                 endBattleBackground.gameObject.SetActive(true);
                 StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
