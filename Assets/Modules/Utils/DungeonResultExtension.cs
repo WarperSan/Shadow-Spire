@@ -20,6 +20,11 @@ namespace UtilsModule
         public static void Add(this DungeonResult level, int x, int y, Tile tile) => level.Set(x, y, level.Get(x, y) | tile);
 
         /// <summary>
+        /// Removes the given tile at the given position
+        /// </summary>
+        public static void Remove(this DungeonResult level, int x, int y, Tile tile) => level.Set(x, y, level.Get(x, y) & ~tile);
+
+        /// <summary>
         /// Checks if the tile at the given position has the given tile
         /// </summary>
         public static bool Has(this DungeonResult level, int x, int y, Tile tile) => (level.Get(x, y) & tile) != 0;
