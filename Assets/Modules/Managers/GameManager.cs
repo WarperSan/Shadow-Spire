@@ -110,11 +110,11 @@ namespace Managers
         public void EndBattle(bool isVictory) // S'OCCUPE DE GERER LE END BATTLE DEPENDEMENT DU SCENARIO
         {
             IsInBattle = false;
-
+            
             if(!isVictory)
             {
                 endBattleBackground.gameObject.SetActive(true);
-                battleManager.DeadPlayerTextFadeIn(diedText);
+                StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
             }
             SceneManager.UnloadSceneAsync("BattleScene");
             InputManager.Instance.SwitchToPlayer();

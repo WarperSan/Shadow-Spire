@@ -34,7 +34,6 @@ namespace CameraUtils
 
         void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log("OnSceneUnloaded: " + scene.name);
             canvas.worldCamera = Camera.main;
         }
     }

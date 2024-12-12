@@ -56,15 +56,17 @@ namespace Battle
 
         public IEnumerator EnableSpoiler()
         {
+            const float FADE_TIME = 7f;
+
             spoiler.SetActive(true);
             var blackout = spoiler.GetComponent<Image>();
             var blackoutColor = blackout.color;
             blackoutColor.a = 0f;
             blackout.color = blackoutColor;
 
-            for(int i = 1; i <= 7; i++)
+            for(int i = 1; i <= FADE_TIME; i++)
             {
-                blackoutColor.a = 1f / 7 * i;
+                blackoutColor.a = 1f / FADE_TIME * i;
                 blackout.color = blackoutColor;
                 yield return new WaitForSeconds(0.2f);
             }
