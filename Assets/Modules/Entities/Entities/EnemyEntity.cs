@@ -8,13 +8,6 @@ namespace Entities
 {
     public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable
     {
-        public EnemySO temp;
-
-        private void Start()
-        {
-            EnemyData = temp;
-        }
-
         #region Data
 
         private EnemySO _data;

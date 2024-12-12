@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using Dungeon.Drawers;
 using Dungeon.Generation;
+using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
@@ -55,6 +56,17 @@ namespace Managers
 
         [SerializeField]
         private ExitEntity exit;
+
+        #endregion
+
+        #region Enemies
+
+        [Header("Enemies")]
+        [SerializeField]
+        private GameObject enemyPrefab;
+
+        [SerializeField]
+        private EnemySO[] enemyPool;
 
         #endregion
 
@@ -118,10 +130,14 @@ namespace Managers
             // Create drawers
             DrawerPipeline = new Drawer[]
             {
+                // Terrain
                 new WallDrawer(lvl, wallMap, wallTiles),
                 new DoorDrawer(lvl, wallMap, doorTile),
                 new EntranceExitDrawer(lvl, entrance, exit, player),
                 new GroundDrawer(lvl, groundMap, groundTile),
+
+                // Rooms
+                new EnemyRoomDrawer(lvl, enemyPrefab, enemyPool),
             };
 
             // Process the level

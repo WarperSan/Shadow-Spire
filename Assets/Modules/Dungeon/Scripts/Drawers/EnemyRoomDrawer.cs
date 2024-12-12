@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Dungeon.Generation;
 using Enemies;
+using Entities;
 using UnityEngine;
 using UtilsModule;
 
@@ -9,13 +10,15 @@ namespace Dungeon.Drawers
     public class EnemyRoomDrawer : Drawer
     {
         private readonly EnemySO[] EnemyPool;
+        private GameObject EnemyPrefab;
         private readonly List<GameObject> enemiesSpawned;
 
         #region Drawer
 
-        public EnemyRoomDrawer(DungeonResult level, EnemySO[] enemyPool) : base(level)
+        public EnemyRoomDrawer(DungeonResult level, GameObject enemyPrefab, EnemySO[] enemyPool) : base(level)
         {
             EnemyPool = enemyPool;
+            EnemyPrefab = enemyPrefab;
             enemiesSpawned = new();
         }
 
@@ -34,8 +37,33 @@ namespace Dungeon.Drawers
             enemiesSpawned.Clear();
         }
 
+        /// <inheritdoc/>
         public override void Draw(Room[] rooms)
         {
+            foreach (var room in rooms)
+            {
+                // If not an enemy room, skip
+                if (room.Type != RoomType.ENEMY)
+                    continue;
+
+                for (int y = room.Y; y < room.Y + room.Height; y++)
+                {
+                    for (int x = room.X; x < room.X + room.Width; x++)
+                    {
+                        // If not an enemy, skip
+                        if (!Level.Has(x, y, Tile.ENEMY))
+                            continue;
+
+                        var enemy = Object.Instantiate(EnemyPrefab);
+                        enemy.transform.position = new Vector3(x, -y, 0);
+
+                        if (enemy.TryGetComponent(out EnemyEntity entity))
+                            entity.EnemyData = EnemyPool[Level.Random.Next(0, EnemyPool.Length)];
+
+                        enemiesSpawned.Add(enemy);
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -82,27 +110,20 @@ namespace Dungeon.Drawers
                 if (positions.Count == 0)
                     continue;
 
-                int totalValue = Mathf.CeilToInt(room.Width * room.Height * 0.5f * (Level.Index + 1) * 0.15f);
+                int count = Mathf.CeilToInt(room.Width * room.Height / 8f * 0.6f);
+                count = Mathf.Min(count, positions.Count);
 
-                for (int i = 0; i < positions.Count; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    totalValue -= 2;
+                    int rdmIndex = Level.Random.Next(0, positions.Count);
+                    var pos = positions[rdmIndex];
 
-                    if (totalValue <= 0)
-                        break;
+                    Level.Add(pos.x, pos.y, Tile.ENEMY);
 
-                    
-                                        
+                    positions.RemoveAt(rdmIndex);
                 }
-
-
             }
         }
-
-        #endregion
-
-        #region Enemy
-
 
         #endregion
     }

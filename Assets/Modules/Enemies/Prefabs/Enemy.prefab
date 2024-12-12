@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1503088749147638007}
   - component: {fileID: 2000010170808374224}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,4 +130,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2000010170808374224}
-  temp: {fileID: 0}
