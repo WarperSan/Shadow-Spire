@@ -8,7 +8,7 @@ namespace Battle.Options
 {
     public class EnemyOptionData : UIOptionData
     {
-        public WeaponSO Weapon;
+        public WeaponInstance Weapon;
         public BattleEnemyEntity Entity;
     }
 
@@ -125,13 +125,14 @@ namespace Battle.Options
         [SerializeField]
         private TextMeshProUGUI targetEffectiveness;
 
-        private void SetEffectiveness(WeaponSO weapon, BattleEnemyEntity entity)
+        private void SetEffectiveness(WeaponInstance weapon, BattleEnemyEntity entity)
         {
-            float percent = entity.CalculateEffectiveness(weapon.AttackType);
+            var weaponData = weapon.GetBaseData();
+            float percent = entity.CalculateEffectiveness(weaponData.AttackType);
 
             targetEffectiveness.text = string.Format(
                 "<sprite name={0}> <color={1}>{2}</color>%",
-                weapon.Icon.name,
+                weaponData.Icon.name,
                 GetEffectivenessColor(percent),
                 percent
             );

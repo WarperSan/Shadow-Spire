@@ -84,15 +84,39 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
-    m_Scale: 2
+    m_Scale: 1
     m_Name: icon_sword_small
     m_HashCode: -492556279
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 1
-    m_Scale: 2
+    m_Scale: 1
     m_Name: icon_heart
     m_HashCode: 686345854
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 2
+    m_Scale: 1
+    m_Name: icon_axe
+    m_HashCode: 1246910280
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 3
+    m_Scale: 1
+    m_Name: icon_dagger
+    m_HashCode: 709778982
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 4
+    m_Scale: 1
+    m_Name: icon_book
+    m_HashCode: -1801374499
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 5
+    m_Scale: 1
+    m_Name: icon_magic_sword
+    m_HashCode: -842803465
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -106,7 +130,7 @@ MonoBehaviour:
       m_Y: 48
       m_Width: 16
       m_Height: 16
-    m_Scale: 1
+    m_Scale: 2
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -852831718, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
@@ -115,16 +139,80 @@ MonoBehaviour:
       m_Width: 16
       m_Height: 16
       m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 10
+      m_HorizontalBearingY: 8
       m_HorizontalAdvance: 16
     m_GlyphRect:
       m_X: 48
       m_Y: 48
       m_Width: 16
       m_Height: 16
-    m_Scale: 1
+    m_Scale: 2
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -308894918, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  - m_Index: 2
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 10
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 16
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 2
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 1473058514, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  - m_Index: 3
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 10
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 2
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 135341577, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  - m_Index: 4
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 10
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 32
+      m_Y: 0
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 2
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 892852645, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  - m_Index: 5
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 10
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 80
+      m_Y: 48
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 2
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 1478395535, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

@@ -93,7 +93,7 @@ namespace Managers
 
         private bool isSelectingEnemyOption;
 
-        private void LoadEnemyOptions(WeaponSO weapon, params BattleEnemyEntity[] entities)
+        private void LoadEnemyOptions(WeaponInstance weapon, params BattleEnemyEntity[] entities)
         {
             var options = new EnemyOptionData[entities.Length];
 

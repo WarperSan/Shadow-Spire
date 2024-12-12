@@ -3,6 +3,7 @@ using Dungeon.Generation;
 using Entities;
 using UnityEngine;
 using UtilsModule;
+using Weapons;
 
 namespace Managers
 {
@@ -102,6 +103,13 @@ namespace Managers
             IsInBattle = false;
             InputManager.Instance.SwitchToPlayer();
         }
+
+        #endregion
+
+        #region Weapons
+
+        [Header("Weapons")]
+        public WeaponSO[] allWeapons;
 
         #endregion
 

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Net;
 using Entities.Interfaces;
 using Managers;
 using TMPro;
@@ -14,10 +13,8 @@ namespace Entities
         private void Start()
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
-            SetWeapon(weapon); // Update UI
+            SetWeapon(new WeaponInstance(startWeapon, 0)); // Update UI
         }
-
-        public GameObject icon;
 
         #region Inputs
 
@@ -49,7 +46,6 @@ namespace Entities
         public void OnTurnStarted()
         {
             requestMove = null; // Clear previous moves
-            icon.SetActive(true);
         }
 
         /// <inheritdoc/>
@@ -58,7 +54,6 @@ namespace Entities
             while (requestMove == null)
                 yield return null;
 
-            icon.SetActive(false);
             yield return requestMove.Value;
         }
 
@@ -78,7 +73,10 @@ namespace Entities
 
         [Header("Weapon")]
         [SerializeField]
-        private WeaponSO weapon;
+        private WeaponInstance weapon;
+
+        [SerializeField]
+        private WeaponSO startWeapon;
 
         [SerializeField]
         private Image weaponIcon;
@@ -86,13 +84,19 @@ namespace Entities
         [SerializeField]
         private TextMeshProUGUI weaponType;
 
-        public WeaponSO GetWeapon() => weapon;
+        [SerializeField]
+        private TextMeshProUGUI weaponDamage;
 
-        public void SetWeapon(WeaponSO weapon)
+        public WeaponInstance GetWeapon() => weapon;
+
+        public void SetWeapon(WeaponInstance weapon)
         {
             this.weapon = weapon;
-            weaponIcon.sprite = weapon.Icon;
-            weaponType.text = BattleEntity.BattleEntity.GetIcons(weapon.AttackType);
+
+            WeaponSO baseData = weapon.GetBaseData();
+            weaponIcon.sprite = baseData.Icon;
+            weaponType.text = BattleEntity.BattleEntity.GetIcons(baseData.AttackType);
+            weaponDamage.text = weapon.GetDamage().ToString();
         }
 
         #endregion
