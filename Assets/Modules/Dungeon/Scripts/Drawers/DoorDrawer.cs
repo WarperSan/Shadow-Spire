@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
@@ -52,48 +53,68 @@ namespace Dungeon.Drawers
                     if (processedLinks.Contains((adjacent, room)))
                         continue;
 
-                    Vector2Int point = new(1, 1);
-
-                    if (adjacent.X >= room.X + room.Width)
-                    {
-                        var minY = Mathf.Max(room.Y, adjacent.Y);
-                        var maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
-
-                        if (maxY - minY >= 3)
-                        {
-                            minY++;
-                            maxY--;
-                        }
-
-                        point.x = adjacent.X - 1;
-                        point.y = random.Next(minY, maxY);
-                    }
-                    else if (adjacent.Y >= room.Y + room.Height)
-                    {
-                        var minX = Mathf.Max(room.X, adjacent.X);
-                        var maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
-
-                        if (maxX - minX >= 3)
-                        {
-                            minX++;
-                            maxX--;
-                        }
-
-
-                        point.x = random.Next(minX, maxX);
-                        point.y = adjacent.Y - 1;
-                    }
-                    else
+                    if (adjacent.X < room.X + room.Width && adjacent.Y < room.Y + room.Height)
                         continue;
 
-                    Level.Add(point.x, point.y, Generation.Tile.DOOR_CLOSED);
                     processedLinks.Add((room, adjacent));
+
+                    bool isVerticalWall = adjacent.X >= room.X + room.Width;
+
+                    int min = isVerticalWall
+                        ? Mathf.Max(room.Y, adjacent.Y)
+                        : Mathf.Max(room.X, adjacent.X);
+
+                    int max = isVerticalWall
+                        ? Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1)
+                        : Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
+
+                    // if (max - min > 2 && Level.Random.NextDouble() < 0.333f)
+                    // {
+                    //     RemoveWall(room, adjacent);
+                    //     continue;
+                    // }
+
+                    if (max - min >= 2)
+                    {
+                        min++;
+                        max--;
+                    }
+
+                    if (isVerticalWall)
+                        PlaceDoor(adjacent.X - 1, random.Next(min, max));
+                    else
+                        PlaceDoor(random.Next(min, max), adjacent.Y - 1);
                 }
             }
         }
 
         /// <inheritdoc/>
         public override void Clear() => wallMap.ClearAllTiles();
+
+        #endregion
+
+        #region Door
+
+        private void PlaceDoor(int x, int y) => Level.Add(x, y, Generation.Tile.DOOR_OPENED);
+        private void RemoveWall(Room room, Room adjacent)
+        {
+            if (adjacent.X >= room.X + room.Width)
+            {
+                var minY = Mathf.Max(room.Y, adjacent.Y);
+                var maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
+
+                for (int y = minY; y <= maxY; y++)
+                    Level.Remove(adjacent.X - 1, y, Generation.Tile.WALL);
+            }
+            else
+            {
+                var minX = Mathf.Max(room.X, adjacent.X);
+                var maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
+
+                for (int x = minX; x <= maxX; x++)
+                    Level.Remove(x, adjacent.Y - 1, Generation.Tile.WALL);
+            }
+        }
 
         #endregion
     }
