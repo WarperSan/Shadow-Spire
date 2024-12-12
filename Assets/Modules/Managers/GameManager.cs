@@ -37,21 +37,21 @@ namespace Managers
         {
             Level = null;
             IsLevelOver = false;
-            levelIndex++;
 
             int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
             overSeed = seed;
 
             var settings = new DungeonSettings
             {
+                LevelIndex = levelIndex,
                 Seed = seed,
-                Width = Mathf.Min(4 + (levelIndex - 1) * 2, 18),
-                Height = Mathf.Min(4 + (levelIndex - 1) * 2, 12),
-                MinimumRoomHeight = levelIndex < 3 ? 2 : 3,
-                MinimumRoomWidth = levelIndex < 3 ? 2 : 3,
+                Width = Mathf.Min(4 + levelIndex * 2, 18),
+                Height = Mathf.Min(4 + levelIndex * 2, 12),
+                MinimumRoomHeight = levelIndex <= 1 ? 2 : 3,
+                MinimumRoomWidth = levelIndex <= 1 ? 2 : 3,
                 SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
-                AddHighLoop = levelIndex >= 6,
-                AddLowLoop = levelIndex >= 6
+                AddHighLoop = levelIndex >= 5,
+                AddLowLoop = levelIndex >= 5
             };
 
             Debug.Log("Seed: " + seed);
@@ -67,6 +67,7 @@ namespace Managers
         public void EndLevel()
         {
             IsLevelOver = true;
+            levelIndex++;
             StartCoroutine(dungeonManager.EndLevel(levelIndex, levelIndex + 1, new System.Func<IEnumerator>(EndLevelCallback)));
         }
 
