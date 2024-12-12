@@ -10,7 +10,6 @@ namespace Dungeon.Drawers
     {
         private readonly PlayerEntity player;
 
-
         #region Drawer
 
         public EntranceExitDrawer(DungeonResult level, EntranceEntity entrance, ExitEntity exit, PlayerEntity player) : base(level)
@@ -35,6 +34,12 @@ namespace Dungeon.Drawers
 
                     if (Level.Has(x, y, Tile.EXIT))
                         PlaceExit(x, y);
+
+                    if (Level.Has(x, y, Tile.PLAYER))
+                    {
+                        player.transform.position = new Vector3(x, -y, 0);
+                        player.FlipByMovement(Level.Has(x + 1, y, Tile.ENTRANCE) ? Movement.LEFT : Movement.RIGHT);
+                    }
                 }
             }
         }
@@ -44,6 +49,9 @@ namespace Dungeon.Drawers
         {
             var entrancePosition = ProcessEntrance(Level.Entrance);
             Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
+
+            bool isLeft = Level.HasWall(entrancePosition.x + 1, entrancePosition.y);
+            Level.Add(entrancePosition.x + (isLeft ? -1 : 1), entrancePosition.y, Tile.PLAYER);
 
             var exitPosition = ProcessExit(Level.Exit);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
@@ -66,18 +74,7 @@ namespace Dungeon.Drawers
         private void PlaceEntrance(int x, int y)
         {
             entrance.transform.position = new Vector3(x, -y, 0);
-
-            bool isLeft = Level.HasWall(x + 1, y);
-
-            Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
-
-            if (isLeft)
-                player.transform.position = new Vector3(x - 1, -y, 0);
-            else
-                player.transform.position = new Vector3(x + 1, -y, 0);
-
-            player.FlipByMovement(direction);
-            entrance.FlipByMovement(direction);
+            entrance.FlipByMovement(Level.Has(x + 1, y, Tile.PLAYER) ? Movement.RIGHT : Movement.LEFT);
         }
 
         private Vector2Int ProcessEntrance(Room entrance)
