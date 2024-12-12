@@ -1,6 +1,7 @@
 using System.Collections;
 using Battle.Options;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Battle
 {
@@ -53,6 +54,21 @@ namespace Battle
             yield return null;
         }
 
+        public IEnumerator EnableSpoiler()
+        {
+            spoiler.SetActive(true);
+            var blackout = spoiler.GetComponent<Image>();
+            var blackoutColor = blackout.color;
+            blackoutColor.a = 0f;
+            blackout.color = blackoutColor;
+
+            for(int i = 1; i <= 7; i++)
+            {
+                blackoutColor.a = 1f / 7 * i;
+                blackout.color = blackoutColor;
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
         #endregion
     }
 }

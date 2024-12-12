@@ -3,6 +3,7 @@ using Battle;
 using Battle.Options;
 using BattleEntity;
 using Enemies;
+using TMPro;
 using UnityEngine;
 using Weapons;
 
@@ -37,6 +38,17 @@ namespace Managers
             AddInputs();
         }
 
+        public void EndBattle(bool isVictory) // TRANSITION DE END BATTLE
+        {
+            StartCoroutine(EndBattleCoroutine(isVictory));
+        }
+
+        private IEnumerator EndBattleCoroutine(bool isVictory) // TRANSITION DE END BATTLE
+        {
+            yield return battleUI.EnableSpoiler();
+            GameManager.Instance.EndBattle(isVictory);
+        }
+
         #region Battle UI
 
         private BattleUI battleUI;
@@ -49,6 +61,22 @@ namespace Managers
                 yield return null;
             } while (battleUI == null);
         }
+
+        public IEnumerator DeadPlayerTextFadeIn(TextMeshProUGUI text)
+        {
+            text.gameObject.SetActive(true);
+            var textColor = text.color;
+            textColor.a = 0f;
+            text.color = textColor;
+
+            for(int i = 1; i < 4; i++)
+            {
+                textColor.a = 1f / 7 * i;
+                text.color = textColor;
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
+    
 
         #endregion
 
@@ -65,6 +93,16 @@ namespace Managers
                 },
                 new() {
                     Text = "Heal"
+                },
+                new()
+                {
+                    Text = "Victory",
+                    OnEnter = () => EndBattle(true)
+                },
+                new()
+                {
+                    Text = "Defeat",
+                    OnEnter = () => EndBattle(false)
                 }
             });
         }

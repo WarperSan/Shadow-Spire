@@ -1,7 +1,10 @@
 using System.Collections;
 using Dungeon.Generation;
 using Entities;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UtilsModule;
 
 namespace Managers
@@ -85,6 +88,12 @@ namespace Managers
         [SerializeField]
         private BattleManager battleManager;
 
+        [SerializeField]
+        private Image endBattleBackground;
+
+        [SerializeField]
+        private TextMeshProUGUI diedText;
+
         public bool IsInBattle { get; private set; }
 
         public void StartBattle(EnemyEntity enemy)
@@ -97,9 +106,16 @@ namespace Managers
             InputManager.Instance.SwitchToUI();
         }
 
-        public void EndBattle()
+        public void EndBattle(bool isVictory) // S'OCCUPE DE GERER LE END BATTLE DEPENDEMENT DU SCENARIO
         {
             IsInBattle = false;
+
+            if(!isVictory)
+            {
+                endBattleBackground.gameObject.SetActive(true);
+                battleManager.DeadPlayerTextFadeIn(diedText);
+            }
+            SceneManager.UnloadSceneAsync("BattleScene");
             InputManager.Instance.SwitchToPlayer();
         }
 
