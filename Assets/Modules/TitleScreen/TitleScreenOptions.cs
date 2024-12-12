@@ -67,7 +67,7 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
         if (isRunningPlaySequence)
             return;
 
-        StartCoroutine(PlaySequence());
+        Arcade.Arcade.Instance.StartCoroutine(PlaySequence());
         isRunningPlaySequence = true;
     }
 
@@ -76,7 +76,11 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
         if (Camera2D.IsIn3D)
         {
             Arcade.Arcade.QuitUnload = false;
-            yield return SceneManager.UnloadSceneAsync("TitleScreen");
+
+            var title = SceneManager.UnloadSceneAsync("TitleScreen");
+
+            while (!title.isDone)
+                yield return null;
         }
 
         SceneManager.LoadScene("Game", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);

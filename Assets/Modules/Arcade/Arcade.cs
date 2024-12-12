@@ -2,13 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using UtilsModule;
 
 namespace Arcade
 {
     /// <summary>
     /// Script for the interaction between the player and the arcade
     /// </summary>
-    public class Arcade : MonoBehaviour, IInteractable
+    public class Arcade : Singleton<Arcade>, IInteractable
     {
         [SerializeField] CinemachineVirtualCamera ArcadeCamera;
         [SerializeField] PlayerController player;
@@ -62,5 +63,12 @@ namespace Arcade
             isGameLoaded = false;
             QuitUnload = false;
         }
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override bool DestroyOnLoad => true;
+
+        #endregion
     }
 }
