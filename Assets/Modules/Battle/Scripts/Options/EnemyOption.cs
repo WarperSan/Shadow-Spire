@@ -68,7 +68,9 @@ namespace Battle.Options
 
             var enemy = entity.Enemy;
             sprite.sprite = enemy.FightSprite;
+
             shadow.sprite = enemy.FightShadowSprite;
+            shadow.enabled = shadow.sprite != null;
         }
 
         private void OnHit(int damage)

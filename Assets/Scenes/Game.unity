@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37312585, g: 0.3807451, b: 0.358728, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1087,7 +1087,28 @@ MonoBehaviour:
   battleManager: {fileID: 75914958}
   endBattleBackground: {fileID: 2004717174}
   diedText: {fileID: 1334258073}
-  allWeapons: []
+  allWeapons:
+  - {fileID: 11400000, guid: 406792a82b16fe3fbaed28193692af15, type: 2}
+  - {fileID: 11400000, guid: 98e9970d82294ea428b26c54ac318eea, type: 2}
+  - {fileID: 11400000, guid: b4afdebecbdc14e7a9b7f97b793f9195, type: 2}
+  - {fileID: 11400000, guid: 3efbf9c4fb6d7a2df81c9441ad8495a2, type: 2}
+  - {fileID: 11400000, guid: 9bc5cd4f776a00ad890a864a1f33f702, type: 2}
+  allEnemies:
+  - {fileID: 11400000, guid: 779532432a2d056d0b6bbdbac6f8dec9, type: 2}
+  - {fileID: 11400000, guid: 992f1ce2f71be56c3a27cd0c8278d3db, type: 2}
+  - {fileID: 11400000, guid: 1a61a788034ea37d581cf02b04c36ce2, type: 2}
+  - {fileID: 11400000, guid: 8f3444359d2cefacd90fd0ffc4714033, type: 2}
+  - {fileID: 11400000, guid: e3fa4aae138d02028a60cf81d7fd4efc, type: 2}
+  - {fileID: 11400000, guid: bfefcc06ca65d63c5b0b4a0ff0064f59, type: 2}
+  - {fileID: 11400000, guid: a1cc3a34223245fa0866d95131ce7946, type: 2}
+  - {fileID: 11400000, guid: 3824e7df9afd80057aae377df88887c0, type: 2}
+  - {fileID: 11400000, guid: 9e386fb4326ce6afe965b2993839abc8, type: 2}
+  - {fileID: 11400000, guid: 89859b5e7830dee539759f3173048e34, type: 2}
+  - {fileID: 11400000, guid: 31d0b1bd66b847024a139e4393389e04, type: 2}
+  - {fileID: 11400000, guid: 5a24a4907ecb7405ebe1c2a86b36c874, type: 2}
+  - {fileID: 11400000, guid: 0ec87b827bd95d95aaf28c3194a3add2, type: 2}
+  - {fileID: 11400000, guid: 1388da764b3ff052bac7820300c070c9, type: 2}
+  - {fileID: 11400000, guid: b2b421885d196130ab1bcb37480776e2, type: 2}
 --- !u!1 &1005352961
 GameObject:
   m_ObjectHideFlags: 0

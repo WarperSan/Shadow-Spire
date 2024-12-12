@@ -1,5 +1,6 @@
 using System.Collections;
 using Dungeon.Generation;
+using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
@@ -88,7 +89,7 @@ namespace Managers
         [Header("Turn")]
         [SerializeField]
         private TurnManager turnManager;
-        
+
         #endregion
 
         #region Battle
@@ -115,11 +116,11 @@ namespace Managers
             InputManager.Instance.SwitchToUI();
         }
 
-        public void EndBattle(bool isVictory, EnemyEntity enemy) 
+        public void EndBattle(bool isVictory, EnemyEntity enemy)
         {
             IsInBattle = false;
-            
-            if(isVictory)
+
+            if (isVictory)
             {
                 Destroy(enemy.gameObject);
                 turnManager.StartTurn();
@@ -139,6 +140,13 @@ namespace Managers
 
         [Header("Weapons")]
         public WeaponSO[] allWeapons;
+
+        #endregion
+
+        #region Enemies
+
+        [Header("Weapons")]
+        public EnemySO[] allEnemies;
 
         #endregion
 

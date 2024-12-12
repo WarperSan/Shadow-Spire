@@ -65,9 +65,6 @@ namespace Managers
         [SerializeField]
         private GameObject enemyPrefab;
 
-        [SerializeField]
-        private EnemySO[] enemyPool;
-
         #endregion
 
         #region UI
@@ -137,7 +134,7 @@ namespace Managers
                 new GroundDrawer(lvl, groundMap, groundTile),
 
                 // Rooms
-                new EnemyRoomDrawer(lvl, enemyPrefab, enemyPool),
+                new EnemyRoomDrawer(lvl, enemyPrefab, GameManager.Instance.allEnemies),
             };
 
             // Process the level

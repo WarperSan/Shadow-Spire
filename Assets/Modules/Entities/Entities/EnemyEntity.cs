@@ -27,7 +27,7 @@ namespace Entities
 
             turnsRemaining = waitTurns = data.MovementSpeed switch
             {
-                EnemyMovementSpeed.VERY_SLOW => 3,
+                EnemyMovementSpeed.VERY_SLOW => 2,
                 EnemyMovementSpeed.SLOW => 1,
                 _ => 0
             };
