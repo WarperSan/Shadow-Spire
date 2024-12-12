@@ -7,5 +7,6 @@ namespace Weapons
     {
         public Sprite Icon;
         public BattleEntity.BattleEntityType AttackType;
+        public int BaseDamage;
     }
 }

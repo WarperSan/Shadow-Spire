@@ -131,4 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3695297128709096921}
   icon: {fileID: 0}
-  weapon: {fileID: 11400000, guid: 9bc5cd4f776a00ad890a864a1f33f702, type: 2}
+  startWeapon: {fileID: 11400000, guid: 9bc5cd4f776a00ad890a864a1f33f702, type: 2}
+  weaponIcon: {fileID: 0}
+  weaponType: {fileID: 0}
+  weaponDamage: {fileID: 0}

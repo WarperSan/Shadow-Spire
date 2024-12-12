@@ -26,9 +26,9 @@ namespace BattleEntity
         public int Health { get; protected set; }
         public bool IsDead { get; private set; }
 
-        public void TakeAttack(WeaponSO weapon)
+        public void TakeAttack(WeaponInstance weapon)
         {
-            int damage = Mathf.RoundToInt(2 * CalculateEffectiveness(weapon.AttackType) / 100f);
+            int damage = Mathf.RoundToInt(weapon.GetDamage() * CalculateEffectiveness(weapon.GetBaseData().AttackType) / 100f);
             TakeDamage(damage);
         }
 

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c40340e404f8f819eec931e7385740, type: 3}
-  m_Name: Sword
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  Icon: {fileID: -852831718, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
-  AttackType: 2
-  BaseDamage: 5
+  Icon: {fileID: 1473058514, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  AttackType: 16
+  BaseDamage: 7

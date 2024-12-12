@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UtilsModule;
+using Weapons;
 
 namespace Managers
 {
@@ -118,6 +119,13 @@ namespace Managers
             SceneManager.UnloadSceneAsync("BattleScene");
             InputManager.Instance.SwitchToPlayer();
         }
+
+        #endregion
+
+        #region Weapons
+
+        [Header("Weapons")]
+        public WeaponSO[] allWeapons;
 
         #endregion
 
