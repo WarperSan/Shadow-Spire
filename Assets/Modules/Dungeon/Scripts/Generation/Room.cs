@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Dungeon.Generation
 {
+    public enum RoomType
+    {
+        NORMAL,
+        ENTRANCE, // Room that is the entrance
+        EXIT, // Room that is the exit
+    }
+
     public class Room
     {
         public int X { get; set; }
@@ -12,6 +19,7 @@ namespace Dungeon.Generation
         public int Height { get; set; }
 
         public int Depth { get; set; }
+        public RoomType Type { get; set; } = RoomType.NORMAL;
 
         public Room[] Children { get; private set; }
 

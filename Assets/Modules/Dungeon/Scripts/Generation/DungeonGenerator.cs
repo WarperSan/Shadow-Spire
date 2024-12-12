@@ -19,10 +19,7 @@ namespace Dungeon.Generation
             this.settings.MinimumRoomHeight++; // Add down wall
         }
 
-        #region Rooms
-
-        public static DungeonResult Generate(Random random, DungeonSettings settings)
-            => new DungeonGenerator(random, settings).Generate();
+        public static DungeonResult Generate(Random random, DungeonSettings settings) => new DungeonGenerator(random, settings).Generate();
 
         private DungeonResult Generate()
         {
@@ -37,8 +34,12 @@ namespace Dungeon.Generation
 
             // Compile all the rooms
             Room[] rooms = CompileRooms(root);
+            
             Room entrance = EntranceExitDrawer.FindEntrance(rooms);
+            entrance.Type = RoomType.ENTRANCE;
+
             Room exit = EntranceExitDrawer.FindExit(rooms, entrance);
+            exit.Type = RoomType.EXIT;
 
             // Find adjacent rooms
             Dictionary<Room, HashSet<Room>> adjacentRooms = FindAdjacentRooms(rooms);
@@ -57,6 +58,8 @@ namespace Dungeon.Generation
                 Height = settings.Height,
             };
         }
+
+        #region Rooms
 
         /// <summary>
         /// Slices the given room into smaller rooms
@@ -113,6 +116,10 @@ namespace Dungeon.Generation
 
             return rooms.ToArray();
         }
+
+        #endregion
+
+        #region Doors
 
         /// <summary>
         /// Creates a map of all the rooms and all the rooms they are connected to
@@ -270,6 +277,13 @@ namespace Dungeon.Generation
 
             return (furthestRoom, lowestNeighbor);
         }
+
+        #endregion
+    
+        #region Type
+
+        //private void FindTreasureRooms(Room[] rooms,)
+
 
         #endregion
     }
