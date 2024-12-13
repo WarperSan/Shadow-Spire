@@ -293,7 +293,7 @@ namespace Managers
         private IEnumerator EnemyTurn()
         {
             // Set up
-            projectiles.SetupProjectiles(battleEnemyEntities);
+            projectiles.SetupProjectiles(battleEnemyEntities, battlePlayerEntity);
 
             // Disable Player BattleUI
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);

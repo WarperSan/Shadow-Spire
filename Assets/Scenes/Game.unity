@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37312585, g: 0.3807451, b: 0.358728, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -480,7 +480,6 @@ MonoBehaviour:
   entrance: {fileID: 889232534}
   exit: {fileID: 38550080}
   enemyPrefab: {fileID: 8825905050529268576, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
-  spikesPrefab: {fileID: 293997661653964087, guid: 4a2ff0a75c067d10cb7c31e522509fd5, type: 3}
   potionPrefab: {fileID: 6970080255333001215, guid: c132e317932a7a8e49f987fe808dbcb4, type: 3}
   blackout: {fileID: 444811996}
   transitionLevelText: {fileID: 5877184638961969173}
@@ -1186,7 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1931053744}
   dungeonManager: {fileID: 366401024}
-  levelIndex: 6
+  levelIndex: 5
   dungeonCamera: {fileID: 1052180607}
   overSeed: -2078715853
   useSeed: 0

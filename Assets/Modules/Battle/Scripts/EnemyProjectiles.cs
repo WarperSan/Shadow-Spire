@@ -5,8 +5,7 @@ using System.Collections;
 public class EnemyProjectiles : MonoBehaviour
 {
     [SerializeField] private GameObject projectile;
-
-
+    [SerializeField] private PlayerBattleMovement player;
 
     #region Data
 
@@ -17,8 +16,10 @@ public class EnemyProjectiles : MonoBehaviour
 
     #region Manager
 
-    public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities)
+    public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity)
     {
+        player.playerEntity = playerEntity;
+
         if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
             return;
 
@@ -26,13 +27,17 @@ public class EnemyProjectiles : MonoBehaviour
         var combinedType = BattleEntityType.NONE;
 
         foreach (var enemy in battleEnemyEntities)
-            combinedType |= enemy.Type;
+        {
+            if(!enemy.IsDead)
+                combinedType |= enemy.Type;
+        }
 
         enemyTypes = BattleEntity.BattleEntity.GetTypes(combinedType);
 
         // Calculate how many projectiles to spawn per seconds
 
         enemyCount = battleEnemyEntities.Length;
+        spawnInterval = 0.015f / enemyCount;
     }
 
     public IEnumerator SpawnProjectiles(float duration)
@@ -66,11 +71,11 @@ public class EnemyProjectiles : MonoBehaviour
 
     #region Projectiles
 
-    private float spawnInterval = 0.05f;
-    private float minX = -2f;
-    private float maxX = 2f;
+    private float spawnInterval = 0.015f;
+    private float minX = -2.5f;
+    private float maxX = 2.5f;
     private float spawnY = 0.818f;
-    private float projectileSpeed = 3.0f;
+    private float projectileSpeed = 5.0f;
     private float minSpawnDistance = 0.5f;
     private float lastSpawnX = 0.818f;
 
