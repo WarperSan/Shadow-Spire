@@ -2,6 +2,7 @@ using System.Collections;
 using Entities.Interfaces;
 using Managers;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Weapons;
@@ -79,24 +80,14 @@ namespace Entities
         private WeaponSO startWeapon;
 
         [SerializeField]
-        private Image weaponIcon;
-
-        [SerializeField]
-        private TextMeshProUGUI weaponType;
-
-        [SerializeField]
-        private TextMeshProUGUI weaponDamage;
+        private WeaponOption weaponOption;
 
         public WeaponInstance GetWeapon() => weapon;
 
         public void SetWeapon(WeaponInstance weapon)
         {
             this.weapon = weapon;
-
-            WeaponSO baseData = weapon.GetBaseData();
-            weaponIcon.sprite = baseData.Icon;
-            weaponType.text = BattleEntity.BattleEntity.GetIcons(baseData.AttackType);
-            weaponDamage.text = weapon.GetDamage().ToString();
+            weaponOption.LoadOption(new WeaponOptionData() { WeaponInstance = weapon });
         }
 
         #endregion

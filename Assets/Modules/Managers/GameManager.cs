@@ -78,6 +78,7 @@ namespace Managers
 
         private IEnumerator EndLevelCallback()
         {
+            yield return EndLevelWeaponOffer();
             StartLevel();
             yield return null;
         }
@@ -140,6 +141,14 @@ namespace Managers
 
         [Header("Weapons")]
         public WeaponSO[] allWeapons;
+
+        [SerializeField]
+        private WeaponUI weaponUI;
+
+        private IEnumerator EndLevelWeaponOffer()
+        {
+            yield return weaponUI.ShowWeapons();
+        }
 
         #endregion
 
