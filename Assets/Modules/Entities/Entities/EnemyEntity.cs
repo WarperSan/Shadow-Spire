@@ -1,64 +1,19 @@
 using System.Collections;
-using BehaviourModule.Interfaces;
-using BehaviourModule.Nodes;
-using BehaviourModule.Nodes.Controls;
 using Enemies;
-using Enemies.Node;
 using Entities.Interfaces;
 using Managers;
-using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 
 namespace Entities
 {
-    public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable, IVisualizable
+    public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable
     {
-        #region Behavior Tree
-
-        protected IVisualizable tree;
-
-        protected NodeState UpdateTree()
-        {
-            if (this._root == null)
-                return NodeState.FAILURE;
-
-            this._root.Reset();
-            return this._root.Evaluate();
-        }
-
-        #endregion
-
-        #region IVisualizble
-
-        private Node _root;
-
-        /// <inheritdoc/>
-        public Node GetRoot() => this._root;
-
-        public void RebuildRoot()
-        {
-            Selector root = new();
-
-            Sequence movement = new();
-
-            movement += new WaitTurn(_data);
-
-            if(_data.Pathing == EnemyPathing.DIRECT)
-                movement += new GoToTarget(this, GameManager.Instance.player).Alias("GoToTarget");
-
-            if(_data.Pathing == EnemyPathing.RANDOM)
-                movement += new GoRandomPosition(this).Alias("GoRandomPosition");
-
-            root += movement;
-
-            this._root = root.Alias("Root");
-        }
-
-        #endregion
-
         #region Data
 
         private EnemySO _data;
+
+        private int waitTurns;
+        private int movesPerTurn;
+        private int turnsRemaining;
 
         public EnemySO EnemyData
         {
@@ -72,10 +27,20 @@ namespace Entities
             spriteRenderer.flipX = data.IsFlipped;
             spriteRenderer.color = BattleEntity.BattleEntity.GetTypeColor(data.Type);
 
-            _data = data;
+            turnsRemaining = waitTurns = data.MovementSpeed switch
+            {
+                EnemyMovementSpeed.VERY_SLOW => 2,
+                EnemyMovementSpeed.SLOW => 1,
+                _ => 0
+            };
+            movesPerTurn = data.MovementSpeed switch
+            {
+                EnemyMovementSpeed.FAST => 2,
+                EnemyMovementSpeed.VERY_FAST => 3,
+                _ => 1
+            };
 
-            this.RebuildRoot();
-            this._root = this.GetRoot();
+            _data = data;
         }
 
         #endregion
@@ -85,16 +50,32 @@ namespace Entities
         /// <inheritdoc/>
         IEnumerator ITurnable.Think()
         {
-            var state = UpdateTree();
+            turnsRemaining--;
 
-            if(state == NodeState.FAILURE)
+            if (turnsRemaining >= 0)
+            {
+                yield return null;
+                yield break;
+            }
+            
+            turnsRemaining = waitTurns;
+
+            //if (_data.Pathing == EnemyPathing.DIRECT)
+            
+            int[] path = PathFindingManager.FindPath(this, GameManager.Instance.player);
+            Movement[] movements = PathFindingManager.GetDirections(path);
+
+            // If no path found or on the same tile
+            if (movements == null || movements.Length == 0)
             {
                 yield return null;
                 yield break;
             }
 
-            var nextMovement = _root.GetData<Movement?>("NextMovement");
-            yield return nextMovement;
+            yield return movements[0];
+
+            //if (_data.Pathing == EnemyPathing.RANDOM)
+            //    movement += new GoRandomPosition(this).Alias("GoRandomPosition");
         }
 
         #endregion
