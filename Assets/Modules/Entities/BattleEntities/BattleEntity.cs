@@ -115,6 +115,22 @@ namespace BattleEntity
             return indexes.ToArray();
         }
 
+        public static BattleEntityType[] GetTypes(BattleEntityType type)
+        {
+            var types = Enum.GetValues(typeof(BattleEntityType));
+            var indexes = new List<BattleEntityType>();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                BattleEntityType item = (BattleEntityType)types.GetValue(i);
+
+                if ((type & item) != 0)
+                    indexes.Add(item);
+            }
+
+            return indexes.ToArray();
+        }
+
         public static string GetIcons(BattleEntityType type)
         {
             StringBuilder builder = new();
@@ -128,7 +144,7 @@ namespace BattleEntity
                         string.Format(
                             "<sprite name=\"icon_type_{0}\" color={1}>",
                             item.ToString().ToLower(),
-                            GetTypeColor(item)
+                            "#" + ColorUtility.ToHtmlStringRGB(GetTypeColor(item))
                         )
                     );
                 }
@@ -138,21 +154,11 @@ namespace BattleEntity
             return builder.ToString();
         }
 
-        public static string GetTypeColor(BattleEntityType type)
+        public static Color GetTypeColor(BattleEntityType type)
         {
-            // Find first type
-            var types = Enum.GetValues(typeof(BattleEntityType));
+            var types = GetTypes(type);
 
-            foreach (BattleEntityType item in types)
-            {
-                if ((type & item) != 0)
-                {
-                    type = item;
-                    break;
-                }
-            }
-
-            return type switch
+            var color = types[0] switch
             {
                 BattleEntityType.NONE => "#D3D3D3",
                 BattleEntityType.NORMAL => "#B9E5EB",
@@ -162,6 +168,8 @@ namespace BattleEntity
                 BattleEntityType.ANIMAL => "#FF8B00",
                 _ => "white"
             };
+
+            return ColorUtility.TryParseHtmlString(color, out Color clr) ? clr : Color.white;
         }
 
         #endregion

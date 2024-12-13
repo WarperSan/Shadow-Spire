@@ -70,9 +70,7 @@ namespace Entities
         {
             spriteRenderer.sprite = data.OverworldSprite;
             spriteRenderer.flipX = data.IsFlipped;
-
-            if (ColorUtility.TryParseHtmlString(BattleEntity.BattleEntity.GetTypeColor(data.Type), out Color color))
-                spriteRenderer.color = color;
+            spriteRenderer.color = BattleEntity.BattleEntity.GetTypeColor(data.Type);
 
             _data = data;
 

@@ -293,17 +293,20 @@ namespace Managers
         {
             yield return new WaitForSeconds(0.5f);
 
+            // Set up
+            projectiles.SetupProjectiles(battleEnemyEntities);
+
             // Disable Player BattleUI
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
 
             // Start attacks
             yield return ExecuteEnemyAttacks();
 
-            // End attacks
-            yield return CleanEnemyAttacks();
-
             // Enable Player BattleUI
             yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
+
+            // End attacks
+            projectiles.CleanProjectiles();
 
             if (hasBattleEnded)
                 yield break;
@@ -324,6 +327,7 @@ namespace Managers
         #region Enemy Projectiles
 
         private EnemyProjectiles projectiles;
+
         private IEnumerator FindEnemyProjectiles()
         {
             do
@@ -332,16 +336,17 @@ namespace Managers
                 yield return null;
             } while (projectiles == null);
         }
+
         private IEnumerator ExecuteEnemyAttacks()
         {
             // Enable EnemyAttack coroutine
-            projectiles.SpawnProjectiles(battleEnemyEntities);
-            yield return new WaitForSeconds(5f);
+            yield return projectiles.SpawnProjectiles(5f);
         }
 
         private IEnumerator CleanEnemyAttacks()
         {
             // Disable EnemyAttack coroutine
+            projectiles.CleanProjectiles();
             yield return null;
         }
 
