@@ -683,6 +683,8 @@ MonoBehaviour:
   battleOptions: {fileID: 7446650073907574095}
   enemyOptions: {fileID: 466871610123559184}
   spoiler: {fileID: 2915240662006265275}
+  battleOptionsGroup: {fileID: 2378045913916503619}
+  enemyAttackUI: {fileID: 0}
 --- !u!1 &7250249544507791583
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,6 +731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9190954848348615889}
   - component: {fileID: 6845526779847004639}
+  - component: {fileID: 2378045913916503619}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -753,10 +756,10 @@ RectTransform:
   - {fileID: 4156431207937174946}
   m_Father: {fileID: 4690502691862481387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.11}
+  m_AnchorMin: {x: 0.1, y: 0.13}
   m_AnchorMax: {x: 0.9, y: 0.39}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &6845526779847004639
 MonoBehaviour:
@@ -772,6 +775,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!225 &2378045913916503619
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8492639557268740357}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &3768948177486260037
 PrefabInstance:
   m_ObjectHideFlags: 0

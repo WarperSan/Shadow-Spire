@@ -288,9 +288,10 @@ namespace Managers
 
         private IEnumerator EnemyTurn()
         {
+            yield return new WaitForSeconds(0.5f);
+
             // Disable Player BattleUI
-            yield return playerEntity.playerInformation.OpenGroup();
-            yield return battleUI.StartEnemyTurn(battleEnemyEntities);
+            yield return battleUI.StartEnemyTurn(playerEntity.playerInformation, battleEnemyEntities);
 
             // Start attacks
             yield return ExecuteEnemyAttacks();
@@ -299,8 +300,7 @@ namespace Managers
             yield return CleanEnemyAttacks();
 
             // Enable Player BattleUI
-            yield return battleUI.EndEnemyTurn();
-            yield return playerEntity.playerInformation.CloseGroup();
+            yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
 
             if (hasBattleEnded)
                 yield break;
