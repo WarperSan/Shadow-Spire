@@ -181,7 +181,7 @@ namespace Managers
             dungeonManager.ClearDungeon();
             yield return null;
 
-            var title = SceneManager.LoadSceneAsync("TitleScreen", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
+            var title = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Single);
 
             while (!title.isDone)
                 yield return null;
