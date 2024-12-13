@@ -196,7 +196,6 @@ namespace Managers
 
             if (callback != null)
                 yield return callback.Invoke();
-            //StartLevel();
 
             yield return BlackoutFadeOut(BLACKOUT_TICKS);
 

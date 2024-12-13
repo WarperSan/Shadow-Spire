@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Battle;
 using Battle.Options;
 using BattleEntity;
@@ -27,12 +29,7 @@ namespace Managers
             var weapon = GameManager.Instance.player.GetWeapon();
             LoadBattleOptions();
 
-            enemies = new BattleEnemyEntity[3]
-            {
-                new(enemy1),
-                new(enemy2),
-                new(enemy3),
-            };
+            enemies = GenerateEnemies(enemy);
 
             LoadEnemyOptions(weapon, enemies);
 
@@ -155,6 +152,24 @@ namespace Managers
             }
 
             battleUI.Load(options);
+        }
+
+        private BattleEnemyEntity[] GenerateEnemies(EnemyEntity enemy)
+        {
+            var random = GameManager.Instance.Level.Random;
+            var allEnemies = GameManager.Instance.allEnemies;
+
+            var enemies = new List<BattleEnemyEntity>();
+
+            if (random.NextDouble() <= 0.9f)
+                enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
+
+            enemies.Add(new(enemy.EnemyData));
+
+            if (random.NextDouble() <= 0.9f)
+                enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
+
+            return enemies.ToArray();
         }
 
         private void OnEnemyConfirmed()
