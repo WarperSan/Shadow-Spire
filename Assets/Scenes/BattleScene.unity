@@ -2074,7 +2074,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!4 &226601135 stripped
 Transform:
@@ -19440,7 +19440,7 @@ Transform:
   m_GameObject: {fileID: 2065712029}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9, z: 0}
+  m_LocalPosition: {x: 0, y: 0.818, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19459,6 +19459,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 7680616454520866613, guid: d0bff19b705adbf4dafd9faa7ae36abe, type: 3}
+  spawnInterval: 0.5
+  minX: -2
+  maxX: 2
+  spawnY: 0.9
+  projectileSpeed: 3
+  minSpawnDistance: 0.5
 --- !u!4 &2072284492 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8953236155586779581, guid: 742df6df5e675f44399b65400019883d, type: 3}
