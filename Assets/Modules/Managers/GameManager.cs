@@ -142,9 +142,12 @@ namespace Managers
         [Header("Weapons")]
         public WeaponSO[] allWeapons;
 
+        [SerializeField]
+        private WeaponUI weaponUI;
+
         private IEnumerator EndLevelWeaponOffer()
         {
-            yield return null;
+            yield return weaponUI.ShowWeapons();
         }
 
         #endregion

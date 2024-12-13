@@ -11,11 +11,26 @@ namespace Weapons
 
         public IEnumerator ShowWeapons()
         {
-            // var weapons = new WeaponOptionData[3] {
-            //     new 
-            // }
-            //GameManager.Instance.player.GetWeapon();
+            var weapons = new WeaponOptionData[3] {
+                new() {
+                    WeaponInstance = GameManager.Instance.player.GetWeapon()
+                },
+                new() {
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index)
+                },
+                new() {
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index)
+                }
+            };
+
+            options.LoadOptions(weapons);
+            yield return null;
+
+
+
             yield return null;
         }
+
+        //private
     }
 }
