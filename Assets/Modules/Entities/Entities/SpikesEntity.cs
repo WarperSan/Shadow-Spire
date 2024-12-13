@@ -28,7 +28,7 @@ namespace Entities
         public void OnEntityLanded(PlayerEntity entity)
         {
             if (spikesTurns == 1)
-                entity.TakeDamage(200);
+                entity.TakeDamage(2);
             else if (spikesTurns < 0)
                 spikesTurns = 3;
         }
