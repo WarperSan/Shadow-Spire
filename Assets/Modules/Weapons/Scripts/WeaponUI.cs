@@ -6,31 +6,95 @@ namespace Weapons
 {
     public class WeaponUI : MonoBehaviour
     {
+        public IEnumerator ShowWeapons()
+        {
+            hasSelected = false;
+
+            LoadWeapons(GameManager.Instance.player.GetWeapon());
+
+            yield return null; // Wait for weapons to load
+
+            // Enable inputs
+            AddInputs();
+
+            // Wait until weapon selected
+            while (!hasSelected)
+                yield return null;
+
+            options.DestroyOptions();
+        }
+
+        private void SelectWeapon()
+        {
+            // If already selected, skip
+            if (hasSelected)
+                return;
+
+            hasSelected = true;
+
+            // Disable inputs
+            RemoveInputs();
+
+            var selectedOption = options.GetSelection().GetOption();
+            GameManager.Instance.player.SetWeapon(selectedOption.WeaponInstance);
+        }
+
+        #region Options
+
         [SerializeField]
         private WeaponOptions options;
 
-        public IEnumerator ShowWeapons()
+        private bool hasSelected = false;
+
+        private void LoadWeapons(WeaponInstance currentWeapon)
         {
             var weapons = new WeaponOptionData[3] {
                 new() {
-                    WeaponInstance = GameManager.Instance.player.GetWeapon()
+                    WeaponInstance = currentWeapon,
+                    Subtext = "Keep",
+                    OnEnter = SelectWeapon
                 },
                 new() {
-                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index)
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
+                    Subtext = "Replace",
+                    OnEnter = SelectWeapon
                 },
                 new() {
-                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index)
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
+                    Subtext = "Replace",
+                    OnEnter = SelectWeapon
                 }
             };
 
             options.LoadOptions(weapons);
-            yield return null;
-
-
-
-            yield return null;
+            options.ShowSelection();
         }
 
-        //private
+        #endregion
+
+        #region Inputs
+
+        private void Move(Vector2 dir) => options.Move(dir);
+        private void Enter() => options.Enter();
+
+        /// <summary>
+        /// Adds the inputs for this object
+        /// </summary>
+        private void AddInputs()
+        {
+            InputManager.Instance.OnMoveUI.AddListener(Move);
+            InputManager.Instance.OnEnterUI.AddListener(Enter);
+        }
+
+        /// <summary>
+        /// Removes the inputs for this object
+        /// </summary>
+        private void RemoveInputs()
+        {
+            InputManager.Instance.OnMoveUI.RemoveListener(Move);
+            InputManager.Instance.OnEnterUI.RemoveListener(Enter);
+        }
+
+        #endregion
     }
 }

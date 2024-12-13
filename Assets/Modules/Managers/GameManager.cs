@@ -67,12 +67,14 @@ namespace Managers
                 -(Level.Height / 2f + 0.5f),
                 dungeonCamera.transform.position.z
             );
+            InputManager.Instance.SwitchToPlayer();
         }
 
         public void EndLevel()
         {
             IsLevelOver = true;
             levelIndex++;
+            InputManager.Instance.SwitchToUI();
             StartCoroutine(dungeonManager.EndLevel(levelIndex, levelIndex + 1, new System.Func<IEnumerator>(EndLevelCallback)));
         }
 

@@ -47,9 +47,11 @@ namespace Managers
         private IEnumerator EndBattleCoroutine(bool isVictory)
         {
             RemoveInputs();
-            yield return battleUI.EnableSpoiler();
             DisableBattleOption();
             DisableEnemyOption();
+
+            yield return battleUI.EnableSpoiler();
+
             GameManager.Instance.EndBattle(isVictory, enemy);
         }
 

@@ -86,9 +86,7 @@ namespace Battle.Options
 
         protected virtual void LoadOptions(U[] options)
         {
-            // Destroy all options
-            foreach (Transform option in transform)
-                Destroy(option.gameObject);
+            DestroyOptions();
 
             loadedOptions = new T[options.Length];
 
@@ -115,6 +113,26 @@ namespace Battle.Options
 
         #endregion
 
+        #region Destroy
+
+        /// <summary>
+        /// Destroys all the loaded options
+        /// </summary>
+        public void DestroyOptions()
+        {
+            if (selectedIndex != -1)
+                HideSelection();
+
+            // Destroy all options
+            foreach (Transform option in transform)
+                Destroy(option.gameObject);
+
+            loadedOptions = null;
+            selectedIndex = -1;
+        }
+
+        #endregion
+
         #region Selection
 
         /// <inheritdoc/>
@@ -125,6 +143,8 @@ namespace Battle.Options
 
         /// <inheritdoc/>
         public override U1 GetSelection<T1, U1>() => (loadedOptions[selectedIndex] as U1) ?? base.GetSelection<T1, U1>();
+
+        public T GetSelection() => loadedOptions[selectedIndex];
 
         #endregion
 

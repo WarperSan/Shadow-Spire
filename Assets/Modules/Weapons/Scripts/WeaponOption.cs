@@ -8,6 +8,7 @@ namespace Weapons
     public class WeaponOptionData : UIOptionData
     {
         public WeaponInstance WeaponInstance;
+        public string Subtext;
     }
 
     public class WeaponOption : UIOption<WeaponOptionData>
@@ -27,6 +28,9 @@ namespace Weapons
         [SerializeField]
         private Image frame;
 
+        [SerializeField]
+        private TextMeshProUGUI subtext;
+
         #endregion
 
         #region UIOption
@@ -40,18 +44,21 @@ namespace Weapons
             icon.sprite = data.Icon;
             type.text = BattleEntity.BattleEntity.GetIcons(data.AttackType);
             damage.text = instance.GetDamage().ToString();
+            subtext.text = option.Subtext;
         }
 
         /// <inheritdoc/>
         public override void Deselect()
         {
-            frame.enabled = false;
+            frame.gameObject.SetActive(false);
+            subtext.gameObject.SetActive(false);
         }
 
         /// <inheritdoc/>
         public override void Select()
         {
-            frame.enabled = true;
+            frame.gameObject.SetActive(true);
+            subtext.gameObject.SetActive(true);
         }
 
         #endregion
