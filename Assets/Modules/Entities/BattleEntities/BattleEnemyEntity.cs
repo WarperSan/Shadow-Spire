@@ -1,4 +1,6 @@
 ﻿using Enemies;
+using Managers;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace BattleEntity
@@ -12,7 +14,7 @@ namespace BattleEntity
         public BattleEnemyEntity(EnemySO enemy)
         {
             Enemy = enemy;
-            Health = enemy.BaseHealth;
+            Health = Mathf.RoundToInt(enemy.BaseHealth + enemy.BaseHealth * 0.5f * GameManager.Instance.Level.Index * 0.5f);
             Attack = enemy.BaseAttack;
             Type = enemy.Type;
         }
