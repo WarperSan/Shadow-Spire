@@ -100,6 +100,8 @@ namespace Battle.Options
                 if (newOption.TryGetComponent(out RectTransform rectTransform))
                     rectTransform.anchoredPosition = new Vector2(startX + singleX * i, 0);
 
+                newOption.transform.position = new Vector3(newOption.transform.position.x, newOption.transform.position.y, 0);
+
                 if (newOption.TryGetComponent(out T battleOption))
                 {
                     battleOption.SetParent(this);

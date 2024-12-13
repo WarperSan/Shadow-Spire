@@ -88,6 +88,10 @@ namespace Managers
                 text.color = textColor;
                 yield return new WaitForSeconds(0.2f);
             }
+
+            yield return new WaitForSeconds(5);
+
+            yield return GameManager.Instance.ReturnToTitle();
         }
 
         #endregion
@@ -144,7 +148,7 @@ namespace Managers
         public void PlayerTakeDamage(int damage)
         {
             battlePlayerEntity.TakeDamage(damage);
-            if(battlePlayerEntity.IsDead)
+            if (battlePlayerEntity.IsDead)
                 EndBattle(false);
         }
 
