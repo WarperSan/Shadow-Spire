@@ -105,16 +105,16 @@ namespace Managers
                 new() {
                     Text = "Heal"
                 },
-                new()
-                {
-                    Text = "Victory",
-                    OnEnter = () => EndBattle(true)
-                },
-                new()
-                {
-                    Text = "Take Hit",
-                    OnEnter = () => PlayerTakeDamage(20)
-                }
+                //new()
+                //{
+                //    Text = "Nuke",
+                //    OnEnter = () => EndBattle(true)
+                //},
+                //new()
+                //{
+                //    Text = "Death",
+                //    OnEnter = () => EndBattle(false)
+                //}
             });
         }
 
@@ -201,6 +201,7 @@ namespace Managers
 
             if (VerifyEnemiesState())
             {
+                EnemyTurn();
                 EnableBattleOption();
                 AddInputs();
             }
@@ -209,7 +210,6 @@ namespace Managers
                 // All enemies dead, victory
                 EndBattle(true);
             }
-
         }
 
         private void OnEnemyEscape()
@@ -244,6 +244,14 @@ namespace Managers
             // If all enemies dead
             return false;
         }
+
+        private void EnemyTurn()
+        {
+            int rdmDamage = Random.Range(5, 11);
+
+            PlayerTakeDamage(rdmDamage);
+        }
+
         #endregion
 
         #region Battle Transition
