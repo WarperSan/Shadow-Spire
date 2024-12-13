@@ -255,7 +255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SHADOWSPIRE
+  m_text: SHADOW SPIRE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1520877d6b42d7ae7ac2ffb88519f576, type: 2}
   m_sharedMaterial: {fileID: -3011420495301056882, guid: 1520877d6b42d7ae7ac2ffb88519f576, type: 2}

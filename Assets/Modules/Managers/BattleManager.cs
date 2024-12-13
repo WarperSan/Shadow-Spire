@@ -328,7 +328,7 @@ namespace Managers
         {
             do
             {
-                projectiles = FindObjectOfType<EnemyProjectiles>();
+                projectiles = FindObjectOfType<EnemyProjectiles>(true);
                 yield return null;
             } while (projectiles == null);
         }
