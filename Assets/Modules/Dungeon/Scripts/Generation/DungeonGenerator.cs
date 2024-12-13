@@ -51,6 +51,7 @@ namespace Dungeon.Generation
             // Find room types
             FindEnemyRooms(rooms);
             FindTreasureRooms(rooms);
+            FindSpikesRooms(rooms);
 
             // Package results
             return new DungeonResult
@@ -291,6 +292,7 @@ namespace Dungeon.Generation
         public const int ENEMY_ROOM_INDEX = 2;
         public const int WEAPON_INDEX = 2;
         public const int TREASURE_ROOM_INDEX = 3;
+        public const int SPIKES_ROOM_INDEX = 4;
 
         private void FindEnemyRooms(Room[] rooms)
         {
@@ -350,6 +352,38 @@ namespace Dungeon.Generation
                 return;
 
             deepest.Type = RoomType.TREASURE;
+        }
+
+        private void FindSpikesRooms(Room[] rooms)
+        {
+            if (settings.Index < TREASURE_ROOM_INDEX)
+                return;
+
+            // Find random
+            Room randomRoom = null;
+
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                var room = rooms[i];
+
+                if (room.Type != RoomType.NORMAL)
+                    continue;
+
+                if (randomRoom == null)
+                {
+                    randomRoom = room;
+                    continue;
+                }
+
+                // 50% replace 50% keep
+                if (random.Next(0, 2) == 0)
+                    randomRoom = room;
+            }
+
+            if (randomRoom == null)
+                return;
+
+            randomRoom.Type = RoomType.SPIKES;
         }
 
         #endregion

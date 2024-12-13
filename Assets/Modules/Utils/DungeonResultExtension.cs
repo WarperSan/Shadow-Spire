@@ -32,7 +32,7 @@ namespace UtilsModule
         #region Predicate
 
         public static bool HasWall(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.WALL);
-        public static bool HasGround(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.GROUND);
+        public static bool HasGround(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.GROUND | Tile.COVERED_GROUND);
         public static bool HasObstacle(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.ENTRANCE | Tile.EXIT);
         public static bool IsBlocked(this DungeonResult level, int x, int y) => level.HasWall(x, y) || level.HasObstacle(x, y);
         public static bool HasDoor(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.DOOR_CLOSED | Tile.DOOR_OPENED);

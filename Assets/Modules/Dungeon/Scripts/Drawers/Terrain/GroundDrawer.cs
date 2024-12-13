@@ -46,6 +46,9 @@ namespace Dungeon.Drawers.Terrain
                     if (!Level.HasGround(x, y))
                         continue;
 
+                    if (Level.Has(x, y, Generation.Tile.COVERED_GROUND))
+                        continue;
+
                     groundMap.SetTile(new Vector3Int(x, -y, 0), tile);
                 }
             }

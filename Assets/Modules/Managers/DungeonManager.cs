@@ -66,6 +66,9 @@ namespace Managers
         [SerializeField]
         private GameObject enemyPrefab;
 
+        [SerializeField]
+        private GameObject spikesPrefab;
+
         #endregion
 
         #region Treasures
@@ -145,6 +148,7 @@ namespace Managers
                 // Rooms
                 new EnemyRoomDrawer(lvl, enemyPrefab, GameManager.Instance.allEnemies),
                 new TreasureRoomDrawer(lvl, potionPrefab),
+                new SpikesRoomDrawer(lvl, spikesPrefab),
             };
 
             // Process the level

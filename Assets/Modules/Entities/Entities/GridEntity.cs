@@ -24,35 +24,35 @@ namespace Entities
 
         public IEnumerator ExecuteTurn()
         {
-            // An entity must be a Turnable and a Movable in order to move 
+            // An entity must be a Turnable
             if (this is not ITurnable turnable)
-                yield break;
-
-            if (this is not IMovable movable)
                 yield break;
 
             turnable.OnTurnStarted();
 
-            yield return ProcessTurn(turnable, movable);
+            yield return ProcessTurn(turnable);
 
             turnable.OnTurnEnded();
         }
 
-        protected virtual IEnumerator ProcessTurn(ITurnable turnable, IMovable movable)
+        protected virtual IEnumerator ProcessTurn(ITurnable turnable)
         {
             CoroutineWithData cd = new(this, turnable.Think());
             yield return cd.coroutine;
 
-            if (cd.result is Movement movement)
+            if (this is IMovable movable)
             {
-                yield return movable.ApplyMovement(movement);
-            }
-            else if (cd.result is Movement[] movements)
-            {
-                foreach (var mov in movements)
+                if (cd.result is Movement movement)
                 {
-                    yield return movable.ApplyMovement(mov);
-                    yield return new WaitForSeconds(0.1f);
+                    yield return movable.ApplyMovement(movement);
+                }
+                else if (cd.result is Movement[] movements)
+                {
+                    foreach (var mov in movements)
+                    {
+                        yield return movable.ApplyMovement(mov);
+                        yield return new WaitForSeconds(0.1f);
+                    }
                 }
             }
         }
