@@ -469,7 +469,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.9, y: 0.5}
   m_AnchorMax: {x: 0.9, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 30, y: 25}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6608560819788050803
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite name=icon_heart> 25 / 25
+  m_text: <sprite name=icon_heart> 200 / 200
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1520877d6b42d7ae7ac2ffb88519f576, type: 2}
   m_sharedMaterial: {fileID: -3011420495301056882, guid: 1520877d6b42d7ae7ac2ffb88519f576, type: 2}

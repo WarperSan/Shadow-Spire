@@ -82,6 +82,7 @@ namespace Entities
         {
             Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
             playerInformation.SetHealth(Health, MaxHealth);
+            GameManager.Instance.IsPlayerDead = Health <= 0;
         }
 
         public void TakeDamage(int damage)

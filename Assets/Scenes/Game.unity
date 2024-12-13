@@ -480,6 +480,7 @@ MonoBehaviour:
   entrance: {fileID: 889232534}
   exit: {fileID: 38550080}
   enemyPrefab: {fileID: 8825905050529268576, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
+  spikesPrefab: {fileID: 293997661653964087, guid: 4a2ff0a75c067d10cb7c31e522509fd5, type: 3}
   potionPrefab: {fileID: 6970080255333001215, guid: c132e317932a7a8e49f987fe808dbcb4, type: 3}
   blackout: {fileID: 444811996}
   transitionLevelText: {fileID: 5877184638961969173}
@@ -1184,8 +1185,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1931053744}
+  IsPlayerDead: 0
   dungeonManager: {fileID: 366401024}
-  levelIndex: 5
+  levelIndex: 0
   dungeonCamera: {fileID: 1052180607}
   overSeed: -2078715853
   useSeed: 0
@@ -2584,6 +2586,10 @@ PrefabInstance:
     - target: {fileID: 3869310955373635236, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915220471122597081, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4739470593535147704, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_Color.b

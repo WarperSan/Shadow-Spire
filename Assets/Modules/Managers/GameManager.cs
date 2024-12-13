@@ -19,7 +19,18 @@ namespace Managers
             StartLevel();
         }
 
+        #region Player
+
         public PlayerEntity player;
+        public bool IsPlayerDead;
+
+        public void Defeat()
+        {
+            endBattleBackground.gameObject.SetActive(true);
+            StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
+        }
+
+        #endregion
 
         #region Dungeon
 
@@ -131,10 +142,8 @@ namespace Managers
                 InputManager.Instance.SwitchToPlayer();
             }
             else
-            {
-                endBattleBackground.gameObject.SetActive(true);
-                StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
-            }
+                Defeat();
+
             SceneManager.UnloadSceneAsync("BattleScene");
         }
 

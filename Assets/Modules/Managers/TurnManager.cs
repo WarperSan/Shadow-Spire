@@ -21,7 +21,7 @@ namespace Managers
                 foreach (var entity in turnEntities)
                 {
                     // If player is in battle or if the level is over, skip turn
-                    if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver)
+                    if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.IsPlayerDead)
                     {
                         _continue = false;
                         break;
@@ -56,6 +56,9 @@ namespace Managers
                     }
                 }
             }
+
+            if (GameManager.Instance.IsPlayerDead)
+                GameManager.Instance.Defeat();
         }
 
 

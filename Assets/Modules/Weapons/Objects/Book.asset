@@ -15,4 +15,4 @@ MonoBehaviour:
   Icon: {fileID: 892852645, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
   AttackType: 8
   BaseDamage: 15
-  DamageRate: 0.65
+  DamageRate: 0.55

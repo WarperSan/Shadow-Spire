@@ -181,14 +181,12 @@ namespace Managers
             yield return new WaitForSeconds(0.5f);
         }
 
-        private IEnumerator DamagePlayer(int amount)
+        public void DamagePlayer(int amount)
         {
             battlePlayerEntity.TakeDamage(amount);
 
             if (battlePlayerEntity.IsDead)
                 EndBattle(false);
-
-            yield return new WaitForSeconds(0.5f);
         }
 
         #endregion
@@ -224,12 +222,12 @@ namespace Managers
 
             var enemies = new List<BattleEnemyEntity>();
 
-            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX > 1)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 1)
                 enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
 
             enemies.Add(new(enemy.EnemyData));
 
-            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX > 3)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
                 enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
 
             return enemies.ToArray();
@@ -293,7 +291,7 @@ namespace Managers
         private IEnumerator EnemyTurn()
         {
             // Set up
-            projectiles.SetupProjectiles(battleEnemyEntities, battlePlayerEntity);
+            projectiles.SetupProjectiles(battleEnemyEntities, battlePlayerEntity, this);
 
             // Disable Player BattleUI
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);

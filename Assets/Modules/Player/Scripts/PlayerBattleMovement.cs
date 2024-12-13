@@ -1,7 +1,6 @@
-using BattleEntity;
+using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Pool;
 
 public class PlayerBattleMovement : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class PlayerBattleMovement : MonoBehaviour
     float movementX;
     float movementY;
     float[] boxLimit = { -0.75f, 0.75f, -0.68f, 0.68f };
-    public BattlePlayerEntity playerEntity;
+    public BattleManager battleManager;
     
     void Update()
     {
@@ -41,19 +40,10 @@ public class PlayerBattleMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject);
-        Debug.Log(collision.gameObject.tag);
-        if(collision.gameObject.CompareTag("Projectile"))
+        if (collision.gameObject.CompareTag("Projectile"))
         {
-
-            TakeDamage(5);
+            battleManager.DamagePlayer(5);
             collision.gameObject.SetActive(false);
         }
     }
-
-    public void TakeDamage(int damage)
-    {
-        playerEntity.TakeDamage(damage);
-    }
-
 }

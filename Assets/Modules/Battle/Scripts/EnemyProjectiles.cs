@@ -1,6 +1,7 @@
 using BattleEntity;
 using UnityEngine;
 using System.Collections;
+using Managers;
 
 public class EnemyProjectiles : MonoBehaviour
 {
@@ -9,49 +10,49 @@ public class EnemyProjectiles : MonoBehaviour
 
     #region Data
 
-    private int enemyCount;
     private BattleEntityType[] enemyTypes;
+    private BattlePlayerEntity playerEntity;
+    private BattleManager battleManager;
 
     #endregion
 
     #region Manager
 
-    public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity)
+    public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity, BattleManager battleManager)
     {
-        player.playerEntity = playerEntity;
+        player.battleManager = this.battleManager = battleManager;
+        this.playerEntity = playerEntity;
 
         if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
             return;
+
+        var enemyCount = 0;
 
         // Compile types
         var combinedType = BattleEntityType.NONE;
 
         foreach (var enemy in battleEnemyEntities)
         {
-            if(!enemy.IsDead)
+            if (!enemy.IsDead)
+            {
+                enemyCount++;
                 combinedType |= enemy.Type;
+            }
         }
 
         enemyTypes = BattleEntity.BattleEntity.GetTypes(combinedType);
 
         // Calculate how many projectiles to spawn per seconds
 
-        enemyCount = battleEnemyEntities.Length;
-        spawnInterval = 0.015f / enemyCount;
+        spawnInterval = 0.3f / enemyCount;
     }
 
     public IEnumerator SpawnProjectiles(float duration)
     {
-        while (duration > 0)
+        while (duration > 0 && !playerEntity.IsDead)
         {
-            for (int i = 0; i < enemyCount; i++)
-            {
-                var rdmType = enemyTypes[Random.Range(0, enemyTypes.Length)];
-                SpawnSingleProjectile(rdmType);
-
-                duration -= 0.1f;
-                yield return new WaitForSeconds(0.1f);
-            }
+            var rdmType = enemyTypes[Random.Range(0, enemyTypes.Length)];
+            SpawnSingleProjectile(rdmType);
 
             duration -= spawnInterval;
             yield return new WaitForSeconds(spawnInterval);

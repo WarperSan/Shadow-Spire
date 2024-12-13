@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: -852831718, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
   AttackType: 2
-  BaseDamage: 10
+  BaseDamage: 7
+  DamageRate: 1
