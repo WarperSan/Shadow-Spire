@@ -50,6 +50,7 @@ namespace Dungeon.Generation
 
             // Find room types
             FindEnemyRooms(rooms);
+            FindTreasureRooms(rooms);
 
             // Package results
             return new DungeonResult
@@ -289,10 +290,10 @@ namespace Dungeon.Generation
 
         public const int ENEMY_ROOM_INDEX = 2;
         public const int WEAPON_INDEX = 2;
+        public const int TREASURE_ROOM_INDEX = 3;
 
         private void FindEnemyRooms(Room[] rooms)
         {
-            // Don't spawn before level 3
             if (settings.Index < ENEMY_ROOM_INDEX)
                 return;
 
@@ -313,7 +314,7 @@ namespace Dungeon.Generation
 
             int count = rooms.Length / 3;
 
-            if(count >= validRooms.Count)
+            if (count >= validRooms.Count)
                 return;
 
             for (int i = 0; i < count; i++)
@@ -326,7 +327,30 @@ namespace Dungeon.Generation
                 validRooms[^(count + 1)].Type = RoomType.ENEMY;
         }
 
-        //private void FindTreasureRooms(Room[] rooms,)
+        private void FindTreasureRooms(Room[] rooms)
+        {
+            if (settings.Index < TREASURE_ROOM_INDEX)
+                return;
+
+            // Find deepest
+            Room deepest = null;
+
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                var room = rooms[i];
+
+                if (room.Type != RoomType.NORMAL)
+                    continue;
+
+                if (deepest == null || room.Depth > deepest.Depth)
+                    deepest = room;
+            }
+
+            if (deepest == null)
+                return;
+
+            deepest.Type = RoomType.TREASURE;
+        }
 
         #endregion
     }

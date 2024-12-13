@@ -68,6 +68,14 @@ namespace Managers
 
         #endregion
 
+        #region Treasures
+
+        [Header("Treasures")]
+        [SerializeField]
+        private GameObject potionPrefab;
+
+        #endregion
+
         #region UI
 
         [Header("UI")]
@@ -136,6 +144,7 @@ namespace Managers
 
                 // Rooms
                 new EnemyRoomDrawer(lvl, enemyPrefab, GameManager.Instance.allEnemies),
+                new TreasureRoomDrawer(lvl, potionPrefab),
             };
 
             // Process the level
