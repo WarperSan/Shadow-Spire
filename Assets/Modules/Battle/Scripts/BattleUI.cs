@@ -84,7 +84,7 @@ namespace Battle
         [SerializeField]
         private Transform enemyAttackUI;
 
-        public IEnumerator StartEnemyTurn(PlayerInformation playerInformation, BattleEnemyEntity[] battleEnemyEntities)
+        public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
             battleOptionsGroup.alpha = 1;
             battleOptionsGroup.gameObject.SetActive(true);

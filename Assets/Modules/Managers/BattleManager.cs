@@ -6,7 +6,6 @@ using BattleEntity;
 using Entities;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Weapons;
 
 namespace Managers
@@ -24,6 +23,8 @@ namespace Managers
 
         public IEnumerator StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
         {
+            hasBattleEnded = false;
+
             // Initialize entities
             this.enemyEntity = enemyEntity;
             this.playerEntity = playerEntity;
@@ -34,6 +35,8 @@ namespace Managers
 
             // Find all elements
             yield return FindBattleUI();
+
+            yield return FindEnemyProjectiles();
 
             // Load options
             LoadBattleOptions();
@@ -291,7 +294,7 @@ namespace Managers
             yield return new WaitForSeconds(0.5f);
 
             // Disable Player BattleUI
-            yield return battleUI.StartEnemyTurn(playerEntity.playerInformation, battleEnemyEntities);
+            yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
 
             // Start attacks
             yield return ExecuteEnemyAttacks();
@@ -316,9 +319,23 @@ namespace Managers
             AddInputs();
         }
 
+        #endregion
+
+        #region Enemy Projectiles
+
+        private EnemyProjectiles projectiles;
+        private IEnumerator FindEnemyProjectiles()
+        {
+            do
+            {
+                projectiles = FindObjectOfType<EnemyProjectiles>();
+                yield return null;
+            } while (projectiles == null);
+        }
         private IEnumerator ExecuteEnemyAttacks()
         {
             // Enable EnemyAttack coroutine
+            projectiles.SpawnProjectiles(battleEnemyEntities);
             yield return new WaitForSeconds(5f);
         }
 
