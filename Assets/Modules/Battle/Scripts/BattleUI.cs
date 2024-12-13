@@ -1,5 +1,6 @@
 using System.Collections;
 using Battle.Options;
+using BattleEntity;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,7 +81,7 @@ namespace Battle
         [SerializeField] RectTransform playerOptionUI;
         [SerializeField] Transform enemyAttackUI;
 
-        public IEnumerator StartEnemyTurn()
+        public IEnumerator StartEnemyTurn(BattleEnemyEntity[] battleEnemyEntities)
         {
             yield return null;
 

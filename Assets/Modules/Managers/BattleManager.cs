@@ -290,7 +290,7 @@ namespace Managers
         {
             // Disable Player BattleUI
             yield return playerEntity.playerInformation.OpenGroup();
-            yield return battleUI.StartEnemyTurn();
+            yield return battleUI.StartEnemyTurn(battleEnemyEntities);
 
             // Start attacks
             yield return ExecuteEnemyAttacks();

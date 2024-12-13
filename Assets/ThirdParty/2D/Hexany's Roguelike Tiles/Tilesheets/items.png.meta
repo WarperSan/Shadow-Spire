@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Normal_AttackPattern
+      name: Projectile
       rect:
         serializedVersion: 2
         x: 356
@@ -215,7 +215,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -240,7 +240,7 @@ TextureImporter:
     nameFileIdTable:
       Ghost_AttackPattern_2: -1662210169
       Giant_AttackPattern: -1202885691
-      Normal_AttackPattern: -1118481341
+      Projectile: -1118481341
       Undead_AttackPattern: 1937663465
       tile_potion: -1622823706
   mipmapLimitGroupName: 
