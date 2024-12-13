@@ -21,8 +21,11 @@ namespace UtilsModule
             // Keep only one
             if (Instance != null)
             {
-                Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
-                Destroy(this.gameObject);
+                if (!CanCoexist)
+                {
+                    Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
+                    Destroy(this.gameObject);
+                }
                 return;
             }
 
@@ -45,6 +48,11 @@ namespace UtilsModule
         /// Defines if the singleton should be destroyed when loading a new scene
         /// </summary>
         protected virtual bool DestroyOnLoad => false;
+
+        /// <summary>
+        /// Defines if multiple instances of the singleton can coexist
+        /// </summary>
+        protected virtual bool CanCoexist => false;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called

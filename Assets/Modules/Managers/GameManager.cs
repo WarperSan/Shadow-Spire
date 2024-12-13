@@ -1,4 +1,5 @@
 using System.Collections;
+using CameraUtils;
 using Dungeon.Generation;
 using Enemies;
 using Entities;
@@ -149,7 +150,10 @@ namespace Managers
 
         private IEnumerator EndLevelWeaponOffer()
         {
-            yield return weaponUI.ShowWeapons();
+            if (Level.Index < DungeonGenerator.WEAPON_INDEX)
+                yield return null;
+            else
+                yield return weaponUI.ShowWeapons();
         }
 
         #endregion
@@ -165,7 +169,7 @@ namespace Managers
 
         public IEnumerator ReturnToTitle()
         {
-            var title = SceneManager.LoadSceneAsync("TitleScreen");
+            var title = SceneManager.LoadSceneAsync("TitleScreen", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
 
             while (!title.isDone)
                 yield return null;

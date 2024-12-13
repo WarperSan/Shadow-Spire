@@ -1,3 +1,4 @@
+using Dungeon.Generation;
 using Managers;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace Weapons
             var random = GameManager.Instance.Level.Random;
 
             var rdmWeapon = allWeapons[random.Next(0, allWeapons.Length)];
-            return new WeaponInstance(rdmWeapon, level);
+            return new WeaponInstance(rdmWeapon, level - DungeonGenerator.WEAPON_INDEX);
         }
     }
 }

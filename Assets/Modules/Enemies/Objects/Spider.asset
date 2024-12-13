@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Spider
   m_EditorClassIdentifier: 
   OverworldSprite: {fileID: -736504548, guid: 53b107fb996a9238089926b6420042f1, type: 3}
+  IsFlipped: 0
   MovementSpeed: 2
+  Pathing: 0
   FightSprite: {fileID: -1154044961, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
   FightShadowSprite: {fileID: -1727956127, guid: dd7eb1e0ab004e814ae18440780176a7, type: 3}
-  BaseHealth: 15
+  BaseHealth: 7
   BaseAttack: 3
   Type: 32

@@ -13,12 +13,11 @@ namespace Managers
 {
     public class BattleManager : MonoBehaviour
     {
-        public EnemySO enemy1;
-        public EnemySO enemy2;
-        public EnemySO enemy3;
         private EnemyEntity enemyEntity;
         private BattleEnemyEntity[] battleEnemyEntities;
         private BattlePlayerEntity battlePlayerEntity;
+
+        private bool hasBattleEnded;
 
         public IEnumerator StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
         {
@@ -42,6 +41,7 @@ namespace Managers
 
         public void EndBattle(bool isVictory)
         {
+            hasBattleEnded = true;
             StartCoroutine(EndBattleCoroutine(isVictory));
         }
 
@@ -206,14 +206,16 @@ namespace Managers
             if (VerifyEnemiesState())
             {
                 EnemyTurn();
-                EnableBattleOption();
-                AddInputs();
+
+                if (!hasBattleEnded)
+                {
+                    EnableBattleOption();
+                    AddInputs();
+                }
             }
+            // All enemies dead, victory
             else
-            {
-                // All enemies dead, victory
                 EndBattle(true);
-            }
         }
 
         private void OnEnemyEscape()

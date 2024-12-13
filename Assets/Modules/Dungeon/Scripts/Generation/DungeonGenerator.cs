@@ -286,10 +286,13 @@ namespace Dungeon.Generation
 
         #region Type
 
+        public const int ENEMY_ROOM_INDEX = 2;
+        public const int WEAPON_INDEX = 2;
+
         private void FindEnemyRooms(Room[] rooms)
         {
             // Don't spawn before level 3
-            if (settings.Index <= 1)
+            if (settings.Index < ENEMY_ROOM_INDEX)
                 return;
 
             var validRooms = new List<Room>();
@@ -297,7 +300,7 @@ namespace Dungeon.Generation
             foreach (var room in rooms)
             {
                 // If too close from the entrance, skip
-                if (room.Depth <= 1 && settings.Index > 2)
+                if (room.Depth <= 1 && settings.Index > ENEMY_ROOM_INDEX)
                     continue;
 
                 validRooms.Add(room);

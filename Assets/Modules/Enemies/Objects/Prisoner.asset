@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Prisoner
   m_EditorClassIdentifier: 
   OverworldSprite: {fileID: -1842615060, guid: 53b107fb996a9238089926b6420042f1, type: 3}
+  IsFlipped: 0
   MovementSpeed: 3
   Pathing: 1
   FightSprite: {fileID: 1316337788, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
   FightShadowSprite: {fileID: 0}
-  BaseHealth: 12
+  BaseHealth: 6
   BaseAttack: 4
   Type: 8

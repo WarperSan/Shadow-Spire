@@ -16,7 +16,7 @@ NavMeshProjectSettings:
   - name: 
     cost: 1
   - name: BarArea
-    cost: 10
+    cost: 100
   - name: 
     cost: 1
   - name: 
