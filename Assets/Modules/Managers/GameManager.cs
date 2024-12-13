@@ -169,6 +169,9 @@ namespace Managers
 
         public IEnumerator ReturnToTitle()
         {
+            dungeonManager.ClearDungeon();
+            yield return null;
+
             var title = SceneManager.LoadSceneAsync("TitleScreen", Camera2D.IsIn3D ? LoadSceneMode.Additive : LoadSceneMode.Single);
 
             while (!title.isDone)

@@ -4,7 +4,7 @@ using Entities;
 using UnityEngine;
 using UtilsModule;
 
-namespace Dungeon.Drawers
+namespace Dungeon.Drawers.Terrain
 {
     public class EntranceExitDrawer : Drawer
     {

@@ -23,7 +23,7 @@ namespace Dungeon.Generation
         // 1 << 12
         ENTRANCE = 1 << 13,
         EXIT = 1 << 14,
-        // 1 << 15
+        TREASURE = 1 << 15,
         // 1 << 16
         PLAYER = 1 << 17,
         ENEMY = 1 << 18
