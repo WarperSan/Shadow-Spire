@@ -14,7 +14,7 @@ namespace BattleEntity
         public BattleEnemyEntity(EnemySO enemy)
         {
             Enemy = enemy;
-            Health = Mathf.RoundToInt(enemy.BaseHealth + enemy.BaseHealth * 0.5f * GameManager.Instance.Level.Index * 0.5f);
+            Health = Mathf.RoundToInt(enemy.BaseHealth + enemy.BaseHealth * 0.5f * (GameManager.Instance.Level.Index - 1) * 0.5f);
             Attack = enemy.BaseAttack;
             Type = enemy.Type;
         }

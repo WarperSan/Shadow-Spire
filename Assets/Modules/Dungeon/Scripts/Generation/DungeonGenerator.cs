@@ -288,8 +288,8 @@ namespace Dungeon.Generation
 
         private void FindEnemyRooms(Room[] rooms)
         {
-            // Don't spawn before level 4
-            if (settings.Index <= 2)
+            // Don't spawn before level 3
+            if (settings.Index <= 1)
                 return;
 
             var validRooms = new List<Room>();
