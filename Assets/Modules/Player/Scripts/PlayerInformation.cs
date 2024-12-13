@@ -41,25 +41,57 @@ namespace Player
         public void SetPotionCount(int count) => potionCountText.text = string.Format("x{0}", count);
 
         #endregion
-    
+
         #region Group
 
         [Header("Group")]
-        [SerializeField] 
+        [SerializeField]
         private HorizontalLayoutGroup groupUI;
 
-        public IEnumerator OpenGroup()
+        public IEnumerator OpenGroup(float time)
         {
-            groupUI.spacing = 450;
-            groupUI.padding.left = -40;
-            yield return null;
+            const float SPACING = 450;
+            const int PADDING_LEFT = -40;
+
+            float spacing = groupUI.spacing;
+            int paddingLeft = groupUI.padding.left;
+
+            float duration = 0;
+
+            while (duration < time)
+            {
+                groupUI.spacing = Mathf.Lerp(spacing, SPACING, duration / time);
+                groupUI.padding.left = (int)Mathf.Lerp(paddingLeft, PADDING_LEFT, duration / time);
+
+                duration += Time.deltaTime;
+                yield return null;
+            }
+
+            groupUI.spacing = SPACING;
+            groupUI.padding.left = PADDING_LEFT;
         }
 
-        public IEnumerator CloseGroup()
+        public IEnumerator CloseGroup(float time)
         {
-            groupUI.spacing = 0;
-            groupUI.padding.left = 0;
-            yield return null;
+            const float SPACING = 0;
+            const int PADDING_LEFT = 0;
+
+            float spacing = groupUI.spacing;
+            int paddingLeft = groupUI.padding.left;
+
+            float duration = 0;
+
+            while (duration < time)
+            {
+                groupUI.spacing = Mathf.Lerp(spacing, SPACING, duration / time);
+                groupUI.padding.left = (int)Mathf.Lerp(paddingLeft, PADDING_LEFT, duration / time);
+
+                duration += Time.deltaTime;
+                yield return null;
+            }
+
+            groupUI.spacing = SPACING;
+            groupUI.padding.left = PADDING_LEFT;
         }
 
         #endregion

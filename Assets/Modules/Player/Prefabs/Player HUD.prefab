@@ -649,6 +649,7 @@ MonoBehaviour:
   weaponOption: {fileID: 4595939840372976303}
   healthText: {fileID: 2042663321133129441}
   potionCountText: {fileID: 673235484837664654}
+  groupUI: {fileID: 3498530765970340978}
 --- !u!1 &8348590449668891578
 GameObject:
   m_ObjectHideFlags: 0

@@ -77,23 +77,46 @@ namespace Battle
         #region Enemy Attack
 
         [Header("Enemy Attack")]
-        [SerializeField] RectTransform playerOptionUI;
-        [SerializeField] Transform enemyAttackUI;
+        [SerializeField]
+        private CanvasGroup battleOptionsGroup;
 
-        public IEnumerator StartEnemyTurn()
+        [SerializeField]
+        private Transform enemyAttackUI;
+
+        public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
-            yield return null;
+            battleOptionsGroup.alpha = 1;
+            battleOptionsGroup.gameObject.SetActive(true);
 
-            playerOptionUI.gameObject.SetActive(false);
+            for (int i = 0; i <= 4; i++)
+            {
+                battleOptionsGroup.alpha = 1f - 1f / 4f * i;
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            battleOptionsGroup.gameObject.SetActive(false);
+
+            yield return playerInformation.OpenGroup(0.2f);
+
             enemyAttackUI.gameObject.SetActive(true);
         }
 
-        public IEnumerator EndEnemyTurn()
+        public IEnumerator EndEnemyTurn(PlayerInformation playerInformation)
         {
             enemyAttackUI.gameObject.SetActive(false);
-            playerOptionUI.gameObject.SetActive(true);
-        
-            yield return null;
+
+            yield return playerInformation.CloseGroup(0.2f);
+
+            //playerOptionUI.gameObject.SetActive(true);
+
+            battleOptionsGroup.alpha = 0;
+            battleOptionsGroup.gameObject.SetActive(true);
+
+            for (int i = 0; i <= 4; i++)
+            {
+                battleOptionsGroup.alpha = 1f / 4f * i;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         #endregion
