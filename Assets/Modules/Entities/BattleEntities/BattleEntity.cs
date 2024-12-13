@@ -28,7 +28,7 @@ namespace BattleEntity
 
         public void TakeAttack(WeaponInstance weapon)
         {
-            int damage = Mathf.RoundToInt(weapon.GetDamage() * CalculateEffectiveness(weapon.GetBaseData().AttackType) / 100f);
+            int damage = Mathf.RoundToInt(weapon.GetDamage() * CalculateEffectiveness(weapon.GetAttackType()) / 100f);
             TakeDamage(damage);
         }
 

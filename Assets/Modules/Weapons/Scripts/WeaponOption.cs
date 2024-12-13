@@ -39,10 +39,9 @@ namespace Weapons
         protected override void OnLoadOption(WeaponOptionData option)
         {
             var instance = option.WeaponInstance;
-            var data = instance.GetBaseData();
 
-            icon.sprite = data.Icon;
-            type.text = BattleEntity.BattleEntity.GetIcons(data.AttackType);
+            icon.sprite = instance.GetIcon();
+            type.text = BattleEntity.BattleEntity.GetIcons(instance.GetAttackType());
             damage.text = instance.GetDamage().ToString();
             subtext.text = option.Subtext;
         }

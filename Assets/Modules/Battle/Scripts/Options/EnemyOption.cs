@@ -129,12 +129,11 @@ namespace Battle.Options
 
         private void SetEffectiveness(WeaponInstance weapon, BattleEnemyEntity entity)
         {
-            var weaponData = weapon.GetBaseData();
-            float percent = entity.CalculateEffectiveness(weaponData.AttackType);
+            float percent = entity.CalculateEffectiveness(weapon.GetAttackType());
 
             targetEffectiveness.text = string.Format(
                 "<sprite name={0}> <color={1}>{2}</color>%",
-                weaponData.Icon.name,
+                weapon.GetIcon().name,
                 GetEffectivenessColor(percent),
                 percent
             );

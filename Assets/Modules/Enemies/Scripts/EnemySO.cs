@@ -31,8 +31,12 @@ namespace Enemies
         public Sprite FightSprite;
         public Sprite FightShadowSprite;
 
+        [Min(1)]
         public int BaseHealth = 1;
+
+        [Min(1)]
         public int BaseAttack = 1;
+
         public BattleEntityType Type = BattleEntityType.NORMAL;
 
     }

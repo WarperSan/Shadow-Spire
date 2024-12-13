@@ -7,6 +7,7 @@ using Enemies.Node;
 using Entities.Interfaces;
 using Managers;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 namespace Entities
 {
@@ -137,6 +138,14 @@ namespace Entities
         /// <inheritdoc/>
         void IMovable.OnMoveStart(Movement movement)
         {
+            if (_data.IsFlipped)
+            {
+                if (movement == Movement.LEFT)
+                    movement = Movement.RIGHT;
+                else if (movement == Movement.RIGHT)
+                    movement = Movement.LEFT;
+            }
+
             FlipByMovement(movement);
         }
 

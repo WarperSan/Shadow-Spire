@@ -18,6 +18,6 @@ MonoBehaviour:
   Pathing: 1
   FightSprite: {fileID: 645612079, guid: 73d193815b6438ded8b5bf0e963a23b1, type: 3}
   FightShadowSprite: {fileID: -1727956127, guid: dd7eb1e0ab004e814ae18440780176a7, type: 3}
-  BaseHealth: 7
+  BaseHealth: 14
   BaseAttack: 8
   Type: 12
