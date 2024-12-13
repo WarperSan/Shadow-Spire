@@ -68,6 +68,7 @@ namespace Entities
         private void SetData(EnemySO data)
         {
             spriteRenderer.sprite = data.OverworldSprite;
+            spriteRenderer.flipX = data.IsFlipped;
 
             if (ColorUtility.TryParseHtmlString(BattleEntity.BattleEntity.GetTypeColor(data.Type), out Color color))
                 spriteRenderer.color = color;

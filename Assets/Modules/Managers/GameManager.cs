@@ -127,6 +127,7 @@ namespace Managers
             {
                 Destroy(enemy.gameObject);
                 turnManager.StartTurn();
+                InputManager.Instance.SwitchToPlayer();
             }
             else
             {
@@ -134,7 +135,6 @@ namespace Managers
                 StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
             }
             SceneManager.UnloadSceneAsync("BattleScene");
-            InputManager.Instance.SwitchToPlayer();
         }
 
         #endregion
@@ -158,6 +158,24 @@ namespace Managers
 
         [Header("Weapons")]
         public EnemySO[] allEnemies;
+
+        #endregion
+
+        #region Scenes
+
+        public IEnumerator ReturnToTitle()
+        {
+            var title = SceneManager.LoadSceneAsync("TitleScreen");
+
+            while (!title.isDone)
+                yield return null;
+
+            var gameDeload = SceneManager.UnloadSceneAsync("Game");
+
+            while (!gameDeload.isDone)
+                yield return null;
+        }
+
 
         #endregion
 

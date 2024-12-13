@@ -67,7 +67,11 @@ public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOption
         if (isRunningPlaySequence)
             return;
 
-        Arcade.Arcade.Instance.StartCoroutine(PlaySequence());
+        if (Camera2D.IsIn3D)
+            Arcade.Arcade.Instance.StartCoroutine(PlaySequence());
+        else
+            StartCoroutine(PlaySequence());
+
         isRunningPlaySequence = true;
     }
 
