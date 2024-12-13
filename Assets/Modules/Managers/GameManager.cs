@@ -75,8 +75,8 @@ namespace Managers
 
             Level = dungeonManager.StartLevel(settings, player);
             dungeonCamera.transform.position = new Vector3(
-                Level.Width / 2f + 0.5f,
-                -(Level.Height / 2f + 0.5f),
+                Level.Width / 2f,
+                -(Level.Height / 2f),
                 dungeonCamera.transform.position.z
             );
             InputManager.Instance.SwitchToPlayer();
