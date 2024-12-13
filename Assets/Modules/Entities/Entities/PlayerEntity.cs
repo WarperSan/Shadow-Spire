@@ -1,7 +1,7 @@
 using System.Collections;
 using Entities.Interfaces;
 using Managers;
-using TMPro;
+using Player;
 using UnityEngine;
 using Weapons;
 
@@ -9,11 +9,17 @@ namespace Entities
 {
     public class PlayerEntity : GridEntity, ITurnable, IMovable
     {
+        [SerializeField]
+        private PlayerInformation playerInformation;
+
         private void Start()
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
+
+            // Update UI
             SetHealth(MaxHealth);
-            SetWeapon(new WeaponInstance(startWeapon, 0)); // Update UI
+            Weapon = new WeaponInstance(startWeapon, 0);
+            SetPotionCount(0);
         }
 
         #region Inputs
@@ -71,23 +77,16 @@ namespace Entities
 
         #region Health
 
-        [SerializeField] TextMeshProUGUI healthText;
         public int MaxHealth { get; set; } = 200;
         public int Health { get; set; }
         private void SetHealth(int health)
         {
-            if(health < 0)
-                health = 0;
-
-            Health = health;
-            healthText.text = $"<sprite name=icon_heart> {Health} / {MaxHealth}";
+            Health = Mathf.Max(health, 0);
+            playerInformation.SetHealth(Health, MaxHealth);
         }
 
-        public void TakeDamage(int damage)
-        {
-            Health -= damage;
-            SetHealth(Health);
-        }
+        public void TakeDamage(int damage) => SetHealth(Health - damage);
+        public void Heal(int amount) => SetHealth(Health + amount);
 
         #endregion
 
@@ -97,19 +96,36 @@ namespace Entities
         [SerializeField]
         private WeaponInstance weapon;
 
+        public WeaponInstance Weapon
+        {
+            get => weapon;
+            set
+            {
+                playerInformation.SetWeapon(value);
+                weapon = value;
+            }
+        }
+
         [SerializeField]
         private WeaponSO startWeapon;
 
+        #endregion
+
+        #region Potions
+
+        [Header("Potions")]
         [SerializeField]
-        private WeaponOption weaponOption;
+        private int potionCount = 0;
 
-        public WeaponInstance GetWeapon() => weapon;
-
-        public void SetWeapon(WeaponInstance weapon)
+        private void SetPotionCount(int amount)
         {
-            this.weapon = weapon;
-            weaponOption.LoadOption(new WeaponOptionData() { WeaponInstance = weapon });
+            potionCount = amount;
+            playerInformation.SetPotionCount(potionCount);
         }
+
+        public void CollectPotion() => SetPotionCount(potionCount + 1);
+        public void ConsumePotion() => SetPotionCount(potionCount - 1);
+        public bool HasPotions() => potionCount > 0;
 
         #endregion
     }

@@ -13,7 +13,7 @@ namespace Weapons
         {
             hasSelected = false;
 
-            LoadWeapons(GameManager.Instance.player.GetWeapon());
+            LoadWeapons(GameManager.Instance.player.Weapon);
             title.SetActive(true);
 
             yield return null; // Wait for weapons to load
@@ -41,7 +41,7 @@ namespace Weapons
             RemoveInputs();
 
             var selectedOption = options.GetSelection().GetOption();
-            GameManager.Instance.player.SetWeapon(selectedOption.WeaponInstance);
+            GameManager.Instance.player.Weapon = selectedOption.WeaponInstance;
         }
 
         #region Options

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Battle;
 using Battle.Options;
 using BattleEntity;
-using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
@@ -16,24 +15,34 @@ namespace Managers
         private EnemyEntity enemyEntity;
         private BattleEnemyEntity[] battleEnemyEntities;
         private BattlePlayerEntity battlePlayerEntity;
+        private PlayerEntity playerEntity;
+
+        #region Battle State
 
         private bool hasBattleEnded;
 
         public IEnumerator StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
         {
+            // Initialize entities
             this.enemyEntity = enemyEntity;
-            this.battlePlayerEntity = new BattlePlayerEntity(playerEntity);
+            this.playerEntity = playerEntity;
+            battlePlayerEntity = new BattlePlayerEntity(playerEntity);
+
+            // Start battle transition
             yield return StartBattleTransition();
+
+            // Find all elements
             yield return FindBattleUI();
 
-            var weapon = playerEntity.GetWeapon();
+            // Load options
             LoadBattleOptions();
+            LoadEnemyOptions(playerEntity.Weapon, GenerateEnemies(enemyEntity));
 
-            battleEnemyEntities = GenerateEnemies(enemyEntity);
-
-            LoadEnemyOptions(weapon, battleEnemyEntities);
-
+            // Disable spoiler
             yield return battleUI.DisableSpoiler();
+
+            // Wait for spawn animation
+            yield return new WaitForSeconds(2f);
 
             EnableBattleOption();
             AddInputs();
@@ -55,6 +64,8 @@ namespace Managers
 
             GameManager.Instance.EndBattle(isVictory, enemyEntity);
         }
+
+        #endregion
 
         #region Battle UI
 
@@ -107,7 +118,8 @@ namespace Managers
                     OnEnter = OnAttackPressed
                 },
                 new() {
-                    Text = "Heal"
+                    Text = "Heal",
+                    OnEnter = () => StartCoroutine(OnHealPressed())
                 },
                 //new()
                 //{
@@ -128,6 +140,19 @@ namespace Managers
             EnableEnemyOption();
         }
 
+        private IEnumerator OnHealPressed()
+        {
+            if (!playerEntity.HasPotions())
+                yield break;
+
+            yield return HealPlayer(30);
+
+            RemoveInputs();
+            DisableBattleOption();
+
+            yield return EnemyTurn();
+        }
+
         private void EnableBattleOption()
         {
             isSelectingBattleOption = true;
@@ -142,13 +167,24 @@ namespace Managers
 
         #endregion
 
-        #region Damage Player
+        #region Player
 
-        public void PlayerTakeDamage(int damage)
+        private IEnumerator HealPlayer(int amount)
         {
-            battlePlayerEntity.TakeDamage(damage);
+            playerEntity.ConsumePotion();
+            playerEntity.Heal(amount);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        private IEnumerator DamagePlayer(int amount)
+        {
+            battlePlayerEntity.TakeDamage(amount);
+
             if (battlePlayerEntity.IsDead)
                 EndBattle(false);
+
+            yield return new WaitForSeconds(0.5f);
         }
 
         #endregion
@@ -159,6 +195,7 @@ namespace Managers
 
         private void LoadEnemyOptions(WeaponInstance weapon, params BattleEnemyEntity[] entities)
         {
+            battleEnemyEntities = entities;
             var options = new EnemyOptionData[entities.Length];
 
             for (int i = 0; i < options.Length; i++)
@@ -167,7 +204,7 @@ namespace Managers
                 {
                     Weapon = weapon,
                     Entity = entities[i],
-                    OnEnter = OnEnemyConfirmed,
+                    OnEnter = () => StartCoroutine(OnEnemyConfirmed()),
                     OnEscape = OnEnemyEscape
                 };
             }
@@ -193,7 +230,7 @@ namespace Managers
             return enemies.ToArray();
         }
 
-        private void OnEnemyConfirmed()
+        private IEnumerator OnEnemyConfirmed()
         {
             RemoveInputs();
             DisableEnemyOption();
@@ -203,19 +240,16 @@ namespace Managers
 
             enemy.Entity.TakeAttack(enemy.Weapon);
 
-            if (VerifyEnemiesState())
-            {
-                EnemyTurn();
+            yield return new WaitForSeconds(0.7f);
 
-                if (!hasBattleEnded)
-                {
-                    EnableBattleOption();
-                    AddInputs();
-                }
-            }
             // All enemies dead, victory
-            else
+            if (!VerifyEnemiesState())
+            {
                 EndBattle(true);
+                yield break;
+            }
+
+            yield return EnemyTurn();
         }
 
         private void OnEnemyEscape()
@@ -251,11 +285,17 @@ namespace Managers
             return false;
         }
 
-        private void EnemyTurn()
+        private IEnumerator EnemyTurn()
         {
             int rdmDamage = Random.Range(5, 11);
 
-            PlayerTakeDamage(rdmDamage);
+            yield return DamagePlayer(rdmDamage);
+
+            if (hasBattleEnded)
+                yield break;
+
+            EnableBattleOption();
+            AddInputs();
         }
 
         #endregion
