@@ -6,11 +6,15 @@ namespace Weapons
 {
     public class WeaponUI : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject title;
+
         public IEnumerator ShowWeapons()
         {
             hasSelected = false;
 
             LoadWeapons(GameManager.Instance.player.GetWeapon());
+            title.SetActive(true);
 
             yield return null; // Wait for weapons to load
 
@@ -21,6 +25,7 @@ namespace Weapons
             while (!hasSelected)
                 yield return null;
 
+            title.SetActive(false);
             options.DestroyOptions();
         }
 
