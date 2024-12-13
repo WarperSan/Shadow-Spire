@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UtilsModule;
 
-namespace Dungeon.Drawers
+namespace Dungeon.Drawers.Terrain
 {
     public class DoorDrawer : Drawer
     {

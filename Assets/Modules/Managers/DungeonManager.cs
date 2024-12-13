@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Linq;
 using Dungeon.Drawers;
+using Dungeon.Drawers.Rooms;
+using Dungeon.Drawers.Terrain;
 using Dungeon.Generation;
-using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
@@ -188,9 +189,7 @@ namespace Managers
 
             yield return new WaitForSeconds(0.2f); // Level end animation
 
-            // Clear all drawers
-            foreach (var drawer in DrawerPipeline)
-                drawer.Clear();
+            ClearDungeon();
 
             yield return null; // Wait 1 frame
 
@@ -200,6 +199,13 @@ namespace Managers
             yield return BlackoutFadeOut(BLACKOUT_TICKS);
 
             yield return new WaitForSeconds(0.2f);
+        }
+
+        public void ClearDungeon()
+        {
+            // Clear all drawers
+            foreach (var drawer in DrawerPipeline)
+                drawer.Clear();
         }
 
         #endregion

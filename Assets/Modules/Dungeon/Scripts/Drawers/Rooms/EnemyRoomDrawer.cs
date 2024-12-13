@@ -5,7 +5,7 @@ using Entities;
 using UnityEngine;
 using UtilsModule;
 
-namespace Dungeon.Drawers
+namespace Dungeon.Drawers.Rooms
 {
     public class EnemyRoomDrawer : Drawer
     {
