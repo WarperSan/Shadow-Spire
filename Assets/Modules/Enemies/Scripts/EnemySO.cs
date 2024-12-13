@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace Enemies
 {
+    public enum EnemyPathing
+    {
+        DIRECT,
+        RANDOM
+    }
+
     public enum EnemyMovementSpeed
     {
         VERY_SLOW,
@@ -18,6 +24,7 @@ namespace Enemies
         [Header("Overworld")]
         public Sprite OverworldSprite;
         public EnemyMovementSpeed MovementSpeed;
+        public EnemyPathing Pathing;
 
         [Header("Fight")]
         public Sprite FightSprite;

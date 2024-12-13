@@ -1,13 +1,60 @@
 using System.Collections;
+using BehaviourModule.Interfaces;
+using BehaviourModule.Nodes;
+using BehaviourModule.Nodes.Controls;
 using Enemies;
+using Enemies.Node;
 using Entities.Interfaces;
 using Managers;
 using UnityEngine;
 
 namespace Entities
 {
-    public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable
+    public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable, IVisualizable
     {
+        #region Behavior Tree
+
+        protected IVisualizable tree;
+
+        protected NodeState UpdateTree()
+        {
+            if (this._root == null)
+                return NodeState.FAILURE;
+
+            this._root.Reset();
+            return this._root.Evaluate();
+        }
+
+        #endregion
+
+        #region IVisualizble
+
+        private Node _root;
+
+        /// <inheritdoc/>
+        public Node GetRoot() => this._root;
+
+        public void RebuildRoot()
+        {
+            Selector root = new();
+
+            Sequence movement = new();
+
+            movement += new WaitTurn(_data);
+
+            if(_data.Pathing == EnemyPathing.DIRECT)
+                movement += new GoToTarget(this, GameManager.Instance.player).Alias("GoToTarget");
+
+            if(_data.Pathing == EnemyPathing.RANDOM)
+                movement += new GoRandomPosition(this).Alias("GoRandomPosition");
+
+            root += movement;
+
+            this._root = root.Alias("Root");
+        }
+
+        #endregion
+
         #region Data
 
         private EnemySO _data;
@@ -25,66 +72,29 @@ namespace Entities
             if (ColorUtility.TryParseHtmlString(BattleEntity.BattleEntity.GetTypeColor(data.Type), out Color color))
                 spriteRenderer.color = color;
 
-            turnsRemaining = waitTurns = data.MovementSpeed switch
-            {
-                EnemyMovementSpeed.VERY_SLOW => 2,
-                EnemyMovementSpeed.SLOW => 1,
-                _ => 0
-            };
-            movesPerTurn = data.MovementSpeed switch
-            {
-                EnemyMovementSpeed.FAST => 2,
-                EnemyMovementSpeed.VERY_FAST => 3,
-                _ => 1
-            };
-
             _data = data;
+
+            this.RebuildRoot();
+            this._root = this.GetRoot();
         }
 
         #endregion
 
         #region ITurnable
 
-        private int waitTurns;
-        private int movesPerTurn;
-        private int turnsRemaining;
-
         /// <inheritdoc/>
         IEnumerator ITurnable.Think()
         {
-            turnsRemaining--;
+            var state = UpdateTree();
 
-            if (turnsRemaining >= 0)
+            if(state == NodeState.FAILURE)
             {
                 yield return null;
                 yield break;
             }
 
-            turnsRemaining = waitTurns;
-
-            path = PathFindingManager.FindPath(this, GetPathFindingTarget());
-            movements = PathFindingManager.GetDirections(path);
-
-            // If no path found or on the same tile
-            if (movements == null || movements.Length == 0)
-            {
-                yield return null;
-                yield break;
-            }
-
-            yield return movements[0..movesPerTurn];
-        }
-
-        #endregion
-
-        #region Path Finding
-
-        private int[] path;
-        private Movement[] movements;
-
-        protected virtual Vector2Int GetPathFindingTarget()
-        {
-            return GameManager.Instance.player.Position;
+            var nextMovement = _root.GetData<Movement?>("NextMovement");
+            yield return nextMovement;
         }
 
         #endregion
@@ -131,21 +141,5 @@ namespace Entities
 
         #endregion
 
-        #region Gizmos
-#if UNITY_EDITOR
-        /// <inheritdoc/>
-        private void OnDrawGizmos()
-        {
-            if (path == null)
-                return;
-
-            foreach (var item in path)
-            {
-                var pos = GameManager.Instance.Level.TileGraph.GetNode(item).Position + new Vector2(0.5f, -0.5f);
-                Gizmos.DrawIcon(pos, "sv_icon_dot3_pix16_gizmo");
-            }
-        }
-#endif
-        #endregion
     }
 }
