@@ -297,7 +297,7 @@ namespace Dungeon.Generation
             foreach (var room in rooms)
             {
                 // If too close from the entrance, skip
-                if (room.Depth <= 1)
+                if (room.Depth <= 1 && settings.Index > 2)
                     continue;
 
                 validRooms.Add(room);
@@ -308,6 +308,9 @@ namespace Dungeon.Generation
                 return;
 
             int count = rooms.Length / 3;
+
+            if(count >= validRooms.Count)
+                return;
 
             for (int i = 0; i < count; i++)
             {
