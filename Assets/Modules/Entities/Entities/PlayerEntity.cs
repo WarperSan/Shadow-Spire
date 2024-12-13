@@ -80,7 +80,7 @@ namespace Entities
         public int Health { get; set; }
         private void SetHealth(int health)
         {
-            Health = Mathf.Max(health, 0);
+            Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
             playerInformation.SetHealth(Health, MaxHealth);
         }
 
