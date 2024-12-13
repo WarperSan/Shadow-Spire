@@ -76,6 +76,9 @@ namespace Entities
         public int Health { get; set; }
         private void SetHealth(int health)
         {
+            if(health < 0)
+                health = 0;
+
             Health = health;
             healthText.text = $"<sprite name=icon_heart> {Health} / {MaxHealth}";
         }
