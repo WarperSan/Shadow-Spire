@@ -1,3 +1,4 @@
+using BattleEntity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -9,7 +10,8 @@ public class PlayerBattleMovement : MonoBehaviour
     float movementX;
     float movementY;
     float[] boxLimit = { -0.75f, 0.75f, -0.68f, 0.68f };
-
+    public BattlePlayerEntity playerEntity;
+    
     void Update()
     {
         MovePlayer();
@@ -37,8 +39,21 @@ public class PlayerBattleMovement : MonoBehaviour
         transform.localPosition = currPosition;
     }
 
-    public void TakeDamage()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject);
+        Debug.Log(collision.gameObject.tag);
+        if(collision.gameObject.CompareTag("Projectile"))
+        {
+
+            TakeDamage(5);
+            collision.gameObject.SetActive(false);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        playerEntity.TakeDamage(damage);
     }
 
 }

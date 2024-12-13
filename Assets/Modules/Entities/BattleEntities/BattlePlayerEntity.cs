@@ -2,9 +2,9 @@
 
 namespace BattleEntity
 {
-    internal class BattlePlayerEntity : BattleEntity
+    public class BattlePlayerEntity : BattleEntity
     {
-        private PlayerEntity playerEntity;        
+        private PlayerEntity playerEntity;
         public BattlePlayerEntity(PlayerEntity playerEntity)
         {
             this.Health = playerEntity.Health;
