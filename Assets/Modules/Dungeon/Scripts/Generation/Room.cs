@@ -10,6 +10,7 @@ namespace Dungeon.Generation
         EXIT, // Room that is the exit
         ENEMY, // Room that spawns monsters
         TREASURE, // Room that spawns a treasure
+        SPIKES, // Room that spawns spikes
     }
 
     public class Room

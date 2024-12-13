@@ -10,7 +10,7 @@ namespace Dungeon.Generation
     {
         NONE = 0,
         GROUND = 1 << 1,
-        // 1 << 2
+        COVERED_GROUND = 1 << 2,
         // 1 << 3
         // 1 << 4
         WALL = 1 << 5,
@@ -23,10 +23,16 @@ namespace Dungeon.Generation
         // 1 << 12
         ENTRANCE = 1 << 13,
         EXIT = 1 << 14,
-        TREASURE = 1 << 15,
+        // 1 << 15
         // 1 << 16
         PLAYER = 1 << 17,
-        ENEMY = 1 << 18
+        ENEMY = 1 << 18,
+        // 1 << 19
+        // 1 << 20
+        // 1 << 21
+        // 1 << 22
+        TREASURE = 1 << 23,
+        SPIKES = 1 << 24
     }
 
     public class DungeonResult
