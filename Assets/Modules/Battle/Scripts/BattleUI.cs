@@ -1,5 +1,6 @@
 using System.Collections;
 using Battle.Options;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,7 +65,7 @@ namespace Battle
             blackoutColor.a = 0f;
             blackout.color = blackoutColor;
 
-            for(int i = 1; i <= FADE_TIME; i++)
+            for (int i = 1; i <= FADE_TIME; i++)
             {
                 blackoutColor.a = 1f / FADE_TIME * i;
                 blackout.color = blackoutColor;
@@ -73,28 +74,28 @@ namespace Battle
         }
         #endregion
 
+        #region Enemy Attack
 
+        [Header("Enemy Attack")]
         [SerializeField] RectTransform playerOptionUI;
         [SerializeField] Transform enemyAttackUI;
-        [SerializeField] HorizontalLayoutGroup playerHealthUI;
 
-        public void StartEnemyTurn(HorizontalLayoutGroup playerHealthUI)
+        public IEnumerator StartEnemyTurn()
         {
-            playerHealthUI.spacing = 450;
-            playerHealthUI.padding.left = -40;
-
+            yield return null;
 
             playerOptionUI.gameObject.SetActive(false);
             enemyAttackUI.gameObject.SetActive(true);
         }
 
-        public void EndEnemyTurn(HorizontalLayoutGroup playerHealthUI)
+        public IEnumerator EndEnemyTurn()
         {
-            playerHealthUI.spacing = 0;
-            playerHealthUI.padding.left = 0;
-
             enemyAttackUI.gameObject.SetActive(false);
             playerOptionUI.gameObject.SetActive(true);
+        
+            yield return null;
         }
+
+        #endregion
     }
 }

@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Weapons;
 
 namespace Player
@@ -37,6 +39,28 @@ namespace Player
         private TextMeshProUGUI potionCountText;
 
         public void SetPotionCount(int count) => potionCountText.text = string.Format("x{0}", count);
+
+        #endregion
+    
+        #region Group
+
+        [Header("Group")]
+        [SerializeField] 
+        private HorizontalLayoutGroup groupUI;
+
+        public IEnumerator OpenGroup()
+        {
+            groupUI.spacing = 450;
+            groupUI.padding.left = -40;
+            yield return null;
+        }
+
+        public IEnumerator CloseGroup()
+        {
+            groupUI.spacing = 0;
+            groupUI.padding.left = 0;
+            yield return null;
+        }
 
         #endregion
     }

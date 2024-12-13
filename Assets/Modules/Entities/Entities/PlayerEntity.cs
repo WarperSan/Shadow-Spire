@@ -9,8 +9,7 @@ namespace Entities
 {
     public class PlayerEntity : GridEntity, ITurnable, IMovable
     {
-        [SerializeField]
-        private PlayerInformation playerInformation;
+        public PlayerInformation playerInformation;
 
         private void Start()
         {

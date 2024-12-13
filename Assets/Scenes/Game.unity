@@ -1749,7 +1749,7 @@ PrefabInstance:
     - target: {fileID: 2441235539879511821, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: potionIcon
       value: 
-      objectReference: {fileID: 6539442242368879410}
+      objectReference: {fileID: 0}
     - target: {fileID: 2441235539879511821, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: weaponIcon
       value: 
@@ -1769,11 +1769,11 @@ PrefabInstance:
     - target: {fileID: 2441235539879511821, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: potionCountText
       value: 
-      objectReference: {fileID: 6539442242368879411}
+      objectReference: {fileID: 0}
     - target: {fileID: 2441235539879511821, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: playerInformation
       value: 
-      objectReference: {fileID: 6539442242368879412}
+      objectReference: {fileID: 6539442242368879410}
     - target: {fileID: 5204009231057049463, guid: 373c569ce5e308cdf9e2771d465143da, type: 3}
       propertyPath: m_Layer
       value: 29
@@ -2684,6 +2684,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e344b1fdcd52060c1bf4dbb6bf760a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6539442242368879410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2855290938857753926, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+  m_PrefabInstance: {fileID: 6539442242368879408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38512f378868cf0682a7978a76ce880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6539442242368879412 stripped

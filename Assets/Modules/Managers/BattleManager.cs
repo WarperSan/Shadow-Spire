@@ -285,27 +285,46 @@ namespace Managers
             // If all enemies dead
             return false;
         }
-        [SerializeField] HorizontalLayoutGroup playerHealthUI;
 
         private IEnumerator EnemyTurn()
         {
-            //int rdmDamage = Random.Range(5, 11);
-
-            //PlayerTakeDamage(rdmDamage);
-
-
             // Disable Player BattleUI
-            battleUI.StartEnemyTurn(playerHealthUI);
+            yield return playerEntity.playerInformation.OpenGroup();
+            yield return battleUI.StartEnemyTurn();
 
-            // Enable EnemyAttack coroutine
+            // Start attacks
+            yield return ExecuteEnemyAttacks();
+
+            // End attacks
+            yield return CleanEnemyAttacks();
+
+            // Enable Player BattleUI
+            yield return battleUI.EndEnemyTurn();
+            yield return playerEntity.playerInformation.CloseGroup();
+
+            if (hasBattleEnded)
+                yield break;
+
+            //int rdmDamage = Random.Range(5, 11);
 
             // yield return DamagePlayer(rdmDamage);
 
             // if (hasBattleEnded)
             //     yield break;
 
-            // EnableBattleOption();
-            // AddInputs();
+            EnableBattleOption();
+            AddInputs();
+        }
+
+        private IEnumerator ExecuteEnemyAttacks()
+        {
+            // Enable EnemyAttack coroutine
+            yield return new WaitForSeconds(5f);
+        }
+
+        private IEnumerator CleanEnemyAttacks()
+        {
+            // Disable EnemyAttack coroutine
             yield return null;
         }
 
