@@ -64,7 +64,6 @@ namespace Enemies.Node
                 return;
 
             rdmPosition = positions[level.Random.Next(0, positions.Count)];
-            Debug.Log(rdmPosition);
         }
 
     }
