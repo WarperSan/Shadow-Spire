@@ -235,6 +235,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: icon_small_potion
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 218e396a301df0feea95bb7348bd4345
+      internalID: -147981125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -251,6 +272,7 @@ TextureImporter:
       icon_dagger: 135341577
       icon_heart: -308894918
       icon_magic_sword: 1478395535
+      icon_small_potion: -147981125
       icon_sword_small: -852831718
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
