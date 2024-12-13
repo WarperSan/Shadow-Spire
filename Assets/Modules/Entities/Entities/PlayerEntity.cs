@@ -72,7 +72,7 @@ namespace Entities
         #region Health
 
         [SerializeField] TextMeshProUGUI healthText;
-        public int MaxHealth { get; set; } = 25;
+        public int MaxHealth { get; set; } = 200;
         public int Health { get; set; }
         private void SetHealth(int health)
         {
