@@ -291,8 +291,6 @@ namespace Managers
 
         private IEnumerator EnemyTurn()
         {
-            yield return new WaitForSeconds(0.5f);
-
             // Set up
             projectiles.SetupProjectiles(battleEnemyEntities);
 
