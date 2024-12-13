@@ -7,6 +7,7 @@ using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Weapons;
 
 namespace Managers
@@ -251,11 +252,19 @@ namespace Managers
             return false;
         }
 
+        [SerializeField] HorizontalLayoutGroup playerHealthUI;
         private void EnemyTurn()
         {
-            int rdmDamage = Random.Range(5, 11);
+            //int rdmDamage = Random.Range(5, 11);
 
-            PlayerTakeDamage(rdmDamage);
+            //PlayerTakeDamage(rdmDamage);
+
+
+            // Disable Player BattleUI
+            battleUI.StartEnemyTurn(playerHealthUI);
+
+            // Enable EnemyAttack coroutine
+
         }
 
         #endregion

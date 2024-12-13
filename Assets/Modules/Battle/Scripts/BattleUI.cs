@@ -72,5 +72,29 @@ namespace Battle
             }
         }
         #endregion
+
+
+        [SerializeField] RectTransform playerOptionUI;
+        [SerializeField] Transform enemyAttackUI;
+        [SerializeField] HorizontalLayoutGroup playerHealthUI;
+
+        public void StartEnemyTurn(HorizontalLayoutGroup playerHealthUI)
+        {
+            playerHealthUI.spacing = 450;
+            playerHealthUI.padding.left = -40;
+
+
+            playerOptionUI.gameObject.SetActive(false);
+            enemyAttackUI.gameObject.SetActive(true);
+        }
+
+        public void EndEnemyTurn(HorizontalLayoutGroup playerHealthUI)
+        {
+            playerHealthUI.spacing = 0;
+            playerHealthUI.padding.left = 0;
+
+            enemyAttackUI.gameObject.SetActive(false);
+            playerOptionUI.gameObject.SetActive(true);
+        }
     }
 }
