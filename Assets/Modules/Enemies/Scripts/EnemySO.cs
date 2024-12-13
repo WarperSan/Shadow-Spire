@@ -23,6 +23,7 @@ namespace Enemies
     {
         [Header("Overworld")]
         public Sprite OverworldSprite;
+        public bool IsFlipped;
         public EnemyMovementSpeed MovementSpeed;
         public EnemyPathing Pathing;
 

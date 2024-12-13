@@ -138,23 +138,32 @@ namespace BattleEntity
             return builder.ToString();
         }
 
-        public static string GetTypeColor(BattleEntityType uniqueType) => uniqueType switch
+        public static string GetTypeColor(BattleEntityType type)
         {
-            BattleEntityType.NONE => "#D3D3D3",
-            BattleEntityType.NORMAL => "#B9E5EB",
-            BattleEntityType.UNDEAD => "#6BD36B",
-            BattleEntityType.GHOST => "#AA74FF",
-            BattleEntityType.GIANT => "#FF5E47",
-            BattleEntityType.ANIMAL => "#FF8B00",
-            _ => "white"
-        };
+            // Find first type
+            var types = Enum.GetValues(typeof(BattleEntityType));
+
+            foreach (BattleEntityType item in types)
+            {
+                if ((type & item) != 0)
+                {
+                    type = item;
+                    break;
+                }
+            }
+
+            return type switch
+            {
+                BattleEntityType.NONE => "#D3D3D3",
+                BattleEntityType.NORMAL => "#B9E5EB",
+                BattleEntityType.UNDEAD => "#6BD36B",
+                BattleEntityType.GHOST => "#AA74FF",
+                BattleEntityType.GIANT => "#FF5E47",
+                BattleEntityType.ANIMAL => "#FF8B00",
+                _ => "white"
+            };
+        }
 
         #endregion
     }
 }
-
-// NORMAL: 3 (Copycat, Medusa, Goblin)
-// UNDEAD: 3 (Zombie, Parasite, Blob)
-// GHOST: 3 (Reaper, Prisoner, Dead Angel)
-// GIANT: 3 (Orc, Knight, Dragon)
-// ANIMAL: 3 (Spider, Kraken, Snail)
