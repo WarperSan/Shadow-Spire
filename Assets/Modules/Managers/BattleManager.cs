@@ -218,17 +218,18 @@ namespace Managers
 
         private BattleEnemyEntity[] GenerateEnemies(EnemyEntity enemy)
         {
+            var level = GameManager.Instance.Level.Index;
             var random = GameManager.Instance.Level.Random;
             var allEnemies = GameManager.Instance.allEnemies;
 
             var enemies = new List<BattleEnemyEntity>();
 
-            if (random.NextDouble() <= 0.9f)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX > 1)
                 enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
 
             enemies.Add(new(enemy.EnemyData));
 
-            if (random.NextDouble() <= 0.9f)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX > 3)
                 enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
 
             return enemies.ToArray();
@@ -297,8 +298,8 @@ namespace Managers
             // Disable Player BattleUI
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
 
-            // Start attacks
-            yield return ExecuteEnemyAttacks();
+            // Execute enemy attacks
+            yield return projectiles.SpawnProjectiles(5f);
 
             // Enable Player BattleUI
             yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
@@ -308,13 +309,6 @@ namespace Managers
 
             if (hasBattleEnded)
                 yield break;
-
-            //int rdmDamage = Random.Range(5, 11);
-
-            // yield return DamagePlayer(rdmDamage);
-
-            // if (hasBattleEnded)
-            //     yield break;
 
             EnableBattleOption();
             AddInputs();
@@ -333,19 +327,6 @@ namespace Managers
                 projectiles = FindObjectOfType<EnemyProjectiles>(true);
                 yield return null;
             } while (projectiles == null);
-        }
-
-        private IEnumerator ExecuteEnemyAttacks()
-        {
-            // Enable EnemyAttack coroutine
-            yield return projectiles.SpawnProjectiles(5f);
-        }
-
-        private IEnumerator CleanEnemyAttacks()
-        {
-            // Disable EnemyAttack coroutine
-            projectiles.CleanProjectiles();
-            yield return null;
         }
 
         #endregion
