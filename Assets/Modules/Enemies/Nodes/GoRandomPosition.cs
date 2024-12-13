@@ -1,7 +1,9 @@
 ﻿using BehaviourModule.Nodes;
 using Entities;
 using Managers;
+using System.Collections.Generic;
 using UnityEngine;
+using UtilsModule;
 
 namespace Enemies.Node
 {
@@ -15,7 +17,7 @@ namespace Enemies.Node
         public GoRandomPosition(GridEntity self)
         {
             this.self = self;
-            FindRandomPosition();
+            rdmPosition = self.Position;
         }
 
         protected override NodeState OnEvaluate()
@@ -43,10 +45,27 @@ namespace Enemies.Node
             var level = GameManager.Instance.Level;
             var rdmRoom = level.Rooms[level.Random.Next(0, level.Rooms.Length)];
 
-            var rdmX = level.Random.Next(rdmRoom.X, rdmRoom.X + rdmRoom.Width - 1);
-            var rdmY = level.Random.Next(rdmRoom.Y, rdmRoom.Y + rdmRoom.Height - 1);
+            var positions = new List<Vector2Int>();
 
-            rdmPosition = new Vector2Int(rdmX, rdmY);
+            for (int y = rdmRoom.Y; y < rdmRoom.Y + rdmRoom.Height; y++)
+            {
+                for (int x = rdmRoom.X; x < rdmRoom.X + rdmRoom.Width; x++)
+                {
+                    // If the tile is blocked, skip
+                    if (level.IsBlocked(x, y))
+                        continue;
+
+                    positions.Add(new(x, -y));
+                }
+            }
+
+            // If no valid position, skip
+            if (positions.Count == 0)
+                return;
+
+            rdmPosition = positions[level.Random.Next(0, positions.Count)];
+            Debug.Log(rdmPosition);
         }
+
     }
 }
