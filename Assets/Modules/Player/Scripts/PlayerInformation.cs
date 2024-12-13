@@ -24,11 +24,23 @@ namespace Player
         [SerializeField]
         private TextMeshProUGUI healthText;
 
+        [SerializeField]
+        private TextMeshProUGUI healthPopupText;
+
+        [SerializeField]
+        private Animator healthAnimator;
+
         public void SetHealth(int health, int maxHealth) => healthText.text = string.Format(
             "<sprite name=icon_heart> {0} / {1}",
             health,
             maxHealth
         );
+
+        public void HitHealth(int amount)
+        {
+            healthPopupText.text = string.Format("-{0}", amount);
+            healthAnimator.SetTrigger("hit");
+        }
 
         #endregion
 

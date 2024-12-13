@@ -84,7 +84,12 @@ namespace Entities
             playerInformation.SetHealth(Health, MaxHealth);
         }
 
-        public void TakeDamage(int damage) => SetHealth(Health - damage);
+        public void TakeDamage(int damage)
+        {
+            SetHealth(Health - damage);
+            playerInformation.HitHealth(damage);
+        }
+        
         public void Heal(int amount) => SetHealth(Health + amount);
 
         #endregion
