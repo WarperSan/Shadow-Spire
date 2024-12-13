@@ -17,21 +17,23 @@ namespace Managers
         public EnemySO enemy1;
         public EnemySO enemy2;
         public EnemySO enemy3;
-        private EnemyEntity enemy;
-        private BattleEnemyEntity[] enemies;
+        private EnemyEntity enemyEntity;
+        private BattleEnemyEntity[] battleEnemyEntities;
+        private BattlePlayerEntity battlePlayerEntity;
 
-        public IEnumerator StartBattle(EnemyEntity enemy)
+        public IEnumerator StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
         {
-            this.enemy = enemy;
+            this.enemyEntity = enemyEntity;
+            this.battlePlayerEntity = new BattlePlayerEntity(playerEntity);
             yield return StartBattleTransition();
             yield return FindBattleUI();
 
-            var weapon = GameManager.Instance.player.GetWeapon();
+            var weapon = playerEntity.GetWeapon();
             LoadBattleOptions();
 
-            enemies = GenerateEnemies(enemy);
+            battleEnemyEntities = GenerateEnemies(enemyEntity);
 
-            LoadEnemyOptions(weapon, enemies);
+            LoadEnemyOptions(weapon, battleEnemyEntities);
 
             yield return battleUI.DisableSpoiler();
 
@@ -52,7 +54,7 @@ namespace Managers
 
             yield return battleUI.EnableSpoiler();
 
-            GameManager.Instance.EndBattle(isVictory, enemy);
+            GameManager.Instance.EndBattle(isVictory, enemyEntity);
         }
 
         #region Battle UI
@@ -111,8 +113,8 @@ namespace Managers
                 },
                 new()
                 {
-                    Text = "Defeat",
-                    OnEnter = () => EndBattle(false)
+                    Text = "Take Damage",
+                    OnEnter = () => PlayerTakeDamage(20)
                 }
             });
         }
@@ -133,6 +135,17 @@ namespace Managers
         {
             isSelectingBattleOption = false;
             battleUI.HideSelection<BattleOptionData>();
+        }
+
+        #endregion
+
+        #region Damage Player
+
+        public void PlayerTakeDamage(int damage)
+        {
+            battlePlayerEntity.TakeDamage(damage);
+            if(battlePlayerEntity.IsDead)
+                EndBattle(false);
         }
 
         #endregion
@@ -222,10 +235,10 @@ namespace Managers
 
         private bool VerifyEnemiesState()
         {
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < battleEnemyEntities.Length; i++)
             {
                 // If at least one enemy alive
-                if (!enemies[i].IsDead)
+                if (!battleEnemyEntities[i].IsDead)
                     return true;
             }
 

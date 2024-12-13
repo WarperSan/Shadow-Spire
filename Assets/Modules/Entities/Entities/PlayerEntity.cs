@@ -2,9 +2,7 @@ using System.Collections;
 using Entities.Interfaces;
 using Managers;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using Weapons;
 
 namespace Entities
@@ -14,6 +12,7 @@ namespace Entities
         private void Start()
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
+            SetHealth(MaxHealth);
             SetWeapon(new WeaponInstance(startWeapon, 0)); // Update UI
         }
 
@@ -69,7 +68,26 @@ namespace Entities
         }
 
         #endregion
-    
+
+        #region Health
+
+        [SerializeField] TextMeshProUGUI healthText;
+        public int MaxHealth { get; set; } = 25;
+        public int Health { get; set; }
+        private void SetHealth(int health)
+        {
+            Health = health;
+            healthText.text = $"<sprite name=icon_heart> {Health} / {MaxHealth}";
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+            SetHealth(Health);
+        }
+
+        #endregion
+
         #region Weapon
 
         [Header("Weapon")]

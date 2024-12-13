@@ -126,7 +126,7 @@ namespace Entities
             // Needs to check if you aleady started a battle.
             // If the player lands on an enemy, this method will be called twice,
             // because the player calls OnEntityLanded and this entity calls OnEntityLand.
-            GameManager.Instance.StartBattle(this);
+            GameManager.Instance.StartBattle(this, player);
         }
 
         #endregion

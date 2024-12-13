@@ -109,13 +109,13 @@ namespace Managers
 
         public bool IsInBattle { get; private set; }
 
-        public void StartBattle(EnemyEntity enemy)
+        public void StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
         {
             if (IsInBattle)
                 return;
 
             IsInBattle = true;
-            StartCoroutine(battleManager.StartBattle(enemy));
+            StartCoroutine(battleManager.StartBattle(enemyEntity, playerEntity));
             InputManager.Instance.SwitchToUI();
         }
 
