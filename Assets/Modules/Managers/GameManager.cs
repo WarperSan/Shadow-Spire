@@ -62,7 +62,7 @@ namespace Managers
                 Index = levelIndex,
                 Seed = seed,
                 Width = Mathf.Min(4 + levelIndex * 2, 18),
-                Height = Mathf.Min(4 + levelIndex * 2, 12),
+                Height = Mathf.Min(4 + levelIndex * 2, 8),
                 MinimumRoomHeight = levelIndex <= 1 ? 2 : 3,
                 MinimumRoomWidth = levelIndex <= 1 ? 2 : 3,
                 SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
@@ -75,7 +75,7 @@ namespace Managers
             Level = dungeonManager.StartLevel(settings, player);
             dungeonCamera.transform.position = new Vector3(
                 Level.Width / 2f,
-                -(Level.Height / 2f),
+                -(Level.Height / 2f + 1f),
                 dungeonCamera.transform.position.z
             );
             InputManager.Instance.SwitchToPlayer();

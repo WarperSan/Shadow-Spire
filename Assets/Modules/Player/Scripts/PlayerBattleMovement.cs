@@ -10,16 +10,17 @@ public class PlayerBattleMovement : MonoBehaviour
     float movementY;
     float[] boxLimit = { -0.75f, 0.75f, -0.68f, 0.68f };
     public BattleManager battleManager;
-    
+
+    public bool canTakeDamage;
+
     void Update()
     {
         MovePlayer();
         LimitMovements();
     }
 
-    public void Move(InputAction.CallbackContext context)
+    public void Move(Vector2 direction)
     {
-        Vector2 direction = context.ReadValue<Vector2>();
         movementX = direction.x;
         movementY = direction.y;
     }
@@ -32,18 +33,21 @@ public class PlayerBattleMovement : MonoBehaviour
 
     public void LimitMovements()
     {
-        Vector3 currPosition = transform.localPosition ;
+        Vector3 currPosition = transform.localPosition;
         currPosition.x = Mathf.Clamp(currPosition.x, boxLimit[0], boxLimit[1]);
         currPosition.y = Mathf.Clamp(currPosition.y, boxLimit[2], boxLimit[3]);
         transform.localPosition = currPosition;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Projectile"))
-        {
-            battleManager.DamagePlayer(5);
-            collision.gameObject.SetActive(false);
-        }
+        if (!canTakeDamage)
+            return;
+
+        if (!collision.gameObject.CompareTag("Projectile"))
+            return;
+
+        battleManager.DamagePlayer(5);
+        collision.gameObject.SetActive(false);
     }
 }

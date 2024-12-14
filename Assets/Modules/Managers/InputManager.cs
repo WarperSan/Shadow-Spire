@@ -16,11 +16,15 @@ namespace Managers
         public UnityEvent OnEnterUI;
         public UnityEvent OnEscapeUI;
 
+        [Header("Minigame")]
+        public UnityEvent<Vector2> OnMoveMinigame;
+
         #region Inputs
 
         private PlayerInput input;
 
         public void SwitchToPlayer() => input.SwitchCurrentActionMap("Player");
+        public void SwitchToMiniGame() => input.SwitchCurrentActionMap("Minigame-Player");
         public void SwitchToUI() => input.SwitchCurrentActionMap("UI");
 
         #endregion
@@ -43,6 +47,12 @@ namespace Managers
 
             Vector2 dir = context.ReadValue<Vector2>();
             OnMoveUI?.Invoke(dir);
+        }
+
+        public void MoveMinigame(InputAction.CallbackContext context)
+        {
+            Vector2 dir = context.ReadValue<Vector2>();
+            OnMoveMinigame?.Invoke(dir);
         }
 
         public void EnterUI(InputAction.CallbackContext context)

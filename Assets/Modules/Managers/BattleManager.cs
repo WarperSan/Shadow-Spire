@@ -300,14 +300,14 @@ namespace Managers
             // Execute enemy attacks
             yield return minigameManager.SpawnProjectiles(5f);
 
+            if (hasBattleEnded)
+                yield break;
+
             // Enable Player BattleUI
             yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
 
             // End attacks
             minigameManager.CleanProjectiles();
-
-            if (hasBattleEnded)
-                yield break;
 
             EnableBattleOption();
             AddInputs();
