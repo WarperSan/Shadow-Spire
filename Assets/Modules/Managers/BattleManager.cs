@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Battle;
+using Battle.Minigame;
 using Battle.Options;
 using BattleEntity;
 using Entities;
@@ -36,7 +37,7 @@ namespace Managers
             // Find all elements
             yield return FindBattleUI();
 
-            yield return FindEnemyProjectiles();
+            yield return FindMinigameManager();
 
             // Load options
             LoadBattleOptions();
@@ -291,19 +292,19 @@ namespace Managers
         private IEnumerator EnemyTurn()
         {
             // Set up
-            projectiles.SetupProjectiles(battleEnemyEntities, battlePlayerEntity, this);
+            minigameManager.SetupProjectiles(battleEnemyEntities, battlePlayerEntity, this);
 
             // Disable Player BattleUI
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
 
             // Execute enemy attacks
-            yield return projectiles.SpawnProjectiles(5f);
+            yield return minigameManager.SpawnProjectiles(5f);
 
             // Enable Player BattleUI
             yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
 
             // End attacks
-            projectiles.CleanProjectiles();
+            minigameManager.CleanProjectiles();
 
             if (hasBattleEnded)
                 yield break;
@@ -314,17 +315,17 @@ namespace Managers
 
         #endregion
 
-        #region Enemy Projectiles
+        #region Minigame
 
-        private EnemyProjectiles projectiles;
+        private MinigameManager minigameManager;
 
-        private IEnumerator FindEnemyProjectiles()
+        private IEnumerator FindMinigameManager()
         {
             do
             {
-                projectiles = FindObjectOfType<EnemyProjectiles>(true);
+                minigameManager = FindObjectOfType<MinigameManager>(true);
                 yield return null;
-            } while (projectiles == null);
+            } while (minigameManager == null);
         }
 
         #endregion

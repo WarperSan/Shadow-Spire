@@ -1,6 +1,6 @@
 using System.Collections;
+using Battle.Minigame;
 using Battle.Options;
-using BattleEntity;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -85,7 +85,7 @@ namespace Battle
         private CanvasGroup battleEnemiesGroup;
 
         [SerializeField]
-        private Transform enemyAttackUI;
+        private MinigameManager minigameManager;
 
         public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
@@ -102,16 +102,14 @@ namespace Battle
             battleEnemiesGroup.alpha = 0.5f;
 
             yield return playerInformation.OpenGroup(0.5f);
-
-            enemyAttackUI.gameObject.SetActive(true);
+            yield return minigameManager.ShowIn();
         }
 
         public IEnumerator EndEnemyTurn(PlayerInformation playerInformation)
         {
             const int TICKS = 4;
 
-            enemyAttackUI.gameObject.SetActive(false);
-
+            yield return minigameManager.HideOut();
             yield return playerInformation.CloseGroup(0.5f);
 
             for (int i = 0; i <= TICKS; i++)
