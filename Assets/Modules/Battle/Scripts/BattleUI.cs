@@ -82,40 +82,42 @@ namespace Battle
         private CanvasGroup battleOptionsGroup;
 
         [SerializeField]
+        private CanvasGroup battleEnemiesGroup;
+
+        [SerializeField]
         private Transform enemyAttackUI;
 
         public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
-            battleOptionsGroup.alpha = 1;
-            battleOptionsGroup.gameObject.SetActive(true);
+            const int TICKS = 4;
 
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= TICKS; i++)
             {
-                battleOptionsGroup.alpha = 1f - 1f / 4f * i;
+                battleOptionsGroup.alpha = 1f - 1f / TICKS * i;
+                battleEnemiesGroup.alpha = 1f - 0.5f / TICKS * i;
                 yield return new WaitForSeconds(0.1f);
             }
 
-            battleOptionsGroup.gameObject.SetActive(false);
+            battleOptionsGroup.alpha = 0;
+            battleEnemiesGroup.alpha = 0.5f;
 
-            yield return playerInformation.OpenGroup(0.2f);
+            yield return playerInformation.OpenGroup(0.5f);
 
             enemyAttackUI.gameObject.SetActive(true);
         }
 
         public IEnumerator EndEnemyTurn(PlayerInformation playerInformation)
         {
+            const int TICKS = 4;
+
             enemyAttackUI.gameObject.SetActive(false);
 
-            yield return playerInformation.CloseGroup(0.2f);
+            yield return playerInformation.CloseGroup(0.5f);
 
-            //playerOptionUI.gameObject.SetActive(true);
-
-            battleOptionsGroup.alpha = 0;
-            battleOptionsGroup.gameObject.SetActive(true);
-
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= TICKS; i++)
             {
-                battleOptionsGroup.alpha = 1f / 4f * i;
+                battleOptionsGroup.alpha = 1f / TICKS * i;
+                battleEnemiesGroup.alpha = 0.5f + 0.5f / TICKS * i;
                 yield return new WaitForSeconds(0.1f);
             }
         }

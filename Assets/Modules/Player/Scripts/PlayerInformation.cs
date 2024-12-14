@@ -8,6 +8,13 @@ namespace Player
 {
     public class PlayerInformation : MonoBehaviour
     {
+        private RectTransform rectTransform;
+
+        private void Awake()
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+
         #region Weapon
 
         [Header("Weapon")]
@@ -30,11 +37,16 @@ namespace Player
         [SerializeField]
         private Animator healthAnimator;
 
-        public void SetHealth(int health, int maxHealth) => healthText.text = string.Format(
-            "<sprite name=icon_heart> {0} / {1}",
-            health,
-            maxHealth
-        );
+        public void SetHealth(int health, int maxHealth)
+        {
+            healthText.text = string.Format(
+                "<sprite name=icon_heart> {0} / {1}",
+                health,
+                maxHealth
+            );
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        }
 
         public void HitHealth(int amount)
         {
@@ -62,48 +74,32 @@ namespace Player
 
         public IEnumerator OpenGroup(float time)
         {
-            const float SPACING = 450;
-            const int PADDING_LEFT = -40;
+            const int TICKS = 16;
+            const float SPACING = 225;
 
-            float spacing = groupUI.spacing;
-            int paddingLeft = groupUI.padding.left;
-
-            float duration = 0;
-
-            while (duration < time)
+            for (int i = 1; i <= TICKS; i++)
             {
-                groupUI.spacing = Mathf.Lerp(spacing, SPACING, duration / time);
-                groupUI.padding.left = (int)Mathf.Lerp(paddingLeft, PADDING_LEFT, duration / time);
-
-                duration += Time.deltaTime;
-                yield return null;
+                groupUI.spacing = SPACING / TICKS * i;
+                yield return new WaitForSeconds(time / TICKS);
             }
 
             groupUI.spacing = SPACING;
-            groupUI.padding.left = PADDING_LEFT;
         }
 
         public IEnumerator CloseGroup(float time)
         {
+            const int TICKS = 16;
             const float SPACING = 0;
-            const int PADDING_LEFT = 0;
 
-            float spacing = groupUI.spacing;
-            int paddingLeft = groupUI.padding.left;
+            float startSpacing = groupUI.spacing;
 
-            float duration = 0;
-
-            while (duration < time)
+            for (int i = 1; i <= TICKS; i++)
             {
-                groupUI.spacing = Mathf.Lerp(spacing, SPACING, duration / time);
-                groupUI.padding.left = (int)Mathf.Lerp(paddingLeft, PADDING_LEFT, duration / time);
-
-                duration += Time.deltaTime;
-                yield return null;
+                groupUI.spacing = startSpacing - startSpacing / TICKS * i;
+                yield return new WaitForSeconds(time / TICKS);
             }
 
             groupUI.spacing = SPACING;
-            groupUI.padding.left = PADDING_LEFT;
         }
 
         #endregion
