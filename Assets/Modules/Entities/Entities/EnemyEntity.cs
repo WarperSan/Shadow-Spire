@@ -21,7 +21,6 @@ namespace Entities
             Instance = new EnemyInstance(data, level);
 
             spriteRenderer.sprite = data.OverworldSprite;
-            spriteRenderer.flipX = data.IsFlipped;
             spriteRenderer.color = BattleEntity.BattleEntity.GetTypeColor(data.Type);
 
             turnsRemaining = waitTurns = data.MovementSpeed switch
@@ -113,18 +112,7 @@ namespace Entities
         #region IMovable
 
         /// <inheritdoc/>
-        void IMovable.OnMoveStart(Movement movement)
-        {
-            if (_data.IsFlipped)
-            {
-                if (movement == Movement.LEFT)
-                    movement = Movement.RIGHT;
-                else if (movement == Movement.RIGHT)
-                    movement = Movement.LEFT;
-            }
-
-            FlipByMovement(movement);
-        }
+        void IMovable.OnMoveStart(Movement movement) => FlipByMovement(movement);
 
         #endregion
     }

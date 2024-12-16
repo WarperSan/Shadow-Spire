@@ -18,12 +18,16 @@ namespace Enemies
         VERY_FAST
     }
 
+    /// <summary>
+    /// Data of an enemy
+    /// </summary>
     [CreateAssetMenu(fileName = "EnemySO", menuName = "Enemy", order = 0)]
     public class EnemySO : ScriptableObject
     {
         [Header("Overworld")]
+        [Tooltip("Sprite used when displaying this enemy in the overworld")]
         public Sprite OverworldSprite;
-        public bool IsFlipped;
+
         public EnemyMovementSpeed MovementSpeed;
         public EnemyPathing Pathing;
 
