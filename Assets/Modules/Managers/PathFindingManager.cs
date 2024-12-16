@@ -140,7 +140,7 @@ namespace Managers
             return movements;
         }
 
-        public static int[] FindPath(GridEntity origin, GridEntity target) => FindPath(origin, target.Position);
+        public static int[] FindPath(GridEntity origin, GridEntity target) => FindPath(origin, target.Position);
 
         public static int[] FindPath(GridEntity origin, Vector2Int target)
         {

@@ -130,7 +130,7 @@ namespace Managers
         private Drawer[] DrawerPipeline;
         private IDungeonReceive[] Receivers;
 
-        public DungeonResult StartLevel(DungeonSettings settings, PlayerEntity player)
+        public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
         {
             // Generate level
             var random = new System.Random(settings.Seed);
@@ -146,7 +146,7 @@ namespace Managers
                 new GroundDrawer(lvl, groundMap, groundTile),
 
                 // Rooms
-                new EnemyRoomDrawer(lvl, enemyPrefab, GameManager.Instance.allEnemies),
+                new EnemyRoomDrawer(lvl, enemyPrefab, Enemies.EnemyInstance.ENEMIES),
                 new TreasureRoomDrawer(lvl, potionPrefab),
                 new SpikesRoomDrawer(lvl, spikesPrefab),
             };
@@ -164,6 +164,11 @@ namespace Managers
             // Compute graphs
             lvl.TileGraph = PathFindingManager.ComputeTileGraph(lvl);
 
+            return lvl;
+        }
+
+        public void StartLevel(DungeonResult lvl)
+        {
             // Draw the level
             foreach (var drawer in DrawerPipeline)
                 drawer.Draw(lvl.Rooms);
@@ -173,8 +178,6 @@ namespace Managers
 
             foreach (var receiver in Receivers)
                 receiver.OnLevelStart(lvl);
-
-            return lvl;
         }
 
         public IEnumerator EndLevel(int currentLevel, int nextLevel, System.Func<IEnumerator> callback = null)

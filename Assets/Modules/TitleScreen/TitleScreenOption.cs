@@ -2,25 +2,44 @@ using Battle.Options;
 using TMPro;
 using UnityEngine;
 
-public class TitleScreenOptionData : UIOptionData 
+namespace TitleScreen
 {
-    public string text;
-}
-
-public class TitleScreenOption : UIOption<TitleScreenOptionData>
-{
-    [SerializeField] TextMeshProUGUI optionTitle;
-    protected override void OnLoadOption(TitleScreenOptionData option)
+    /// <summary>
+    /// Data used for the title screen menu
+    /// </summary>
+    public class TitleScreenOptionData : UIOptionData
     {
-        optionTitle.text = loadedOption.text;
-    }
-    public override void Select()
-    {
-        optionTitle.text = "> " + loadedOption.text + " <";
+        public string Text;
     }
 
-    public override void Deselect()
+    /// <summary>
+    /// Option used for the title screen menu
+    /// </summary>
+    public class TitleScreenOption : UIOption<TitleScreenOptionData>
     {
-        optionTitle.text = loadedOption.text;
+        [SerializeField] 
+        private TextMeshProUGUI optionTitle;
+
+        #region UIOption
+
+        /// <inheritdoc/>
+        protected override void OnLoadOption(TitleScreenOptionData option)
+        {
+            optionTitle.text = loadedOption.Text;
+        }
+
+        /// <inheritdoc/>
+        public override void Select()
+        {
+            optionTitle.text = string.Format("> {0} <", loadedOption.Text);
+        }
+
+        /// <inheritdoc/>
+        public override void Deselect()
+        {
+            optionTitle.text = loadedOption.Text;
+        }
+
+        #endregion
     }
 }

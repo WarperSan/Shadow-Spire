@@ -38,6 +38,5 @@ namespace Enemies
         public int BaseAttack = 1;
 
         public BattleEntityType Type = BattleEntityType.NORMAL;
-
     }
 }

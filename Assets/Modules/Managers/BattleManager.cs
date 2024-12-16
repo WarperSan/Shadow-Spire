@@ -4,6 +4,7 @@ using Battle;
 using Battle.Minigame;
 using Battle.Options;
 using BattleEntity;
+using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
@@ -219,17 +220,16 @@ namespace Managers
         {
             var level = GameManager.Instance.Level.Index;
             var random = GameManager.Instance.Level.Random;
-            var allEnemies = GameManager.Instance.allEnemies;
 
             var enemies = new List<BattleEnemyEntity>();
 
             if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 1)
-                enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
+                enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));
 
-            enemies.Add(new(enemy.EnemyData));
+            enemies.Add(new(enemy.Instance));
 
             if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
-                enemies.Add(new(allEnemies[random.Next(0, allEnemies.Length)]));
+                enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));
 
             return enemies.ToArray();
         }

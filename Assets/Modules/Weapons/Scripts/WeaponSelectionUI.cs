@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Managers;
 using UnityEngine;
 
@@ -53,25 +54,27 @@ namespace Weapons
 
         private void LoadWeapons(WeaponInstance currentWeapon)
         {
-            var weapons = new WeaponOptionData[3] {
-                new() {
+            var weapons = new List<WeaponOptionData>
+            {
+                new()
+                {
                     WeaponInstance = currentWeapon,
                     Subtext = "Keep",
-                    OnEnter = SelectWeapon
-                },
-                new() {
-                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
-                    Subtext = "Replace",
-                    OnEnter = SelectWeapon
-                },
-                new() {
-                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
-                    Subtext = "Replace",
                     OnEnter = SelectWeapon
                 }
             };
 
-            options.LoadOptions(weapons);
+            for (int i = 0; i < 2; i++)
+            {
+                weapons.Add(new()
+                {
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
+                    Subtext = "Replace",
+                    OnEnter = SelectWeapon
+                });
+            }
+
+            options.LoadOptions(weapons.ToArray());
             options.ShowSelection();
         }
 

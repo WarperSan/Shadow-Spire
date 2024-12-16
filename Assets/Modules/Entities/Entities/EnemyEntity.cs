@@ -9,20 +9,17 @@ namespace Entities
     {
         #region Data
 
+        public EnemyInstance Instance;
         private EnemySO _data;
 
         private int waitTurns;
         private int movesPerTurn;
         private int turnsRemaining;
 
-        public EnemySO EnemyData
+        public void SetData(EnemySO data, int level)
         {
-            get => _data;
-            set => SetData(value);
-        }
+            Instance = new EnemyInstance(data, level);
 
-        private void SetData(EnemySO data)
-        {
             spriteRenderer.sprite = data.OverworldSprite;
             spriteRenderer.flipX = data.IsFlipped;
             spriteRenderer.color = BattleEntity.BattleEntity.GetTypeColor(data.Type);
@@ -33,6 +30,7 @@ namespace Entities
                 EnemyMovementSpeed.SLOW => 1,
                 _ => 0
             };
+
             movesPerTurn = data.MovementSpeed switch
             {
                 EnemyMovementSpeed.FAST => 2,
@@ -57,11 +55,11 @@ namespace Entities
                 yield return null;
                 yield break;
             }
-            
+
             turnsRemaining = waitTurns;
 
             //if (_data.Pathing == EnemyPathing.DIRECT)
-            
+
             int[] path = PathFindingManager.FindPath(this, GameManager.Instance.player);
             Movement[] movements = PathFindingManager.GetDirections(path);
 
@@ -129,6 +127,5 @@ namespace Entities
         }
 
         #endregion
-
     }
 }

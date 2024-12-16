@@ -9,8 +9,34 @@ namespace Managers
 {
     public class TurnManager : MonoBehaviour, IDungeonReceive
     {
+        #region Entities
+
         private readonly List<GridEntity> turnEntities = new();
-        private GridEntity[] foundEntities;
+        private readonly List<GridEntity> foundEntities = new();
+
+        public void AddEntity(GridEntity entity)
+        {
+            foundEntities.Add(entity);
+
+            if (entity is not ITurnable)
+                return;
+
+            turnEntities.Add(entity);
+        }
+
+        public void RemoveEntity(GridEntity entity)
+        {
+            foundEntities.Remove(entity);
+
+            if (entity is not ITurnable)
+                return;
+
+            turnEntities.Remove(entity);
+        }
+
+        #endregion
+
+        #region Turn
 
         private IEnumerator ProcessTurn()
         {
@@ -36,7 +62,7 @@ namespace Managers
                     foreach (var item in foundEntities)
                     {
                         // If entity doesnt exist, skip
-                        if(item == null)
+                        if (item == null)
                             continue;
 
                         // If checking self, skip
@@ -60,8 +86,9 @@ namespace Managers
                 GameManager.Instance.Defeat();
         }
 
-
         public void StartTurn() => StartCoroutine(ProcessTurn());
+
+        #endregion
 
         #region IDungeonReceive
 
@@ -70,21 +97,20 @@ namespace Managers
         {
             var player = level.Player;
 
+            foundEntities.Clear();
             turnEntities.Clear();
-            turnEntities.Add(player); // Make the player the first entity
 
-            foundEntities = FindObjectsOfType<GridEntity>();
+            AddEntity(player); // Make the player the first entity
 
-            foreach (var item in foundEntities)
+            var allEntities = FindObjectsOfType<GridEntity>();
+
+            foreach (var item in allEntities)
             {
                 // Don't add player twice
                 if (item == player)
                     continue;
 
-                if (item is not ITurnable)
-                    continue;
-
-                turnEntities.Add(item);
+                AddEntity(item);
             }
 
             StartTurn();

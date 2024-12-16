@@ -15,7 +15,8 @@ namespace Managers
     {
         private void Start()
         {
-            WeaponInstance.WEAPONS = Resources.FindObjectsOfTypeAll<WeaponSO>();
+            WeaponInstance.WEAPONS = Resources.LoadAll<WeaponSO>("Weapons");
+            EnemyInstance.ENEMIES = Resources.LoadAll<EnemySO>("Enemies");
 
             StartLevel();
         }
@@ -74,7 +75,9 @@ namespace Managers
 
             Debug.Log("Seed: " + seed);
 
-            Level = dungeonManager.StartLevel(settings, player);
+            Level = dungeonManager.GenerateLevel(settings, player);
+            dungeonManager.StartLevel(Level);
+
             dungeonCamera.transform.position = new Vector3(
                 Level.Width / 2f,
                 -(Level.Height / 2f + 1f),
@@ -163,13 +166,6 @@ namespace Managers
             else
                 yield return weaponUI.ShowWeapons();
         }
-
-        #endregion
-
-        #region Enemies
-
-        [Header("Weapons")]
-        public EnemySO[] allEnemies;
 
         #endregion
 

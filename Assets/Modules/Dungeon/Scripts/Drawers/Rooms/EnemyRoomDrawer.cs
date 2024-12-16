@@ -35,7 +35,7 @@ namespace Dungeon.Drawers.Rooms
                     enemy.transform.position = new Vector3(x, -y, 0);
 
                     if (enemy.TryGetComponent(out EnemyEntity entity))
-                        entity.EnemyData = EnemyPool[Level.Random.Next(0, EnemyPool.Length)];
+                        entity.SetData(EnemyPool[Level.Random.Next(0, EnemyPool.Length)], Level.Index);
 
                     enemiesSpawned.Add(enemy);
                 }

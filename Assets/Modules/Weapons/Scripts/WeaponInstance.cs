@@ -47,7 +47,6 @@ namespace Weapons
                 weapon._types |= (BattleEntityType)types.GetValue(random.Next(0, types.Length));
             }
 
-            //weapon._types
             return weapon;
         }
 

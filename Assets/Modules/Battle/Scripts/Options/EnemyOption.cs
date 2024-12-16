@@ -66,7 +66,7 @@ namespace Battle.Options
 
             SetHealth(entity.Health);
 
-            var enemy = entity.Enemy;
+            var enemy = entity.Enemy.GetRaw();
             sprite.sprite = enemy.FightSprite;
 
             shadow.sprite = enemy.FightShadowSprite;
