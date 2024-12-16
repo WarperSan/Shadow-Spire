@@ -468,10 +468,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleOptions: {fileID: 7446650073907574095}
   enemyOptions: {fileID: 466871610123559184}
-  spoiler: {fileID: 2915240662006265275}
+  spoiler: {fileID: 1027991636903909239}
   battleOptionsGroup: {fileID: 2378045913916503619}
   battleEnemiesGroup: {fileID: 7122002069134216999}
-  enemyAttackUI: {fileID: 0}
+  minigameManager: {fileID: 0}
 --- !u!1 &8492639557268740357
 GameObject:
   m_ObjectHideFlags: 0

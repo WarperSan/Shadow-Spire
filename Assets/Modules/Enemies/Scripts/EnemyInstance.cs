@@ -41,11 +41,9 @@ namespace Enemies
         #region Getters
 
         public EnemySO GetRaw() => _data;
-        public int GetHealth() => Mathf.RoundToInt(_data.BaseHealth + _data.BaseHealth * 0.5f * (GameManager.Instance.Level.Index - DungeonGenerator.ENEMY_ROOM_INDEX) * 0.5f);
+        public int GetHealth() => Mathf.RoundToInt(_data.BaseHealth + _data.BaseHealth * 0.5f * _level * 0.5f);
         public int GetAttack() => 5;
         public BattleEntityType GetTypes() => _data.Type;
-
-        //public Sprite GetIcon() => _data.Icon;
 
         #endregion
     }

@@ -4,6 +4,7 @@ using Battle.Options;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
+using UtilsModule;
 
 namespace Battle
 {
@@ -48,31 +49,11 @@ namespace Battle
 
         [Header("Spoiler")]
         [SerializeField]
-        private GameObject spoiler;
+        private Image spoiler;
 
-        public IEnumerator DisableSpoiler()
-        {
-            spoiler.SetActive(false);
-            yield return null;
-        }
+        public IEnumerator DisableSpoiler() => spoiler.FadeOut(4, 0.2f);
+        public IEnumerator EnableSpoiler() => spoiler.FadeIn(7, 0.2f);
 
-        public IEnumerator EnableSpoiler()
-        {
-            const float FADE_TIME = 7f;
-
-            spoiler.SetActive(true);
-            var blackout = spoiler.GetComponent<Image>();
-            var blackoutColor = blackout.color;
-            blackoutColor.a = 0f;
-            blackout.color = blackoutColor;
-
-            for (int i = 1; i <= FADE_TIME; i++)
-            {
-                blackoutColor.a = 1f / FADE_TIME * i;
-                blackout.color = blackoutColor;
-                yield return new WaitForSeconds(0.2f);
-            }
-        }
         #endregion
 
         #region Enemy Attack
@@ -89,17 +70,14 @@ namespace Battle
 
         public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
-            const int TICKS = 4;
-
-            for (int i = 0; i <= TICKS; i++)
+            var parallel = new Coroutine[]
             {
-                battleOptionsGroup.alpha = 1f - 1f / TICKS * i;
-                battleEnemiesGroup.alpha = 1f - 0.5f / TICKS * i;
-                yield return new WaitForSeconds(0.1f);
-            }
+                StartCoroutine(battleOptionsGroup.Fade(4, 0.1f, 1f, 0f)),
+                StartCoroutine(battleEnemiesGroup.Fade(4, 0.1f, 1f, 0.5f))
+            };
 
-            battleOptionsGroup.alpha = 0;
-            battleEnemiesGroup.alpha = 0.5f;
+            foreach (var item in parallel)
+                yield return item;
 
             yield return playerInformation.OpenGroup(0.5f);
             yield return minigameManager.ShowIn();
@@ -107,17 +85,17 @@ namespace Battle
 
         public IEnumerator EndEnemyTurn(PlayerInformation playerInformation)
         {
-            const int TICKS = 4;
-
             yield return minigameManager.HideOut();
             yield return playerInformation.CloseGroup(0.5f);
 
-            for (int i = 0; i <= TICKS; i++)
+            var parallel = new Coroutine[]
             {
-                battleOptionsGroup.alpha = 1f / TICKS * i;
-                battleEnemiesGroup.alpha = 0.5f + 0.5f / TICKS * i;
-                yield return new WaitForSeconds(0.1f);
-            }
+                StartCoroutine(battleOptionsGroup.Fade(4, 0.1f, 0f, 1f)),
+                StartCoroutine(battleEnemiesGroup.Fade(4, 0.1f, 0.5f, 1f))
+            };
+
+            foreach (var item in parallel)
+                yield return item;
         }
 
         #endregion

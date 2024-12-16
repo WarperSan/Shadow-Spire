@@ -995,7 +995,7 @@ MonoBehaviour:
   player: {fileID: 1931053744}
   IsPlayerDead: 0
   dungeonManager: {fileID: 366401024}
-  levelIndex: 0
+  levelIndex: 4
   dungeonCamera: {fileID: 1052180607}
   overSeed: -2078715853
   useSeed: 0
@@ -1004,22 +1004,6 @@ MonoBehaviour:
   endBattleBackground: {fileID: 2004717174}
   diedText: {fileID: 1334258075}
   weaponUI: {fileID: 372251977}
-  allEnemies:
-  - {fileID: 11400000, guid: 779532432a2d056d0b6bbdbac6f8dec9, type: 2}
-  - {fileID: 11400000, guid: 992f1ce2f71be56c3a27cd0c8278d3db, type: 2}
-  - {fileID: 11400000, guid: 1a61a788034ea37d581cf02b04c36ce2, type: 2}
-  - {fileID: 11400000, guid: 8f3444359d2cefacd90fd0ffc4714033, type: 2}
-  - {fileID: 11400000, guid: e3fa4aae138d02028a60cf81d7fd4efc, type: 2}
-  - {fileID: 11400000, guid: bfefcc06ca65d63c5b0b4a0ff0064f59, type: 2}
-  - {fileID: 11400000, guid: a1cc3a34223245fa0866d95131ce7946, type: 2}
-  - {fileID: 11400000, guid: 3824e7df9afd80057aae377df88887c0, type: 2}
-  - {fileID: 11400000, guid: 9e386fb4326ce6afe965b2993839abc8, type: 2}
-  - {fileID: 11400000, guid: 89859b5e7830dee539759f3173048e34, type: 2}
-  - {fileID: 11400000, guid: 31d0b1bd66b847024a139e4393389e04, type: 2}
-  - {fileID: 11400000, guid: 5a24a4907ecb7405ebe1c2a86b36c874, type: 2}
-  - {fileID: 11400000, guid: 0ec87b827bd95d95aaf28c3194a3add2, type: 2}
-  - {fileID: 11400000, guid: 1388da764b3ff052bac7820300c070c9, type: 2}
-  - {fileID: 11400000, guid: b2b421885d196130ab1bcb37480776e2, type: 2}
 --- !u!1 &1005352961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,7 +2099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 348.05554
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.y

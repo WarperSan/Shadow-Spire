@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using UtilsModule;
 
 namespace Managers
 {
@@ -89,40 +90,6 @@ namespace Managers
         private TextMeshProUGUI transitionLevelText;
         private string originalLevelText;
 
-        private IEnumerator BlackoutFadeIn(int transitionTicks)
-        {
-            var blackoutColor = blackout.color;
-            blackoutColor.a = 0;
-
-            blackout.color = blackoutColor;
-            blackout.gameObject.SetActive(true);
-
-            for (int i = 1; i <= transitionTicks; i++)
-            {
-                blackoutColor.a = 1f / transitionTicks * i;
-                blackout.color = blackoutColor;
-                yield return new WaitForSeconds(0.2f);
-            }
-        }
-
-        private IEnumerator BlackoutFadeOut(int transitionTicks)
-        {
-            var blackoutColor = blackout.color;
-            blackoutColor.a = 1;
-
-            blackout.color = blackoutColor;
-            blackout.gameObject.SetActive(true);
-
-            for (int i = 1; i <= transitionTicks; i++)
-            {
-                blackoutColor.a = 1f - 1f / transitionTicks * i;
-                blackout.color = blackoutColor;
-                yield return new WaitForSeconds(0.2f);
-            }
-
-            blackout.gameObject.SetActive(false);
-        }
-
         #endregion
 
         #region Generation
@@ -186,7 +153,7 @@ namespace Managers
 
             yield return new WaitForSeconds(0.2f);
 
-            yield return BlackoutFadeIn(BLACKOUT_TICKS);
+            yield return blackout.FadeIn(BLACKOUT_TICKS, 0.2f);
 
             yield return new WaitForSeconds(0.6f);
 
@@ -212,7 +179,7 @@ namespace Managers
             if (callback != null)
                 yield return callback.Invoke();
 
-            yield return BlackoutFadeOut(BLACKOUT_TICKS);
+            yield return blackout.FadeOut(BLACKOUT_TICKS, 0.2f);
 
             yield return new WaitForSeconds(0.2f);
         }

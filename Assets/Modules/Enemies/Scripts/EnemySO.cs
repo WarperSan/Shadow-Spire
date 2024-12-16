@@ -28,11 +28,17 @@ namespace Enemies
         [Tooltip("Sprite used when displaying this enemy in the overworld")]
         public Sprite OverworldSprite;
 
+        [Tooltip("Determines how fast this enemy moves in the overworld")]
         public EnemyMovementSpeed MovementSpeed;
+
+        [Tooltip("Determines the pathing used by this enemy")]
         public EnemyPathing Pathing;
 
         [Header("Fight")]
+        [Tooltip("Sprite used when displaying this enemy in the fight")]
         public Sprite FightSprite;
+
+        [Tooltip("Sprite used when display this enemy's shadow in the fight")]
         public Sprite FightShadowSprite;
 
         [Min(1)]

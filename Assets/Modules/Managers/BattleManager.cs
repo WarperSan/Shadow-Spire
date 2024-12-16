@@ -8,6 +8,7 @@ using Enemies;
 using Entities;
 using TMPro;
 using UnityEngine;
+using UtilsModule;
 using Weapons;
 
 namespace Managers
@@ -88,22 +89,16 @@ namespace Managers
 
         public IEnumerator DeadPlayerTextFadeIn(TextMeshProUGUI text)
         {
-            const float FADE_TIME = 4f;
-
             text.text = $"You died \n at Level {GameManager.Instance.Level.Index + 1}";
             text.gameObject.SetActive(true);
+
             var textColor = text.color;
             textColor.a = 0f;
             text.color = textColor;
 
             yield return new WaitForSeconds(0.5f);
 
-            for (int i = 1; i <= FADE_TIME; i++)
-            {
-                textColor.a = 1f / FADE_TIME * i;
-                text.color = textColor;
-                yield return new WaitForSeconds(0.2f);
-            }
+            yield return text.FadeIn(4, 0.2f);
 
             yield return new WaitForSeconds(5);
 
