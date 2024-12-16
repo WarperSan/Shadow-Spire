@@ -7,6 +7,23 @@ namespace UtilsModule
 {
     public static class AnimationsUtils
     {
+        #region Translate
+
+        public static IEnumerator TranslateLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end)
+        {
+            Vector3 valuePerTick = (end - start) / ticksCount;
+
+            for (int i = 0; i < ticksCount; i++)
+            {
+                transform.localPosition = start + valuePerTick * (i + 1);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+        #endregion
+
+        #region Fade
+
         /// <summary>
         /// Fades the given element
         /// </summary>
@@ -37,6 +54,8 @@ namespace UtilsModule
 
         public static IEnumerator FadeIn(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 0f, 1f);
         public static IEnumerator FadeOut(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 1f, 0f);
+
+        #endregion
 
         #region Graphic
 

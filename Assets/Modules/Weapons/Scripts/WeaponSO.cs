@@ -12,7 +12,7 @@ namespace Weapons
         public Sprite Icon;
 
         [Tooltip("Base type of this weapon")]
-        public BattleEntity.BattleEntityType BaseType;
+        public BattleEntity.Type BaseType;
         
         [Min(1), Tooltip("Base damage of this weapon")]
         public int BaseDamage;

@@ -9,7 +9,7 @@ namespace BattleEntity
         {
             this.Health = playerEntity.Health;
             this.playerEntity = playerEntity;
-            this.Type = BattleEntityType.NONE;
+            this.Type = Type.NONE;
         }
 
         /// <inheritdoc/>

@@ -16,7 +16,7 @@ namespace Weapons
         #region Data
 
         private WeaponSO _data;
-        private BattleEntityType _types;
+        private BattleEntity.Type _types;
         private int _level;
         private int _rdmDamageBoost;
 
@@ -43,8 +43,8 @@ namespace Weapons
 
             if (level >= 3 && random.NextDouble() < 0.3f)
             {
-                var types = Enum.GetValues(typeof(BattleEntityType));
-                weapon._types |= (BattleEntityType)types.GetValue(random.Next(0, types.Length));
+                var types = Enum.GetValues(typeof(BattleEntity.Type));
+                weapon._types |= (BattleEntity.Type)types.GetValue(random.Next(0, types.Length));
             }
 
             return weapon;
@@ -54,7 +54,7 @@ namespace Weapons
 
         #region Getters
 
-        public BattleEntityType GetAttackType() => _types;
+        public BattleEntity.Type GetAttackType() => _types;
 
         public int GetDamage() => Mathf.RoundToInt(_data.BaseDamage + _data.BaseDamage * 0.5f * (_level + _rdmDamageBoost * 0.4f) * _data.DamageRate);
 

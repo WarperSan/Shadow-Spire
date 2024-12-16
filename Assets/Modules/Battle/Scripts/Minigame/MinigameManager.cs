@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using Battle.Minigame.Spawners;
 using BattleEntity;
 using Managers;
+using Player;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace Battle.Minigame
 {
@@ -16,7 +18,10 @@ namespace Battle.Minigame
         private GameObject projectile;
 
         [SerializeField]
-        private PlayerBattleMovement player;
+        private MinigamePlayer player;
+
+        [SerializeField]
+        private Spawner[] spawners;
 
         [SerializeField]
         private Transform projectilesParent;
@@ -28,7 +33,7 @@ namespace Battle.Minigame
 
         #region Data
 
-        private BattleEntityType[] enemyTypes;
+        private Dictionary<BattleEntity.Type, int> typesCount = new();
         private BattlePlayerEntity playerEntity;
 
         #endregion
@@ -46,21 +51,36 @@ namespace Battle.Minigame
             var enemyCount = 0;
 
             // Compile types
-            var combinedType = BattleEntityType.NONE;
+            foreach (BattleEntity.Type item in Enum.GetValues(typeof(BattleEntity.Type)))
+                typesCount[item] = 0;
 
             foreach (var enemy in battleEnemyEntities)
             {
-                if (!enemy.IsDead)
-                {
-                    enemyCount++;
-                    combinedType |= enemy.Type;
-                }
+                // Ignore dead enemies
+                if (enemy.IsDead)
+                    continue;
+
+                foreach (var uniqueType in BattleEntity.BattleEntity.GetTypes(enemy.Type))
+                    typesCount[uniqueType]++;
+
+                enemyCount++;
             }
 
-            enemyTypes = BattleEntity.BattleEntity.GetTypes(combinedType);
+            // Set up spawners
+            foreach (var spawner in spawners)
+            {
+                var strength = typesCount[spawner.HandledType];
+
+                if (strength > 0)
+                {
+                    spawner.enabled = true;
+                    spawner.Setup(3);
+                }
+                else
+                    spawner.enabled = false;
+            }
 
             // Calculate how many projectiles to spawn per seconds
-
             spawnInterval = 0.3f / enemyCount;
         }
 
@@ -70,14 +90,29 @@ namespace Battle.Minigame
             InputManager.Instance.OnMoveMinigame.AddListener(Move);
             player.canTakeDamage = true;
 
-            while (duration > 0 && !playerEntity.IsDead)
-            {
-                var rdmType = enemyTypes[Random.Range(0, enemyTypes.Length)];
-                SpawnSingleProjectile(rdmType);
+            // while (duration > 0 && !playerEntity.IsDead)
+            // {
+            //     var rdmType = BattleEntity.Type.NORMAL;
+            //     SpawnSingleProjectile(rdmType);
 
-                duration -= spawnInterval;
-                yield return new WaitForSeconds(spawnInterval);
+            //     duration -= spawnInterval;
+            //     yield return new WaitForSeconds(spawnInterval);
+            // }
+
+            var spawnerCoroutines = new List<Coroutine>();
+
+            foreach (var spawner in spawners)
+            {
+                if (!spawner.enabled)
+                    continue;
+
+                spawnerCoroutines.Add(StartCoroutine(spawner.StartSpawn(duration)));
             }
+
+            yield return new WaitForSeconds(duration);
+
+            foreach (var item in spawnerCoroutines)
+                yield return item;
 
             player.canTakeDamage = false;
             InputManager.Instance.OnMoveMinigame.RemoveListener(Move);
@@ -86,12 +121,20 @@ namespace Battle.Minigame
 
         public void CleanProjectiles()
         {
+            foreach (var spawner in spawners)
+            {
+                if (!spawner.enabled)
+                    continue;
+
+                spawner.Clean();
+                spawner.enabled = false;
+            }
+
             // Destroy all projectiles
-            foreach (Transform child in projectilesParent)
-                Destroy(child.gameObject);
+            //foreach (Transform child in projectilesParent)
+            //    Destroy(child.gameObject);
 
             // Remove all the compiled data
-            enemyTypes = null;
             playerEntity = null;
             spawnInterval = 1f;
         }
@@ -106,12 +149,12 @@ namespace Battle.Minigame
         private float minSpawnDistance = 0.5f;
         private float lastSpawnX = 0.818f;
 
-        private void SpawnSingleProjectile(BattleEntityType type)
+        private void SpawnSingleProjectile(BattleEntity.Type type)
         {
             float randomX;
             do
             {
-                randomX = Random.Range(minX, maxX);
+                randomX = UnityEngine.Random.Range(minX, maxX);
             } while (Mathf.Abs(randomX - lastSpawnX) < minSpawnDistance);
 
             lastSpawnX = randomX;
@@ -120,8 +163,8 @@ namespace Battle.Minigame
             newProjectile.transform.SetParent(projectilesParent);
             newProjectile.transform.localPosition = new(randomX, 0, 0);
 
-            if (newProjectile.TryGetComponent(out MinigameProjectile minigameProjectile))
-                minigameProjectile.SetColor(BattleEntity.BattleEntity.GetTypeColor(type));
+            if (newProjectile.TryGetComponent(out Projectiles.Projectile minigameProjectile))
+                minigameProjectile.SetEnemy(type);
         }
 
         #endregion

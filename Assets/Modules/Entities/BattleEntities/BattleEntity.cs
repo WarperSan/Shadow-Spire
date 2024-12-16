@@ -7,7 +7,7 @@ using Weapons;
 namespace BattleEntity
 {
     [Flags]
-    public enum BattleEntityType
+    public enum Type
     {
         NONE = 0,
         NORMAL = 1 << 1,
@@ -60,7 +60,7 @@ namespace BattleEntity
 
         #region Type
 
-        public BattleEntityType Type { get; protected set; }
+        public Type Type { get; protected set; }
 
         // x0   = IMMUNE
         // x0.5 = NOT EFFECTIVE
@@ -78,7 +78,7 @@ namespace BattleEntity
             /* ANIMAL */ {  1f,  1.5f,   0.5f,   1f, 0.5f,   3f }, // WEAK
         };
 
-        public float CalculateEffectiveness(BattleEntityType attackType)
+        public float CalculateEffectiveness(Type attackType)
         {
             // Find index of attack type
             int[] attackIndexes = GetTypeIndexes(attackType);
@@ -99,14 +99,14 @@ namespace BattleEntity
             return percent;
         }
 
-        private static int[] GetTypeIndexes(BattleEntityType type)
+        private static int[] GetTypeIndexes(Type type)
         {
-            var types = Enum.GetValues(typeof(BattleEntityType));
+            var types = Enum.GetValues(typeof(Type));
             var indexes = new List<int>();
 
             for (int i = 0; i < types.Length; i++)
             {
-                BattleEntityType item = (BattleEntityType)types.GetValue(i);
+                Type item = (Type)types.GetValue(i);
 
                 if ((type & item) != 0)
                     indexes.Add(i);
@@ -115,14 +115,14 @@ namespace BattleEntity
             return indexes.ToArray();
         }
 
-        public static BattleEntityType[] GetTypes(BattleEntityType type)
+        public static Type[] GetTypes(Type type)
         {
-            var types = Enum.GetValues(typeof(BattleEntityType));
-            var indexes = new List<BattleEntityType>();
+            var types = Enum.GetValues(typeof(Type));
+            var indexes = new List<Type>();
 
             for (int i = 0; i < types.Length; i++)
             {
-                BattleEntityType item = (BattleEntityType)types.GetValue(i);
+                Type item = (Type)types.GetValue(i);
 
                 if ((type & item) != 0)
                     indexes.Add(item);
@@ -131,12 +131,12 @@ namespace BattleEntity
             return indexes.ToArray();
         }
 
-        public static string GetIcons(BattleEntityType type)
+        public static string GetIcons(Type type)
         {
             StringBuilder builder = new();
 
-            var types = Enum.GetValues(typeof(BattleEntityType));
-            foreach (BattleEntityType item in types)
+            var types = Enum.GetValues(typeof(Type));
+            foreach (Type item in types)
             {
                 if ((type & item) != 0)
                 {
@@ -154,18 +154,18 @@ namespace BattleEntity
             return builder.ToString();
         }
 
-        public static Color GetTypeColor(BattleEntityType type)
+        public static Color GetTypeColor(Type type)
         {
             var types = GetTypes(type);
 
             var color = types[0] switch
             {
-                BattleEntityType.NONE => "#D3D3D3",
-                BattleEntityType.NORMAL => "#B9E5EB",
-                BattleEntityType.UNDEAD => "#6BD36B",
-                BattleEntityType.GHOST => "#AA74FF",
-                BattleEntityType.GIANT => "#FF5E47",
-                BattleEntityType.ANIMAL => "#FF8B00",
+                Type.NONE => "#D3D3D3",
+                Type.NORMAL => "#B9E5EB",
+                Type.UNDEAD => "#6BD36B",
+                Type.GHOST => "#AA74FF",
+                Type.GIANT => "#FF5E47",
+                Type.ANIMAL => "#FF8B00",
                 _ => "white"
             };
 
