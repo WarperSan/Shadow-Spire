@@ -15,6 +15,8 @@ namespace Managers
     {
         private void Start()
         {
+            WeaponInstance.WEAPONS = Resources.FindObjectsOfTypeAll<WeaponSO>();
+
             StartLevel();
         }
 
@@ -151,10 +153,8 @@ namespace Managers
         #region Weapons
 
         [Header("Weapons")]
-        public WeaponSO[] allWeapons;
-
         [SerializeField]
-        private WeaponUI weaponUI;
+        private WeaponSelectionUI weaponUI;
 
         private IEnumerator EndLevelWeaponOffer()
         {

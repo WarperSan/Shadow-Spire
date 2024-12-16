@@ -15,6 +15,8 @@ namespace Entities
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
 
+            MaxHealth = 150;
+
             // Update UI
             SetHealth(MaxHealth);
             Weapon = new WeaponInstance(startWeapon, 0);
@@ -76,7 +78,7 @@ namespace Entities
 
         #region Health
 
-        public int MaxHealth { get; set; } = 200;
+        public int MaxHealth { get; set; }
         public int Health { get; set; }
         private void SetHealth(int health)
         {

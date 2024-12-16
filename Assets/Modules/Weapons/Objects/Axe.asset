@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   Icon: {fileID: 1473058514, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
-  AttackType: 16
+  BaseType: 16
   BaseDamage: 13
+  DamageRate: 1

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Weapons
 {
-    public class WeaponUI : MonoBehaviour
+    public class WeaponSelectionUI : MonoBehaviour
     {
         [SerializeField]
         private GameObject title;

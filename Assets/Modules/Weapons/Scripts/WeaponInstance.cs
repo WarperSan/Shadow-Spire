@@ -6,8 +6,13 @@ using UnityEngine;
 
 namespace Weapons
 {
+    /// <summary>
+    /// Instance of a weapon. Used to store and evaluate weapons
+    /// </summary>
     public class WeaponInstance
     {
+        public static WeaponSO[] WEAPONS;
+
         #region Data
 
         private WeaponSO _data;
@@ -23,7 +28,7 @@ namespace Weapons
         {
             _data = weapon;
             _level = level;
-            _types = weapon.AttackType;
+            _types = weapon.BaseType;
             _rdmDamageBoost = GameManager.Instance.Level.Random.Next(0, GameManager.Instance.Level.Index);
         }
 
@@ -31,16 +36,15 @@ namespace Weapons
         {
             level -= DungeonGenerator.WEAPON_INDEX;
 
-            var allWeapons = GameManager.Instance.allWeapons;
             var random = GameManager.Instance.Level.Random;
 
-            var rdmWeapon = allWeapons[random.Next(0, allWeapons.Length)];
+            var rdmWeapon = WEAPONS[random.Next(0, WEAPONS.Length)];
             var weapon = new WeaponInstance(rdmWeapon, level);
 
             if (level >= 3 && random.NextDouble() < 0.3f)
             {
                 var types = Enum.GetValues(typeof(BattleEntityType));
-                weapon._types |= (BattleEntityType) types.GetValue(random.Next(0, types.Length));
+                weapon._types |= (BattleEntityType)types.GetValue(random.Next(0, types.Length));
             }
 
             //weapon._types

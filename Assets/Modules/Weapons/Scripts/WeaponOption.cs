@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 namespace Weapons
 {
+    /// <summary>
+    /// Data used on the weapon selection menu
+    /// </summary>
     public class WeaponOptionData : UIOptionData
     {
         public WeaponInstance WeaponInstance;
         public string Subtext;
     }
 
+    /// <summary>
+    /// Option used on the weapon selection menu
+    /// </summary>
     public class WeaponOption : UIOption<WeaponOptionData>
     {
         #region Fields
