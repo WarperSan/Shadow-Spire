@@ -31,16 +31,6 @@ namespace Battle
         {
             yield return LoadRandomTransition(material, textures);
             yield return TransitionFadeIn(material, fadeDuration);
-
-            var loadScene = SceneManager.LoadSceneAsync("BattleScene", LoadSceneMode.Additive);
-
-            // Wait until loaded
-            while (!loadScene.isDone)
-                yield return null;
-
-            ResetMaterial(material);
-
-            yield return new WaitForSeconds(1f); // Dramatic effect
         }
 
         /// <summary>

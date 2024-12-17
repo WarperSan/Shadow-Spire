@@ -6,9 +6,7 @@ using Battle.Options;
 using BattleEntity;
 using Enemies;
 using Entities;
-using TMPro;
 using UnityEngine;
-using UtilsModule;
 using Weapons;
 
 namespace Managers
@@ -32,9 +30,6 @@ namespace Managers
             this.enemyEntity = enemyEntity;
             this.playerEntity = playerEntity;
             battlePlayerEntity = new BattlePlayerEntity(playerEntity);
-
-            // Start battle transition
-            yield return StartBattleTransition();
 
             // Find all elements
             yield return FindBattleUI();
@@ -87,24 +82,6 @@ namespace Managers
             } while (battleUI == null);
         }
 
-        public IEnumerator DeadPlayerTextFadeIn(TextMeshProUGUI text)
-        {
-            text.text = $"You died \n at Level {GameManager.Instance.Level.Index + 1}";
-            text.gameObject.SetActive(true);
-
-            var textColor = text.color;
-            textColor.a = 0f;
-            text.color = textColor;
-
-            yield return new WaitForSeconds(0.5f);
-
-            yield return text.FadeIn(4, 0.2f);
-
-            yield return new WaitForSeconds(5);
-
-            yield return GameManager.Instance.ReturnToTitle();
-        }
-
         #endregion
 
         #region Battle Options
@@ -124,16 +101,16 @@ namespace Managers
                     OnEnter = () => StartCoroutine(OnHealPressed()),
                     IsValid = () => playerEntity.HasPotions()
                 },
-                //new()
-                //{
-                //    Text = "Nuke",
-                //    OnEnter = () => EndBattle(true)
-                //},
-                //new()
-                //{
-                //    Text = "Death",
-                //    OnEnter = () => EndBattle(false)
-                //}
+                new()
+                {
+                   Text = "Nuke",
+                   OnEnter = () => EndBattle(true)
+                },
+                new()
+                {
+                   Text = "Death",
+                   OnEnter = () => EndBattle(false)
+                }
             });
         }
 
@@ -324,24 +301,6 @@ namespace Managers
                 yield return null;
             } while (minigameManager == null);
         }
-
-        #endregion
-
-        #region Battle Transition
-
-        [Header("Battle Transition")]
-        [SerializeField]
-        private Material transitionMaterial;
-
-        [SerializeField]
-        private Texture[] transitionTextures;
-
-        private IEnumerator StartBattleTransition() => BattleTransition.ExecuteTransition(transitionMaterial, transitionTextures, 0.9f);
-
-#if UNITY_EDITOR
-        // For keeping consistency in editor
-        private void OnApplicationQuit() => BattleTransition.ResetMaterial(transitionMaterial);
-#endif
 
         #endregion
 

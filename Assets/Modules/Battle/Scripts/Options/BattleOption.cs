@@ -7,7 +7,7 @@ namespace Battle.Options
     public class BattleOptionData : UIOptionData
     {
         public string Text;
-        public Func<bool> IsValid;
+        public Func<bool> IsValid = () => true;
     }
 
     /// <summary>

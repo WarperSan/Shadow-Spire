@@ -2,10 +2,8 @@ using System.Collections;
 using Dungeon.Generation;
 using Enemies;
 using Entities;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using UtilsModule;
 using Weapons;
 
@@ -28,9 +26,21 @@ namespace Managers
 
         public void Defeat()
         {
-            endBattleBackground.gameObject.SetActive(true);
-            StartCoroutine(battleManager.DeadPlayerTextFadeIn(diedText));
+            StartCoroutine(DeathSequence(true));
         }
+
+        private IEnumerator DeathSequence(bool fromOverworld)
+        {
+            yield return UIManager.DeathSequence(Level.Index + 1, fromOverworld);
+            yield return ReturnToTitle();
+        }
+
+        #endregion
+
+        #region UI
+
+        [Header("UI")]
+        public UIManager UIManager;
 
         #endregion
 
@@ -91,14 +101,20 @@ namespace Managers
             IsLevelOver = true;
             levelIndex++;
             InputManager.Instance.SwitchToUI();
-            StartCoroutine(dungeonManager.EndLevel(levelIndex, levelIndex + 1, new System.Func<IEnumerator>(EndLevelCallback)));
+            StartCoroutine(EndLevelSequence());
         }
 
-        private IEnumerator EndLevelCallback()
+        private IEnumerator EndLevelSequence()
         {
+            yield return dungeonManager.EndLevel(levelIndex, levelIndex + 1);
+
             yield return EndLevelWeaponOffer();
+
             StartLevel();
-            yield return null;
+
+            yield return UIManager.FadeOutBlackout();
+
+            yield return new WaitForSeconds(0.2f);
         }
 
         #endregion
@@ -117,12 +133,6 @@ namespace Managers
         [SerializeField]
         private BattleManager battleManager;
 
-        [SerializeField]
-        private Image endBattleBackground;
-
-        [SerializeField]
-        private TextMeshProUGUI diedText;
-
         public bool IsInBattle { get; private set; }
 
         public void StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
@@ -131,24 +141,46 @@ namespace Managers
                 return;
 
             IsInBattle = true;
-            StartCoroutine(battleManager.StartBattle(enemyEntity, playerEntity));
             InputManager.Instance.SwitchToUI();
+            StartCoroutine(StartBattleCoroutine(enemyEntity, playerEntity));
         }
 
         public void EndBattle(bool isVictory, EnemyEntity enemy)
         {
             IsInBattle = false;
 
-            if (isVictory)
-            {
-                Destroy(enemy.gameObject);
-                turnManager.StartTurn();
-                InputManager.Instance.SwitchToPlayer();
-            }
-            else
-                Defeat();
+            StartCoroutine(EndBattleCoroutine(isVictory, enemy));
+        }
 
-            SceneManager.UnloadSceneAsync("BattleScene");
+        private IEnumerator StartBattleCoroutine(EnemyEntity enemyEntity, PlayerEntity playerEntity)
+        {
+            yield return UIManager.StartBattleTransition();
+            yield return battleManager.StartBattle(enemyEntity, playerEntity);
+        }
+
+        private IEnumerator EndBattleCoroutine(bool isVictory, EnemyEntity enemy)
+        {
+            yield return UIManager.FadeInBlackout(1, 0);
+
+            var battle = SceneManager.UnloadSceneAsync("BattleScene");
+
+            while (!battle.isDone)
+                yield return null;
+
+            if (!isVictory)
+            {
+                yield return DeathSequence(false);
+                yield break;
+            }
+
+            Destroy(enemy.gameObject);
+
+            yield return new WaitForSeconds(1f);
+
+            yield return UIManager.FadeOutBlackout();
+
+            turnManager.StartTurn();
+            InputManager.Instance.SwitchToPlayer();
         }
 
         #endregion

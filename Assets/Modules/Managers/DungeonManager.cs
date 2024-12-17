@@ -5,11 +5,8 @@ using Dungeon.Drawers.Rooms;
 using Dungeon.Drawers.Terrain;
 using Dungeon.Generation;
 using Entities;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
-using UtilsModule;
 
 namespace Managers
 {
@@ -88,18 +85,6 @@ namespace Managers
 
         #endregion
 
-        #region UI
-
-        [Header("UI")]
-        [SerializeField]
-        private Graphic blackout;
-
-        [SerializeField]
-        private TextMeshProUGUI transitionLevelText;
-        private string originalLevelText;
-
-        #endregion
-
         #region Generation
 
         private Drawer[] DrawerPipeline;
@@ -155,41 +140,16 @@ namespace Managers
                 receiver.OnLevelStart(lvl);
         }
 
-        public IEnumerator EndLevel(int currentLevel, int nextLevel, System.Func<IEnumerator> callback = null)
+        public IEnumerator EndLevel(int currentLevel, int nextLevel)
         {
-            const int BLACKOUT_TICKS = 4;
-
             yield return new WaitForSeconds(0.2f);
 
-            yield return blackout.FadeIn(BLACKOUT_TICKS, 0.2f);
-
-            yield return new WaitForSeconds(0.6f);
-
-            originalLevelText ??= transitionLevelText.text;
-
-            transitionLevelText.gameObject.SetActive(true);
-            transitionLevelText.text = string.Format(originalLevelText, currentLevel);
-
-            yield return new WaitForSeconds(1.5f);
-
-            transitionLevelText.text = string.Format(originalLevelText, nextLevel);
-
-            yield return new WaitForSeconds(2f);
-
-            transitionLevelText.gameObject.SetActive(false);
-
-            yield return new WaitForSeconds(0.2f); // Level end animation
+            yield return GameManager.Instance.UIManager.FadeInBlackout();
+            yield return GameManager.Instance.UIManager.ShowNextLevel(currentLevel, nextLevel);
 
             ClearDungeon();
 
             yield return null; // Wait 1 frame
-
-            if (callback != null)
-                yield return callback.Invoke();
-
-            yield return blackout.FadeOut(BLACKOUT_TICKS, 0.2f);
-
-            yield return new WaitForSeconds(0.2f);
         }
 
         public void ClearDungeon()
