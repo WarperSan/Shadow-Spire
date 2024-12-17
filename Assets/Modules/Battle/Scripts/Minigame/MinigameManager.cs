@@ -43,6 +43,8 @@ namespace Battle.Minigame
         public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity, BattleManager battleManager)
         {
             player.battleManager = battleManager;
+            player.ResetSelf();
+
             this.playerEntity = playerEntity;
 
             if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)

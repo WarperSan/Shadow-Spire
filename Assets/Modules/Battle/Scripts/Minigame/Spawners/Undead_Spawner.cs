@@ -21,7 +21,6 @@ namespace Battle.Minigame.Spawners
         #region Data
 
         private float spawnDelay = -1;
-        private bool continueSpawning;
 
         #endregion
 

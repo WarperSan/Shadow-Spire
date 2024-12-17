@@ -32,6 +32,12 @@ namespace Player
             return true;
         }
 
+        public void ResetSelf()
+        {
+            transform.localPosition = Vector3.zero;
+            direction = Vector2.zero;
+        }
+
         #region Inputs
 
         public void Move(Vector2 direction) => this.direction = direction;
