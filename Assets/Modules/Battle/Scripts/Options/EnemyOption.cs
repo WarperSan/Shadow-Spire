@@ -148,6 +148,9 @@ namespace Battle.Options
 
         private string GetEffectivenessColor(float percent)
         {
+            if (percent >= 450)
+                return "#FF6CC6";
+
             if (percent >= 250)
                 return "orange";
 
