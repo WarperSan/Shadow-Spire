@@ -71,13 +71,8 @@ namespace Battle.Minigame
             {
                 var strength = typesCount[spawner.HandledType];
 
-                if (strength > 0)
-                {
-                    spawner.enabled = true;
-                    spawner.Setup(3);
-                }
-                else
-                    spawner.enabled = false;
+                spawner.Setup(strength);
+                spawner.enabled = strength > 0;
             }
 
             // Calculate how many projectiles to spawn per seconds
@@ -89,15 +84,6 @@ namespace Battle.Minigame
             InputManager.Instance.SwitchToMiniGame();
             InputManager.Instance.OnMoveMinigame.AddListener(Move);
             player.canTakeDamage = true;
-
-            // while (duration > 0 && !playerEntity.IsDead)
-            // {
-            //     var rdmType = BattleEntity.Type.NORMAL;
-            //     SpawnSingleProjectile(rdmType);
-
-            //     duration -= spawnInterval;
-            //     yield return new WaitForSeconds(spawnInterval);
-            // }
 
             var spawnerCoroutines = new List<Coroutine>();
 
@@ -121,6 +107,7 @@ namespace Battle.Minigame
 
         public void CleanProjectiles()
         {
+            // Destroy all projectiles
             foreach (var spawner in spawners)
             {
                 if (!spawner.enabled)
@@ -129,10 +116,6 @@ namespace Battle.Minigame
                 spawner.Clean();
                 spawner.enabled = false;
             }
-
-            // Destroy all projectiles
-            //foreach (Transform child in projectilesParent)
-            //    Destroy(child.gameObject);
 
             // Remove all the compiled data
             playerEntity = null;

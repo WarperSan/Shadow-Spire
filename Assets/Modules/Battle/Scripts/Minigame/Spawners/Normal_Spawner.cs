@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Battle.Minigame.Projectiles;
 using BattleEntity;
 using UnityEngine;
@@ -60,17 +61,15 @@ namespace Battle.Minigame.Spawners
         /// <inheritdoc/>
         public override void Setup(int strength)
         {
+            bottomWall.SetEnemy(HandledType);
+            topWall.SetEnemy(HandledType);
+            leftWall.SetEnemy(HandledType);
+            rightWall.SetEnemy(HandledType);
+
             bottomWall.gameObject.SetActive(strength >= 1);
-            bottomWall.SetEnemy(Type.NORMAL);
-
             topWall.gameObject.SetActive(strength >= 2);
-            topWall.SetEnemy(Type.NORMAL);
-            
             leftWall.gameObject.SetActive(strength >= 3);
-            leftWall.SetEnemy(Type.NORMAL);
-
             rightWall.gameObject.SetActive(strength >= 3);
-            rightWall.SetEnemy(Type.NORMAL);
         }
 
         /// <inheritdoc/>
@@ -100,9 +99,6 @@ namespace Battle.Minigame.Spawners
 
             return transform.TranslateLocal(4, 0.2f, transform.localPosition, pos);
         }
-
-        /// <inheritdoc/>
-        public override void StopSpawn() { }
 
         #endregion
     }

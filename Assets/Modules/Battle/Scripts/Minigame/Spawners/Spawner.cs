@@ -11,6 +11,5 @@ namespace Battle.Minigame.Spawners
         public abstract void Clean();
 
         public abstract IEnumerator StartSpawn(float duration);
-        public abstract void StopSpawn();
     }
 }
