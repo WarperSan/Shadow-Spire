@@ -278,7 +278,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,7 +299,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -328,6 +328,8 @@ TextureImporter:
       ground_dot: -1547997338
       ground_empty: -1665911208
       opened_door: -533239385
+      rail_horizontal: 838382968
+      rail_vertical: -197418778
       spikes_off: -1048816410
       spikes_on: 55616044
       water_bridge_horizontal: 1384352104

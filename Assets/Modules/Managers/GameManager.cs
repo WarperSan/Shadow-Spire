@@ -64,7 +64,7 @@ namespace Managers
             {
                 Index = levelIndex,
                 Seed = seed,
-                Width = Mathf.Min(4 + levelIndex * 2, 18),
+                Width = Mathf.Min(4 + levelIndex * 2, 17),
                 Height = Mathf.Min(4 + levelIndex * 2, 8),
                 MinimumRoomHeight = levelIndex <= 1 ? 2 : 3,
                 MinimumRoomWidth = levelIndex <= 1 ? 2 : 3,
