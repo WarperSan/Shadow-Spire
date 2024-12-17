@@ -493,7 +493,7 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 42564f7f-e19c-47e6-8df6-87f5fd21ba3c
     m_ActionName: Minigame-Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1

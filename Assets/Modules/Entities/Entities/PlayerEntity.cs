@@ -19,7 +19,7 @@ namespace Entities
 
             // Update UI
             SetHealth(MaxHealth);
-            Weapon = new WeaponInstance(startWeapon, 0);
+            Weapon = WeaponInstance.CreateRandom(0);
             SetPotionCount(0);
         }
 
@@ -112,9 +112,6 @@ namespace Entities
                 weapon = value;
             }
         }
-
-        [SerializeField]
-        private WeaponSO startWeapon;
 
         #endregion
 
