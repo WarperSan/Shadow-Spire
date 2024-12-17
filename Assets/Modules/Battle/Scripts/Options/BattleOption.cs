@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Battle.Options
     public class BattleOptionData : UIOptionData
     {
         public string Text;
+        public Func<bool> IsValid;
     }
 
     /// <summary>
@@ -27,6 +29,7 @@ namespace Battle.Options
         protected override void OnLoadOption(BattleOptionData option)
         {
             text.text = option.Text;
+            text.color = option.IsValid.Invoke() ? Color.white : Color.gray;
         }
 
         /// <inheritdoc/>

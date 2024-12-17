@@ -116,11 +116,13 @@ namespace Managers
             battleUI.Load(new BattleOptionData[] {
                 new() {
                     Text = "Attack",
-                    OnEnter = OnAttackPressed
+                    OnEnter = OnAttackPressed,
+                    IsValid = () => true
                 },
                 new() {
                     Text = "Heal",
-                    OnEnter = () => StartCoroutine(OnHealPressed())
+                    OnEnter = () => StartCoroutine(OnHealPressed()),
+                    IsValid = () => playerEntity.HasPotions()
                 },
                 //new()
                 //{
