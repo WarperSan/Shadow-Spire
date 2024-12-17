@@ -61,6 +61,14 @@ namespace Managers
 
         #endregion
 
+        #region Spawn Items
+
+        [Header("Spawn Items")]
+        [SerializeField]
+        private Transform spawnItemsParent;
+
+        #endregion
+
         #region Enemies
 
         [Header("Enemies")]
@@ -113,9 +121,9 @@ namespace Managers
                 new GroundDrawer(lvl, groundMap, groundTile),
 
                 // Rooms
-                new EnemyRoomDrawer(lvl, enemyPrefab, Enemies.EnemyInstance.ENEMIES),
-                new TreasureRoomDrawer(lvl, potionPrefab),
-                new SpikesRoomDrawer(lvl, spikesPrefab),
+                new EnemyRoomDrawer(lvl, enemyPrefab, Enemies.EnemyInstance.ENEMIES, spawnItemsParent),
+                new TreasureRoomDrawer(lvl, potionPrefab, spawnItemsParent),
+                new SpikesRoomDrawer(lvl, spikesPrefab, spawnItemsParent),
             };
 
             // Process the level

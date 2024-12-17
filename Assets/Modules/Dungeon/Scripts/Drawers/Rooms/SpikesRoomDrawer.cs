@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
 using UtilsModule;
@@ -9,8 +8,8 @@ namespace Dungeon.Drawers.Rooms
 {
     public class SpikesRoomDrawer : RoomDrawer
     {
-        private GameObject SpikesPrefab;
-        private readonly List<GameObject> spikesSpawned;
+        private readonly GameObject SpikesPrefab;
+        private readonly Transform SpawnedParent;
 
         #region RoomDrawer
 
@@ -28,10 +27,8 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.SPIKES))
                         continue;
 
-                    var treasure = Object.Instantiate(SpikesPrefab);
+                    var treasure = Object.Instantiate(SpikesPrefab, SpawnedParent);
                     treasure.transform.position = new Vector3(x, -y, 0);
-
-                    spikesSpawned.Add(treasure);
                 }
             }
         }
@@ -53,26 +50,20 @@ namespace Dungeon.Drawers.Rooms
 
         #region Drawer
 
-        public SpikesRoomDrawer(DungeonResult level, GameObject spikesPrefab) : base(level)
+        public SpikesRoomDrawer(DungeonResult level, GameObject spikesPrefab, Transform spawnedParent) : base(level)
         {
             SpikesPrefab = spikesPrefab;
-            spikesSpawned = new();
+
+            var parent = new GameObject
+            {
+                name = "Spikes"
+            };
+            parent.transform.parent = spawnedParent;
+            SpawnedParent = parent.transform;
         }
 
         /// <inheritdoc/>
-        public override void Clear()
-        {
-            foreach (var spike in spikesSpawned)
-            {
-                // If already despawned, skip
-                if (spike == null)
-                    continue;
-
-                Object.Destroy(spike);
-            }
-
-            spikesSpawned.Clear();
-        }
+        public override void Clear() => Object.Destroy(SpawnedParent.gameObject);
 
         #endregion
     }

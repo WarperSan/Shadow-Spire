@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using Dungeon.Generation;
-using Enemies;
 using UnityEngine;
 using UtilsModule;
 using Object = UnityEngine.Object;
@@ -10,8 +8,8 @@ namespace Dungeon.Drawers.Rooms
 {
     public class TreasureRoomDrawer : RoomDrawer
     {
-        private GameObject PotionPrefab;
-        private readonly List<GameObject> treasuresSpawned;
+        private readonly GameObject PotionPrefab;
+        private readonly Transform SpawnedParent;
 
         #region RoomDrawer
 
@@ -29,10 +27,8 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.TREASURE))
                         continue;
 
-                    var treasure = Object.Instantiate(PotionPrefab);
+                    var treasure = Object.Instantiate(PotionPrefab, SpawnedParent);
                     treasure.transform.position = new Vector3(x, -y, 0);
-
-                    treasuresSpawned.Add(treasure);
                 }
             }
         }
@@ -47,26 +43,20 @@ namespace Dungeon.Drawers.Rooms
 
         #region Drawer
 
-        public TreasureRoomDrawer(DungeonResult level, GameObject potionPrefab) : base(level)
+        public TreasureRoomDrawer(DungeonResult level, GameObject potionPrefab, Transform spawnedParent) : base(level)
         {
             PotionPrefab = potionPrefab;
-            treasuresSpawned = new();
+
+            var parent = new GameObject
+            {
+                name = "Treasures"
+            };
+            parent.transform.parent = spawnedParent;
+            SpawnedParent = parent.transform;
         }
 
         /// <inheritdoc/>
-        public override void Clear()
-        {
-            foreach (var enemy in treasuresSpawned)
-            {
-                // If already despawned, skip
-                if (enemy == null)
-                    continue;
-
-                Object.Destroy(enemy);
-            }
-
-            treasuresSpawned.Clear();
-        }
+        public override void Clear() => Object.Destroy(SpawnedParent.gameObject);
 
         #endregion
     }

@@ -34,7 +34,6 @@ namespace Battle.Minigame
         #region Data
 
         private Dictionary<BattleEntity.Type, int> typesCount = new();
-        private BattlePlayerEntity playerEntity;
 
         #endregion
 
@@ -44,8 +43,6 @@ namespace Battle.Minigame
         {
             player.battleManager = battleManager;
             player.ResetSelf();
-
-            this.playerEntity = playerEntity;
 
             if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
                 return;
@@ -120,7 +117,6 @@ namespace Battle.Minigame
             }
 
             // Remove all the compiled data
-            playerEntity = null;
             spawnInterval = 1f;
         }
 

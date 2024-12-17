@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Dungeon.Generation;
 using Enemies;
 using Entities;
@@ -12,8 +11,8 @@ namespace Dungeon.Drawers.Rooms
     public class EnemyRoomDrawer : RoomDrawer
     {
         private readonly EnemySO[] EnemyPool;
-        private GameObject EnemyPrefab;
-        private readonly List<GameObject> enemiesSpawned;
+        private readonly Transform SpawnedParent;
+        private readonly GameObject EnemyPrefab;
 
         #region RoomDrawer
 
@@ -31,13 +30,11 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.ENEMY))
                         continue;
 
-                    var enemy = Object.Instantiate(EnemyPrefab);
+                    var enemy = Object.Instantiate(EnemyPrefab, SpawnedParent);
                     enemy.transform.position = new Vector3(x, -y, 0);
 
                     if (enemy.TryGetComponent(out EnemyEntity entity))
                         entity.SetData(EnemyPool[Level.Random.Next(0, EnemyPool.Length)], Level.Index);
-
-                    enemiesSpawned.Add(enemy);
                 }
             }
         }
@@ -91,27 +88,21 @@ namespace Dungeon.Drawers.Rooms
 
         #region Drawer
 
-        public EnemyRoomDrawer(DungeonResult level, GameObject enemyPrefab, EnemySO[] enemyPool) : base(level)
+        public EnemyRoomDrawer(DungeonResult level, GameObject enemyPrefab, EnemySO[] enemyPool, Transform spawnedParent) : base(level)
         {
             EnemyPool = enemyPool;
             EnemyPrefab = enemyPrefab;
-            enemiesSpawned = new();
+
+            var parent = new GameObject
+            {
+                name = "Enemies"
+            };
+            parent.transform.parent = spawnedParent;
+            SpawnedParent = parent.transform;
         }
 
         /// <inheritdoc/>
-        public override void Clear()
-        {
-            foreach (var enemy in enemiesSpawned)
-            {
-                // If already despawned, skip
-                if (enemy == null)
-                    continue;
-
-                Object.Destroy(enemy);
-            }
-
-            enemiesSpawned.Clear();
-        }
+        public override void Clear() => Object.Destroy(SpawnedParent.gameObject);
 
         #endregion
     }

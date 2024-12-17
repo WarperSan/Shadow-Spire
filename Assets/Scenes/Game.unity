@@ -315,6 +315,7 @@ MonoBehaviour:
   doorTile: {fileID: 11400000, guid: 17345f2b772d4bf808d762b5cd19cf15, type: 2}
   entrance: {fileID: 889232534}
   exit: {fileID: 38550080}
+  spawnItemsParent: {fileID: 720234762}
   enemyPrefab: {fileID: 8825905050529268576, guid: 18ba6f913a742398eb8ffb80e6d2509f, type: 3}
   spikesPrefab: {fileID: 293997661653964087, guid: 4a2ff0a75c067d10cb7c31e522509fd5, type: 3}
   potionPrefab: {fileID: 6970080255333001215, guid: c132e317932a7a8e49f987fe808dbcb4, type: 3}
@@ -467,6 +468,37 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+--- !u!1 &720234761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 720234762}
+  m_Layer: 29
+  m_Name: SPAWNED ITEMS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &720234762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720234761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824904447}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &824904444
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +530,7 @@ Transform:
   m_Children:
   - {fileID: 616062160}
   - {fileID: 1839656115}
+  - {fileID: 720234762}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &858577266
@@ -2099,7 +2132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 348.05554
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.y
