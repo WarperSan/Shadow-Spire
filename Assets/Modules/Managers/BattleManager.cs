@@ -101,16 +101,16 @@ namespace Managers
                     OnEnter = () => StartCoroutine(OnHealPressed()),
                     IsValid = () => playerEntity.HasPotions()
                 },
-                new()
-                {
-                   Text = "Nuke",
-                   OnEnter = () => EndBattle(true)
-                },
-                new()
-                {
-                   Text = "Death",
-                   OnEnter = () => EndBattle(false)
-                }
+                // new()
+                // {
+                //    Text = "Nuke",
+                //    OnEnter = () => EndBattle(true)
+                // },
+                // new()
+                // {
+                //    Text = "Death",
+                //    OnEnter = () => EndBattle(false)
+                // }
             });
         }
 
