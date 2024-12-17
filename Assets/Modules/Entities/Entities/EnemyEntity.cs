@@ -2,6 +2,7 @@ using System.Collections;
 using Enemies;
 using Entities.Interfaces;
 using Managers;
+using UtilsModule;
 
 namespace Entities
 {
@@ -21,7 +22,7 @@ namespace Entities
             Instance = new EnemyInstance(data, level);
 
             spriteRenderer.sprite = data.OverworldSprite;
-            spriteRenderer.color = BattleEntity.BattleEntity.GetTypeColor(data.Type);
+            spriteRenderer.color = data.Type.GetColor();
 
             turnsRemaining = waitTurns = data.MovementSpeed switch
             {

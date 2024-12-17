@@ -1,6 +1,7 @@
 using BattleEntity;
 using Player;
 using UnityEngine;
+using UtilsModule;
 
 namespace Battle.Minigame.Projectiles
 {
@@ -14,7 +15,7 @@ namespace Battle.Minigame.Projectiles
 
         public void SetEnemy(Type type)
         {
-            SetColor(BattleEntity.BattleEntity.GetTypeColor(type));
+            SetColor(type.GetColor());
         }
 
         public virtual void OnHit() => gameObject.SetActive(false);

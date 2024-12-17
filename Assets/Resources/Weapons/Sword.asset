@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c40340e404f8f819eec931e7385740, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  Icon: {fileID: -852831718, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  Icon: {fileID: -611470768, guid: d10266231e3f427a9a5ff54d6f562a29, type: 3}
   BaseType: 2
   BaseDamage: 7
   DamageRate: 1

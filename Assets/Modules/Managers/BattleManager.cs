@@ -49,7 +49,7 @@ namespace Managers
             yield return battleUI.DisableSpoiler();
 
             // Wait for spawn animation
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
             EnableBattleOption();
             AddInputs();

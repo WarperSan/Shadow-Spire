@@ -17,7 +17,7 @@ namespace Weapons
         [Min(1), Tooltip("Base damage of this weapon")]
         public int BaseDamage;
 
-        [Min(0), Tooltip("How much the level affects the damage")]
+        [Tooltip("How much the level affects the damage")]
         public float DamageRate = 1f;
     }
 }

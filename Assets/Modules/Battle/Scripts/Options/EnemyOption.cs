@@ -2,6 +2,7 @@ using BattleEntity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UtilsModule;
 using Weapons;
 
 namespace Battle.Options
@@ -62,7 +63,7 @@ namespace Battle.Options
             entity.Hit.AddListener(OnHit);
             entity.Death.AddListener(OnDeath);
 
-            types.text = BattleEntity.BattleEntity.GetIcons(entity.Type);
+            types.text = entity.Type.GetIcons();
 
             SetHealth(entity.Health);
 
@@ -129,7 +130,7 @@ namespace Battle.Options
 
         private void SetEffectiveness(WeaponInstance weapon, BattleEnemyEntity entity)
         {
-            float percent = entity.CalculateEffectiveness(weapon.GetAttackType());
+            float percent = entity.CalculateEffectiveness(weapon.GetTypes());
 
             targetEffectiveness.text = string.Format(
                 "<sprite name={0}> <color={1}>{2}</color>%",

@@ -6,6 +6,7 @@ using BattleEntity;
 using Managers;
 using Player;
 using UnityEngine;
+using UtilsModule;
 
 namespace Battle.Minigame
 {
@@ -59,7 +60,7 @@ namespace Battle.Minigame
                 if (enemy.IsDead)
                     continue;
 
-                foreach (var uniqueType in BattleEntity.BattleEntity.GetTypes(enemy.Type))
+                foreach (var uniqueType in enemy.Type.GetTypes())
                     typesCount[uniqueType]++;
 
                 enemyCount++;

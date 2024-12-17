@@ -1,8 +1,9 @@
 using System;
-using BattleEntity;
+using System.Linq;
 using Dungeon.Generation;
 using Managers;
 using UnityEngine;
+using UtilsModule;
 
 namespace Weapons
 {
@@ -43,8 +44,21 @@ namespace Weapons
 
             if (level >= 3 && random.NextDouble() < 0.3f)
             {
-                var types = Enum.GetValues(typeof(BattleEntity.Type));
-                weapon._types |= (BattleEntity.Type)types.GetValue(random.Next(0, types.Length));
+                // Add random type
+                var allTypes = Enum.GetValues(typeof(BattleEntity.Type));
+
+                var types = weapon._types.GetTypes().ToList();
+                types.Add((BattleEntity.Type)allTypes.GetValue(random.Next(0, allTypes.Length)));
+
+                // Remove extra types (max 2)
+                for (int i = types.Count; i > 2; i--)
+                    types.RemoveAt(random.Next(0, types.Count));
+
+                // Assign new types
+                weapon._types = BattleEntity.Type.NONE;
+
+                for (int i = 0; i < types.Count; i++)
+                    weapon._types |= types[i];
             }
 
             return weapon;
@@ -54,9 +68,18 @@ namespace Weapons
 
         #region Getters
 
-        public BattleEntity.Type GetAttackType() => _types;
+        public BattleEntity.Type GetTypes() => _types;
 
-        public int GetDamage() => Mathf.RoundToInt(_data.BaseDamage + _data.BaseDamage * 0.5f * (_level + _rdmDamageBoost * 0.4f) * _data.DamageRate);
+        public int GetDamage()
+        {
+            float damage = _data.BaseDamage;
+
+            damage += _data.BaseDamage * 0.5f * (_level + _rdmDamageBoost * 0.4f) * _data.DamageRate;
+
+            damage = Mathf.Max(damage, 0);
+
+            return Mathf.RoundToInt(damage);
+        }
 
         public Sprite GetIcon() => _data.Icon;
 

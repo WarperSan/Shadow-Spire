@@ -2,6 +2,7 @@ using Battle.Options;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UtilsModule;
 
 namespace Weapons
 {
@@ -47,7 +48,7 @@ namespace Weapons
             var instance = option.WeaponInstance;
 
             icon.sprite = instance.GetIcon();
-            type.text = BattleEntity.BattleEntity.GetIcons(instance.GetAttackType());
+            type.text = instance.GetTypes().GetIcons();
             damage.text = instance.GetDamage().ToString();
             subtext.text = option.Subtext;
         }

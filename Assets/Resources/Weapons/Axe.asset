@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c40340e404f8f819eec931e7385740, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
-  Icon: {fileID: 1473058514, guid: a63ea841d8469d1eeb85bd5fd06fdc20, type: 3}
+  Icon: {fileID: -1627368674, guid: d10266231e3f427a9a5ff54d6f562a29, type: 3}
   BaseType: 16
   BaseDamage: 13
-  DamageRate: 1
+  DamageRate: 0.8
