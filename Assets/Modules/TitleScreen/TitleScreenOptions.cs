@@ -3,6 +3,8 @@ using Battle.Options;
 using Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UtilsModule;
 
 namespace TitleScreen
 {
@@ -11,6 +13,8 @@ namespace TitleScreen
     /// </summary>
     public class TitleScreenOptions : UIOptions<TitleScreenOption, TitleScreenOptionData>
     {
+        public Graphic blackout;
+
         private void Start()
         {
             LoadOptions(new TitleScreenOptionData[] {
@@ -46,15 +50,30 @@ namespace TitleScreen
 
         private IEnumerator PlaySequence()
         {
+            yield return blackout.FadeIn(4, 0.2f);
             SceneManager.LoadScene("Game", LoadSceneMode.Single);
-            yield return null;
         }
 
         #endregion
 
         #region Quit Sequence
 
-        public void OnQuit() => Application.Quit();
+        private bool isRunningQuitSequence;
+
+        public void OnQuit()
+        {
+            if (isRunningQuitSequence)
+                return;
+
+            StartCoroutine(QuitSequence());
+            isRunningQuitSequence = true;
+        }
+
+        private IEnumerator QuitSequence()
+        {
+            yield return blackout.FadeIn(4, 0.2f);
+            Application.Quit();
+        }
 
         #endregion
 
@@ -94,4 +113,3 @@ namespace TitleScreen
         #endregion
     }
 }
-
