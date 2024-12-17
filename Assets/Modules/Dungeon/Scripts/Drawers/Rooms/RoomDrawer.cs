@@ -32,7 +32,7 @@ namespace Dungeon.Drawers.Rooms
                     if (Level.IsBlocked(x, y))
                         continue;
 
-                    if (predicate != null && predicate.Invoke(x, y))
+                    if (predicate != null && !predicate.Invoke(x, y))
                         continue;
 
                     positions.Add(new(x, y));

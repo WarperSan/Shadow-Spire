@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -438,11 +451,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: undead_ground
+      name: water_tile
       rect:
         serializedVersion: 2
-        x: 272
-        y: 176
+        x: 208
+        y: 160
         width: 16
         height: 16
       alignment: 0
@@ -452,8 +465,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 585174f6133209c4aa80ac367b912404
-      internalID: 1458699493
+      spriteID: 4f88cdb0c20492ecea3f51da71b498bd
+      internalID: 430723161
       vertices: []
       indices: 
       edges: []
@@ -488,6 +501,7 @@ TextureImporter:
       wall_right: 1927119805
       wall_top: 742859195
       wall_vertical: 1343635351
+      water_tile: 430723161
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
