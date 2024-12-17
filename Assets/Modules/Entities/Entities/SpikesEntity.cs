@@ -17,7 +17,8 @@ namespace Entities
 
         #endregion
 
-        private int spikesTurns;
+        private int activeTurns;
+        private bool canAttack;
 
         #region IEventable
 
@@ -27,10 +28,13 @@ namespace Entities
         /// <inheritdoc/>
         public void OnEntityLanded(PlayerEntity entity)
         {
-            if (spikesTurns == 1)
+            if (canAttack)
+            {
                 entity.TakeDamage(2);
-            else if (spikesTurns < 0)
-                spikesTurns = 3;
+                activeTurns = 2;
+            }
+            else
+                activeTurns = 3;
         }
 
         #endregion
@@ -39,9 +43,9 @@ namespace Entities
 
         public IEnumerator Think()
         {
-            spikesTurns--;
-
-            spriteRenderer.sprite = spikesTurns == 0 ? onSprite : offSprite;
+            activeTurns--;
+            canAttack = activeTurns < 2 && activeTurns >= 0; // 0 and 1 
+            spriteRenderer.sprite = canAttack ? onSprite : offSprite;
 
             yield return null;
         }
