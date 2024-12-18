@@ -137,10 +137,24 @@ namespace Entities
         #region IDungeonReceive
 
         /// <inheritdoc/>
-        public void OnLevelStart(DungeonResult level) => weapon?.Update(level);
+        public void OnLevelStart(DungeonResult level)
+        {
+            if (weapon != null)
+            {
+                weapon.Update(level);
+                playerInformation.SetWeapon(weapon);
+            }
+        }
 
         /// <inheritdoc/>
-        public void OnLevelEnd(DungeonResult level) => weapon?.Update(level);
+        public void OnLevelEnd(DungeonResult level)
+        {
+            if (weapon != null)
+            {
+                weapon.Update(level);
+                playerInformation.SetWeapon(weapon);
+            }
+        }
 
         #endregion
     }

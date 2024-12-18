@@ -1357,7 +1357,7 @@ MonoBehaviour:
   IsPlayerDead: 0
   UIManager: {fileID: 2022798376}
   dungeonManager: {fileID: 366401024}
-  levelIndex: 5
+  levelIndex: 0
   dungeonCamera: {fileID: 1052180607}
   overSeed: -2078715853
   useSeed: 0
@@ -2509,7 +2509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 348.05554
       objectReference: {fileID: 0}
     - target: {fileID: 929814043600838809, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchoredPosition.y
