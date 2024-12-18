@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dungeon.Generation;
 using Managers;
@@ -35,11 +36,17 @@ namespace Weapons
 
         public static WeaponInstance CreateRandom(int level)
         {
-            level -= DungeonGenerator.WEAPON_INDEX;
-
             var random = GameManager.Instance.Level.Random;
 
-            var rdmWeapon = WEAPONS[random.Next(0, WEAPONS.Length)];
+            var allWeapons = new List<WeaponSO>();
+
+            foreach (var item in WEAPONS)
+            {
+                if (item.UnlockLevel <= level)
+                    allWeapons.Add(item);
+            }
+
+            var rdmWeapon = allWeapons[random.Next(0, allWeapons.Count)];
             var weapon = new WeaponInstance(rdmWeapon, level);
 
             if (level >= 3 && random.NextDouble() < 0.3f)
@@ -78,11 +85,17 @@ namespace Weapons
 
             damage = Mathf.Max(damage, 0);
 
-            return Mathf.RoundToInt(damage);
+            return Mathf.FloorToInt(damage);
         }
 
         public Sprite GetIcon() => _data.Icon;
 
         #endregion
+
+        public void Update(DungeonResult level)
+        {
+            if (_data.UpdateLevel)
+                _level = level.Index;
+        }
     }
 }

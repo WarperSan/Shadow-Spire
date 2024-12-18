@@ -1,4 +1,5 @@
 using System.Collections;
+using Dungeon.Generation;
 using Entities.Interfaces;
 using Managers;
 using Player;
@@ -7,7 +8,7 @@ using Weapons;
 
 namespace Entities
 {
-    public class PlayerEntity : GridEntity, ITurnable, IMovable
+    public class PlayerEntity : GridEntity, ITurnable, IMovable, IDungeonReceive
     {
         public PlayerInformation playerInformation;
 
@@ -92,7 +93,7 @@ namespace Entities
             SetHealth(Health - damage);
             playerInformation.HitHealth(damage);
         }
-        
+
         public void Heal(int amount) => SetHealth(Health + amount);
 
         #endregion
@@ -130,6 +131,16 @@ namespace Entities
         public void CollectPotion() => SetPotionCount(potionCount + 1);
         public void ConsumePotion() => SetPotionCount(potionCount - 1);
         public bool HasPotions() => potionCount > 0;
+
+        #endregion
+
+        #region IDungeonReceive
+
+        /// <inheritdoc/>
+        public void OnLevelStart(DungeonResult level) => weapon?.Update(level);
+
+        /// <inheritdoc/>
+        public void OnLevelEnd(DungeonResult level) => weapon?.Update(level);
 
         #endregion
     }

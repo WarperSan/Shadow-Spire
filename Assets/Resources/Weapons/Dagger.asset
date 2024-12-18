@@ -16,3 +16,5 @@ MonoBehaviour:
   BaseType: 32
   BaseDamage: 1
   DamageRate: 1.1
+  UnlockLevel: 0
+  UpdateLevel: 1

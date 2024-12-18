@@ -19,5 +19,11 @@ namespace Weapons
 
         [Tooltip("How much the level affects the damage")]
         public float DamageRate = 1f;
+
+        [Tooltip("At which level this weapon is unlockable")]
+        public int UnlockLevel;
+
+        [Tooltip("Determines if the level of the weapon updates each level")]
+        public bool UpdateLevel;
     }
 }

@@ -197,12 +197,12 @@ namespace Managers
 
             var enemies = new List<BattleEnemyEntity>();
 
-            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 1)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
                 enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));
 
             enemies.Add(new(enemy.Instance));
 
-            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
+            if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 5)
                 enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));
 
             return enemies.ToArray();

@@ -16,3 +16,4 @@ MonoBehaviour:
   BaseType: 8
   BaseDamage: 16
   DamageRate: 0.4
+  UnlockLevel: 4
