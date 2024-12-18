@@ -45,7 +45,7 @@ namespace Battle.Minigame.Spawners
         /// <inheritdoc/>
         public override void Setup(int strength)
         {
-            spawnDelay = Mathf.Max(0.65f / strength, 0.01f);
+            spawnDelay = Mathf.Max(1.25f / strength, 0.01f);
         }
 
         /// <inheritdoc/>

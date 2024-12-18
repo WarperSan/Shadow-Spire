@@ -18,7 +18,7 @@ namespace Battle.Minigame.Projectiles
             SetColor(type.GetColor());
         }
 
-        public virtual void OnHit() => gameObject.SetActive(false);
+        public virtual void OnHit() { }
         public virtual int GetDamage() => 5;
 
         #region Damage

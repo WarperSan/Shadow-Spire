@@ -18,8 +18,5 @@ namespace Battle.Minigame.Projectiles
         }
 
         #endregion
-
-        /// <inheritdoc/>
-        public override void OnHit() { }
     }
 }

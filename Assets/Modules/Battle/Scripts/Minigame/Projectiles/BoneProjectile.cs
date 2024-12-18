@@ -20,9 +20,6 @@ namespace Battle.Minigame.Projectiles
 
         #region Projectile
 
-        /// <inheritdoc/>
-        public override void OnHit() { }
-
         private void Update() => transform.Translate(3 * Time.deltaTime * Vector2.down, Space.World);
 
         #endregion
