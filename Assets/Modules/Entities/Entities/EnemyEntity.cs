@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using Enemies;
 using Entities.Interfaces;
 using Managers;
+using UnityEngine;
 using UtilsModule;
 
 namespace Entities
@@ -45,6 +47,10 @@ namespace Entities
 
         #region ITurnable
 
+        private int[] path;
+        private Movement[] movements;
+        private int currentIndex = -1;
+
         /// <inheritdoc/>
         IEnumerator ITurnable.Think()
         {
@@ -58,10 +64,8 @@ namespace Entities
 
             turnsRemaining = waitTurns;
 
-            //if (_data.Pathing == EnemyPathing.DIRECT)
-
-            int[] path = PathFindingManager.FindPath(this, GameManager.Instance.player);
-            Movement[] movements = PathFindingManager.GetDirections(path);
+            if (_data.Pathing == EnemyPathing.DIRECT || path == null || currentIndex >= path.Length)
+                UpdatePath();
 
             // If no path found or on the same tile
             if (movements == null || movements.Length == 0)
@@ -70,10 +74,56 @@ namespace Entities
                 yield break;
             }
 
-            yield return movements[0];
+            if (movesPerTurn + currentIndex >= movements.Length)
+            {
+                yield return movements[currentIndex..];
+                currentIndex = path.Length;
+                yield break;
+            }
 
-            //if (_data.Pathing == EnemyPathing.RANDOM)
-            //    movement += new GoRandomPosition(this).Alias("GoRandomPosition");
+            yield return movements[currentIndex..(movesPerTurn + currentIndex)];
+
+            currentIndex += movesPerTurn;
+        }
+
+        private void UpdatePath()
+        {
+            var target = Position;
+
+            if (_data.Pathing == EnemyPathing.DIRECT)
+                target = GameManager.Instance.player.Position;
+            else if (_data.Pathing == EnemyPathing.RANDOM)
+                target = GetRandomPosition();
+
+            path = PathFindingManager.FindPath(this, target);
+            movements = PathFindingManager.GetDirections(path);
+            currentIndex = 0;
+        }
+
+        private Vector2Int GetRandomPosition()
+        {
+            var level = GameManager.Instance.Level;
+            var rdmRoom = level.Rooms[level.Random.Next(0, level.Rooms.Length)];
+
+            var positions = new List<Vector2Int>();
+
+            for (int y = rdmRoom.Y; y < rdmRoom.Y + rdmRoom.Height; y++)
+            {
+                for (int x = rdmRoom.X; x < rdmRoom.X + rdmRoom.Width; x++)
+                {
+                    // If the tile is blocked, skip
+                    if (level.IsBlocked(x, y))
+                        continue;
+
+                    positions.Add(new(x, -y));
+                }
+            }
+
+            // If no valid position, skip
+            if (positions.Count == 0)
+                return Position;
+
+            return positions[level.Random.Next(0, positions.Count)];
         }
 
         #endregion
