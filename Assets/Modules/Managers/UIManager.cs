@@ -25,7 +25,7 @@ namespace Managers
 
         #region Next Level
 
-        private const string NEXT_LEVEL_TEXT = "- Level -\n{0}";
+        private const string NEXT_LEVEL_TEXT = "Level\n{0}";
 
         [Space]
         [SerializeField]
@@ -53,7 +53,7 @@ namespace Managers
 
         #region Level
 
-        private const string CURRENT_LEVEL_TEXT = "Level: {0}";
+        private const string CURRENT_LEVEL_TEXT = "Level\t{0}";
 
         [Space]
         [SerializeField]
