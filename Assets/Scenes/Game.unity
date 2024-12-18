@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -766,7 +766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &874737495
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1120,7 +1120,7 @@ MonoBehaviour:
   IsPlayerDead: 0
   UIManager: {fileID: 2022798376}
   dungeonManager: {fileID: 366401024}
-  levelIndex: 10
+  levelIndex: 0
   dungeonCamera: {fileID: 1052180607}
   overSeed: -2078715853
   useSeed: 0
@@ -1781,6 +1781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackout: {fileID: 444811996}
   nextLevel: {fileID: 5877184638961969173}
+  currentLevel: {fileID: 6539442242368879411}
   deathText: {fileID: 1334258075}
   battleTransitionMaterial: {fileID: 2100000, guid: 7624d611bd330e44b80ef65275598a16, type: 2}
   battleTransitionTextures:
@@ -2377,6 +2378,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1200194020772132546, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2678961692716466195, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2429,6 +2434,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 8276233133949639932, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+      propertyPath: m_fontSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276233133949639932, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2454,6 +2467,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a38512f378868cf0682a7978a76ce880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6539442242368879411 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8276233133949639932, guid: 90e13eaa8e62854458f42c0428940d64, type: 3}
+  m_PrefabInstance: {fileID: 6539442242368879408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

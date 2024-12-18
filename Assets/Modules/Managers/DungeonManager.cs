@@ -140,18 +140,6 @@ namespace Managers
                 receiver.OnLevelStart(lvl);
         }
 
-        public IEnumerator EndLevel(int currentLevel, int nextLevel)
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            yield return GameManager.Instance.UIManager.FadeInBlackout();
-            yield return GameManager.Instance.UIManager.ShowNextLevel(currentLevel, nextLevel);
-
-            ClearDungeon();
-
-            yield return null; // Wait 1 frame
-        }
-
         public void ClearDungeon()
         {
             // Clear all drawers

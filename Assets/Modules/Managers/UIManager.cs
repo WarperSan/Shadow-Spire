@@ -51,6 +51,18 @@ namespace Managers
 
         #endregion
 
+        #region Level
+
+        private const string CURRENT_LEVEL_TEXT = "Level: {0}";
+
+        [Space]
+        [SerializeField]
+        private TextMeshProUGUI currentLevel;
+
+        public void SetLevel(int level) => currentLevel.text = string.Format(CURRENT_LEVEL_TEXT, level);
+
+        #endregion
+
         #region Death
 
         private const string DEATH_TEXT = "YOU DIED\nAT LEVEL {0}";

@@ -35,6 +35,7 @@ namespace Battle.Minigame
         #region Data
 
         private Dictionary<BattleEntity.Type, int> typesCount = new();
+        private float duration;
 
         #endregion
 
@@ -75,11 +76,10 @@ namespace Battle.Minigame
                 spawner.enabled = strength > 0;
             }
 
-            // Calculate how many projectiles to spawn per seconds
-            spawnInterval = 0.3f / enemyCount;
+            duration = 3.5f * enemyCount;
         }
 
-        public IEnumerator SpawnProjectiles(float duration)
+        public IEnumerator SpawnProjectiles()
         {
             InputManager.Instance.SwitchToMiniGame();
             InputManager.Instance.OnMoveMinigame.AddListener(Move);
@@ -118,35 +118,7 @@ namespace Battle.Minigame
             }
 
             // Remove all the compiled data
-            spawnInterval = 1f;
-        }
-
-        #endregion
-
-        #region Projectiles
-
-        private float spawnInterval = 0.015f;
-        private float minX = -0.6f;
-        private float maxX = 0.6f;
-        private float minSpawnDistance = 0.5f;
-        private float lastSpawnX = 0.818f;
-
-        private void SpawnSingleProjectile(BattleEntity.Type type)
-        {
-            float randomX;
-            do
-            {
-                randomX = UnityEngine.Random.Range(minX, maxX);
-            } while (Mathf.Abs(randomX - lastSpawnX) < minSpawnDistance);
-
-            lastSpawnX = randomX;
-
-            GameObject newProjectile = Instantiate(projectile);
-            newProjectile.transform.SetParent(projectilesParent);
-            newProjectile.transform.localPosition = new(randomX, 0, 0);
-
-            if (newProjectile.TryGetComponent(out Projectiles.Projectile minigameProjectile))
-                minigameProjectile.SetEnemy(type);
+            duration = -1;
         }
 
         #endregion

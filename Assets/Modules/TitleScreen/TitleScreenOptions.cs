@@ -51,6 +51,8 @@ namespace TitleScreen
         private IEnumerator PlaySequence()
         {
             yield return blackout.FadeIn(4, 0.2f);
+            yield return new WaitForSeconds(1f);
+
             SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
 

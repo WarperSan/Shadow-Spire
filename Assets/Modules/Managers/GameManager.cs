@@ -24,10 +24,7 @@ namespace Managers
         public PlayerEntity player;
         public bool IsPlayerDead;
 
-        public void Defeat()
-        {
-            StartCoroutine(DeathSequence(true));
-        }
+        public void Defeat() => StartCoroutine(DeathSequence(true));
 
         private IEnumerator DeathSequence(bool fromOverworld)
         {
@@ -93,6 +90,17 @@ namespace Managers
                 -(Level.Height / 2f + 1f),
                 dungeonCamera.transform.position.z
             );
+
+            StartCoroutine(StartLevelSequence());
+        }
+
+        public IEnumerator StartLevelSequence()
+        {
+            UIManager.SetLevel(levelIndex + 1);
+
+            yield return UIManager.FadeOutBlackout();
+            yield return new WaitForSeconds(0.2f);
+
             InputManager.Instance.SwitchToPlayer();
         }
 
@@ -106,15 +114,17 @@ namespace Managers
 
         private IEnumerator EndLevelSequence()
         {
-            yield return dungeonManager.EndLevel(levelIndex, levelIndex + 1);
+            yield return new WaitForSeconds(0.2f);
+
+            yield return UIManager.FadeInBlackout();
+            yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
+
+            dungeonManager.ClearDungeon();
+            yield return null; // Wait 1 frame
 
             yield return EndLevelWeaponOffer();
 
             StartLevel();
-
-            yield return UIManager.FadeOutBlackout();
-
-            yield return new WaitForSeconds(0.2f);
         }
 
         #endregion

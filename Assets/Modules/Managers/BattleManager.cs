@@ -101,16 +101,16 @@ namespace Managers
                     OnEnter = () => StartCoroutine(OnHealPressed()),
                     IsValid = () => playerEntity.HasPotions()
                 },
-                new()
-                {
-                   Text = "Nuke",
-                   OnEnter = () => EndBattle(true)
-                },
-                new()
-                {
-                   Text = "Death",
-                   OnEnter = () => EndBattle(false)
-                }
+                // new()
+                // {
+                //    Text = "Nuke",
+                //    OnEnter = () => EndBattle(true)
+                // },
+                // new()
+                // {
+                //    Text = "Death",
+                //    OnEnter = () => EndBattle(false)
+                // }
             });
         }
 
@@ -272,7 +272,7 @@ namespace Managers
             yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
 
             // Execute enemy attacks
-            yield return minigameManager.SpawnProjectiles(5f);
+            yield return minigameManager.SpawnProjectiles();
 
             if (hasBattleEnded)
                 yield break;
