@@ -42,7 +42,10 @@ namespace Managers
 
         [Header("Doors")]
         [SerializeField]
-        private TileBase doorTile;
+        private TileBase openedDoorTile;
+
+        [SerializeField]
+        private TileBase closedDoorTile;
 
         #endregion
 
@@ -101,7 +104,7 @@ namespace Managers
             {
                 // Terrain
                 new WallDrawer(lvl, wallMap, wallTiles),
-                new DoorDrawer(lvl, wallMap, doorTile),
+                new DoorDrawer(lvl, wallMap, openedDoorTile, closedDoorTile),
                 new EntranceExitDrawer(lvl, entrance, exit, player),
                 new GroundDrawer(lvl, groundMap, groundTile),
 

@@ -76,8 +76,8 @@ namespace Managers
                 MinimumRoomHeight = levelIndex <= 1 ? 2 : 3,
                 MinimumRoomWidth = levelIndex <= 1 ? 2 : 3,
                 SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
-                AddHighLoop = levelIndex >= 5,
-                AddLowLoop = levelIndex >= 5
+                AddHighLoop = levelIndex % 10 == 0,
+                AddLowLoop = levelIndex % 4 == 0
             };
 
             Debug.Log("Seed: " + seed);

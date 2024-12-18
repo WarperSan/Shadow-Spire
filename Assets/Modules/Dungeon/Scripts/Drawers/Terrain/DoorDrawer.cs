@@ -10,14 +10,16 @@ namespace Dungeon.Drawers.Terrain
     public class DoorDrawer : Drawer
     {
         private readonly Tilemap wallMap;
-        private readonly TileBase doorTile;
+        private readonly TileBase openedDoorTile;
+        private readonly TileBase closedDoorTile;
 
         #region Drawer
 
-        public DoorDrawer(DungeonResult level, Tilemap wallMap, TileBase doorTile) : base(level)
+        public DoorDrawer(DungeonResult level, Tilemap wallMap, TileBase openedDoorTile, TileBase closedDoorTile) : base(level)
         {
             this.wallMap = wallMap;
-            this.doorTile = doorTile;
+            this.openedDoorTile = openedDoorTile;
+            this.closedDoorTile = closedDoorTile;
         }
 
         /// <inheritdoc/>
@@ -33,7 +35,7 @@ namespace Dungeon.Drawers.Terrain
                     if (!Level.HasDoor(x, y))
                         continue;
 
-                    wallMap.SetTile(new Vector3Int(x, -y, 0), doorTile);
+                    wallMap.SetTile(new Vector3Int(x, -y, 0), Level.Has(x, y, Generation.Tile.DOOR_OPENED) ? openedDoorTile : closedDoorTile);
                 }
             }
         }
@@ -58,6 +60,7 @@ namespace Dungeon.Drawers.Terrain
 
                     processedLinks.Add((room, adjacent));
 
+                    bool isDoorClosed = false;//Mathf.Abs(room.Depth - adjacent.Depth) > 1;
                     bool isVerticalWall = adjacent.X >= room.X + room.Width;
 
                     int min = isVerticalWall
@@ -68,11 +71,11 @@ namespace Dungeon.Drawers.Terrain
                         ? Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1)
                         : Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
 
-                    // if (max - min > 2 && Level.Random.NextDouble() < 0.333f)
-                    // {
-                    //     RemoveWall(room, adjacent);
-                    //     continue;
-                    // }
+                    if (CanRoomsCombine(room.Type, adjacent.Type) && random.NextDouble() < 0.25f)
+                    {
+                        RemoveWall(room, adjacent);
+                        continue;
+                    }
 
                     if (max - min >= 2)
                     {
@@ -80,10 +83,15 @@ namespace Dungeon.Drawers.Terrain
                         max--;
                     }
 
+                    int x = adjacent.X - 1;
+                    int y = adjacent.Y - 1;
+
                     if (isVerticalWall)
-                        PlaceDoor(adjacent.X - 1, random.Next(min, max));
+                        y = random.Next(min, max);
                     else
-                        PlaceDoor(random.Next(min, max), adjacent.Y - 1);
+                        x = random.Next(min, max);
+
+                    Level.Add(x, y, isDoorClosed ? Generation.Tile.DOOR_CLOSED : Generation.Tile.DOOR_OPENED);
                 }
             }
         }
@@ -95,7 +103,6 @@ namespace Dungeon.Drawers.Terrain
 
         #region Door
 
-        private void PlaceDoor(int x, int y) => Level.Add(x, y, Generation.Tile.DOOR_OPENED);
         private void RemoveWall(Room room, Room adjacent)
         {
             if (adjacent.X >= room.X + room.Width)
@@ -114,6 +121,18 @@ namespace Dungeon.Drawers.Terrain
                 for (int x = minX; x <= maxX; x++)
                     Level.Remove(x, adjacent.Y - 1, Generation.Tile.WALL);
             }
+        }
+
+        private bool CanRoomsCombine(RoomType typeA, RoomType typeB)
+        {
+            var validTypes = new RoomType[]
+            {
+                RoomType.NORMAL,
+                RoomType.ENEMY,
+                RoomType.TREASURE
+            };
+
+            return Array.IndexOf(validTypes, typeA) != -1 && Array.IndexOf(validTypes, typeB) != -1;
         }
 
         #endregion
