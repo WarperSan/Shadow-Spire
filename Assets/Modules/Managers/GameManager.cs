@@ -203,10 +203,13 @@ namespace Managers
 
         private IEnumerator EndLevelWeaponOffer()
         {
-            if (Level.Index < DungeonGenerator.WEAPON_INDEX)
-                yield return null;
-            else
-                yield return weaponUI.ShowWeapons();
+            if (Level.Index == 0)
+                yield break;
+
+            if ((Level.Index + 2) % 5 != 0)
+                yield break;
+
+            yield return weaponUI.ShowWeapons();
         }
 
         #endregion

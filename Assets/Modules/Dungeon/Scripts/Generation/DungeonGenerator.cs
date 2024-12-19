@@ -290,7 +290,6 @@ namespace Dungeon.Generation
         #region Type
 
         public const int ENEMY_ROOM_INDEX = 2; // Level 3+
-        public const int WEAPON_INDEX = 3; // Level 4+
         public const int TREASURE_ROOM_INDEX = 5; // Level 6+
         public const int SPIKES_ROOM_INDEX = 6; // Level 7+
 

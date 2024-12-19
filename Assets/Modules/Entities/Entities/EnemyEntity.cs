@@ -57,10 +57,7 @@ namespace Entities
             turnsRemaining--;
 
             if (turnsRemaining >= 0)
-            {
-                yield return null;
                 yield break;
-            }
 
             turnsRemaining = waitTurns;
 
@@ -69,10 +66,7 @@ namespace Entities
 
             // If no path found or on the same tile
             if (movements == null || movements.Length == 0)
-            {
-                yield return null;
                 yield break;
-            }
 
             if (movesPerTurn + currentIndex >= movements.Length)
             {

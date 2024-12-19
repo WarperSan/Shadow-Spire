@@ -68,7 +68,7 @@ namespace Weapons
             {
                 weapons.Add(new()
                 {
-                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index - Dungeon.Generation.DungeonGenerator.WEAPON_INDEX),
+                    WeaponInstance = WeaponInstance.CreateRandom(GameManager.Instance.Level.Index),
                     Subtext = "Replace",
                     OnEnter = SelectWeapon
                 });

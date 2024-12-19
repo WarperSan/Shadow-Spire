@@ -1357,9 +1357,9 @@ MonoBehaviour:
   IsPlayerDead: 0
   UIManager: {fileID: 2022798376}
   dungeonManager: {fileID: 366401024}
-  levelIndex: 0
+  levelIndex: 8
   dungeonCamera: {fileID: 1052180607}
-  overSeed: -2078715853
+  overSeed: -1825943507
   useSeed: 0
   turnManager: {fileID: 1385701959}
   battleManager: {fileID: 75914958}
