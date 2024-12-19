@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6805829078585000788}
   - component: {fileID: 1983942341657688743}
   m_Layer: 30
-  m_Name: WrecklingBarrel
+  m_Name: WrecklingBarrelProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

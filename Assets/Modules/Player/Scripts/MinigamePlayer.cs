@@ -8,13 +8,15 @@ namespace Player
         [SerializeField] float movementSpeed;
 
         private Vector2 direction;
+
+        public Vector2 pushingDirection;
         public BattleManager battleManager;
 
         public bool canTakeDamage;
 
         void Update()
         {
-            Vector3 movement = movementSpeed * Time.deltaTime * direction;
+            Vector3 movement = movementSpeed * Time.deltaTime * (direction + pushingDirection);
             Vector3 nextPosition = transform.localPosition + movement;
 
             nextPosition.x = Mathf.Clamp(nextPosition.x, -2.5f, 2.5f);

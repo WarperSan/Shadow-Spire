@@ -106,6 +106,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -257,7 +270,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_7
+      name: fight_paon
       rect:
         serializedVersion: 2
         x: 224
@@ -1202,7 +1215,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_52
+      name: fight_gas
       rect:
         serializedVersion: 2
         x: 128
@@ -1391,7 +1404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monochrome_32x32_transparent_61
+      name: fight_gargool
       rect:
         serializedVersion: 2
         x: 160
@@ -1468,11 +1481,14 @@ TextureImporter:
       fight_copycat: 843628579
       fight_dead_angel: 1549134744
       fight_dragon: 639483551
+      fight_gargool: -2137289587
+      fight_gas: -659562384
       fight_goblin: 1409078159
       fight_knight: 1854031816
       fight_kraken: -233166337
       fight_medusa: 1705346344
       fight_orc: -620138874
+      fight_paon: -1810627330
       fight_parasite: 645612079
       fight_prisoner: 1316337788
       fight_reaper: 1976018159
@@ -1514,7 +1530,6 @@ TextureImporter:
       monochrome_32x32_transparent_5: 721859576
       monochrome_32x32_transparent_50: -808679675
       monochrome_32x32_transparent_51: -868854155
-      monochrome_32x32_transparent_52: -659562384
       monochrome_32x32_transparent_53: -1321634316
       monochrome_32x32_transparent_54: 1231955899
       monochrome_32x32_transparent_55: -1417963819
@@ -1522,10 +1537,8 @@ TextureImporter:
       monochrome_32x32_transparent_58: 1146734709
       monochrome_32x32_transparent_6: 442578754
       monochrome_32x32_transparent_60: -1195781418
-      monochrome_32x32_transparent_61: -2137289587
       monochrome_32x32_transparent_62: -1626137969
       monochrome_32x32_transparent_63: 2015835731
-      monochrome_32x32_transparent_7: -1810627330
       monochrome_32x32_transparent_8: 1479185569
       monochrome_32x32_transparent_9: 2025956865
   mipmapLimitGroupName: 

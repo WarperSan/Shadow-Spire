@@ -57,6 +57,7 @@ namespace UtilsModule
                 Type.GHOST => "#AA74FF",
                 Type.GIANT => "#FF5E47",
                 Type.ANIMAL => "#FF8B00",
+                Type.AIR => "#00FFD1",
                 _ => "white"
             };
 

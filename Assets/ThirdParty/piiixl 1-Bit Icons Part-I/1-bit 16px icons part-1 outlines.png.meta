@@ -320,7 +320,7 @@ TextureImporter:
         width: 12
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,7 +341,7 @@ TextureImporter:
         width: 15
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -349,6 +349,27 @@ TextureImporter:
       bones: []
       spriteID: ff8ee070e6610873c9852313e664ea3b
       internalID: 2025606095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: leaf
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 176
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bced2a8a4563877248d3c5bd87370050
+      internalID: -335758873
       vertices: []
       indices: 
       edges: []
@@ -370,6 +391,7 @@ TextureImporter:
       bone_projectile: -1828023552
       chain: 1617894209
       ghost_projectile: -1377482342
+      leaf: -335758873
       oil_tank: 2025606095
       paw_arm_projectile: -1219163281
       paw_projectile: 1620085942

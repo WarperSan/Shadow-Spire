@@ -76,6 +76,12 @@ MonoBehaviour:
     m_Scale: 2
     m_Name: icon_type_animal
     m_HashCode: 1136643541
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 6
+    m_Scale: 2
+    m_Name: icon_type_air
+    m_HashCode: 1055218697
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -173,6 +179,22 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -52940217, guid: 3e10ed5ddad510653a6290d44d4f2ce1, type: 3}
+  - m_Index: 6
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 10
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 32
+      m_Y: 32
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -164055927, guid: 3e10ed5ddad510653a6290d44d4f2ce1, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
 --- !u!21 &4860353065822862137
