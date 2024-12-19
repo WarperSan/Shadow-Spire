@@ -127,7 +127,7 @@ namespace Managers
             if (!playerEntity.HasPotions())
                 yield break;
 
-            yield return HealPlayer(30);
+            yield return HealPlayer(50);
 
             RemoveInputs();
             DisableBattleOption();

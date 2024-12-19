@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1100
+  m_SortingOrder: 1200
   m_Sprite: {fileID: -1377482342, guid: 98e171096adb6659a8d48e43b628f15d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 1
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1152855987358390363
 GameObject:
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 9147658963995681753}
   - component: {fileID: 1928991565963078227}
   m_Layer: 30
-  m_Name: GhostProjectil
+  m_Name: GhostProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,8 +131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 2658624174532398666}
-  player: {fileID: 0}
   _collider: {fileID: 1928991565963078227}
+  Speed: 0.75
+  Cooldown: 1.5
+  Player: {fileID: 0}
 --- !u!61 &1928991565963078227
 BoxCollider2D:
   m_ObjectHideFlags: 0

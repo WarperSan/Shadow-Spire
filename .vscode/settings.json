@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "PFI.sln"
+    "dotnet.defaultSolution": "Shadow-Spire.sln"
 }
