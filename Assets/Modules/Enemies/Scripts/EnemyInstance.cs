@@ -41,7 +41,7 @@ namespace Enemies
         #region Getters
 
         public EnemySO GetRaw() => _data;
-        public int GetHealth() => Mathf.RoundToInt(_data.BaseHealth + _data.BaseHealth * 0.5f * _level * 0.5f);
+        public int GetHealth() => Mathf.RoundToInt(_data.BaseHealth + _data.BaseHealth * 0.25f * Mathf.Pow(_level, 1.3f));
         public int GetAttack() => 5;
         public Type GetTypes() => _data.Type;
 
