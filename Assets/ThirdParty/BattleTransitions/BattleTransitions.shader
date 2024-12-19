@@ -4,7 +4,7 @@
 	{
 		_TransitionTex("Transition Texture", 2D) = "white" {}
 		_Cutoff("Cutoff", Range(0, 1)) = 0
-		_Color ("Main Color", Color) = (0,0,0,1)
+		_Color ("Main Color", Color) = (0, 0, 0, 1)
 	}
 	SubShader
 	{
@@ -66,7 +66,7 @@
 			// Fragment shader (calculates final color)
 			fixed4 frag(v2f i) : SV_Target
 			{
-				fixed4 col = (1,1,1,0);
+				fixed4 col = (1, 1, 1, 0);
 				fixed4 transit = tex2D(_TransitionTex, i.uv1);
 
 				if (transit.b < _Cutoff)

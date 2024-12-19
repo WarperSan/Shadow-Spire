@@ -33,7 +33,6 @@ namespace TitleScreen
             InputManager.Instance.OnMoveUI.AddListener(Move);
             InputManager.Instance.OnEnterUI.AddListener(Enter);
 
-            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
