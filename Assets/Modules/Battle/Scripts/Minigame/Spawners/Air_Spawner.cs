@@ -57,7 +57,7 @@ namespace Battle.Minigame.Spawners
             strength = 3;
 
             float angle = Random.Range(-10 * strength, 10 * strength) - 90;
-            pushingForce = Random.Range(0.05f, 0.8f) * strength;
+            pushingForce = Random.Range(0.01f, 0.2f) * strength;
 
             pushingDirection = new Vector2(
                 Mathf.Cos(angle * Mathf.Deg2Rad),
