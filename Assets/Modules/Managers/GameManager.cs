@@ -48,7 +48,7 @@ namespace Managers
         private DungeonManager dungeonManager;
 
         [SerializeField]
-        private int levelIndex = 0;
+        private int levelIndex = 1;
 
         [SerializeField]
         private Camera dungeonCamera;
@@ -71,10 +71,10 @@ namespace Managers
             {
                 Index = levelIndex,
                 Seed = seed,
-                Width = Mathf.Min(4 + levelIndex * 2, 17),
-                Height = Mathf.Min(4 + levelIndex * 2, 8),
-                MinimumRoomHeight = levelIndex <= 1 ? 2 : 3,
-                MinimumRoomWidth = levelIndex <= 1 ? 2 : 3,
+                Width = Mathf.Min(4 + (levelIndex - 1) * 2, 17),
+                Height = Mathf.Min(4 + (levelIndex - 1) * 2, 8),
+                MinimumRoomHeight = levelIndex <= 2 ? 2 : 3,
+                MinimumRoomWidth = levelIndex <= 2 ? 2 : 3,
                 SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
                 AddHighLoop = levelIndex % 10 == 0,
                 AddLowLoop = levelIndex % 4 == 0
@@ -96,7 +96,7 @@ namespace Managers
 
         public IEnumerator StartLevelSequence()
         {
-            UIManager.SetLevel(levelIndex + 1);
+            UIManager.SetLevel(levelIndex);
 
             yield return UIManager.FadeOutBlackout();
             yield return new WaitForSeconds(0.2f);
@@ -107,7 +107,6 @@ namespace Managers
         public void EndLevel()
         {
             IsLevelOver = true;
-            levelIndex++;
             InputManager.Instance.SwitchToUI();
             StartCoroutine(EndLevelSequence());
         }
@@ -117,13 +116,15 @@ namespace Managers
             yield return new WaitForSeconds(0.2f);
 
             yield return UIManager.FadeInBlackout();
-            yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
 
             dungeonManager.ClearDungeon();
             yield return null; // Wait 1 frame
 
+            yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
+
             yield return EndLevelWeaponOffer();
 
+            levelIndex++;
             StartLevel();
         }
 
@@ -203,10 +204,7 @@ namespace Managers
 
         private IEnumerator EndLevelWeaponOffer()
         {
-            if (Level.Index == 0)
-                yield break;
-
-            if ((Level.Index + 2) % 5 != 0)
+            if ((levelIndex + 1) % 5 != 0)
                 yield break;
 
             yield return weaponUI.ShowWeapons();

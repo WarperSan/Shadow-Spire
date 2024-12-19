@@ -289,9 +289,9 @@ namespace Dungeon.Generation
 
         #region Type
 
-        public const int ENEMY_ROOM_INDEX = 2; // Level 3+
-        public const int TREASURE_ROOM_INDEX = 5; // Level 6+
-        public const int SPIKES_ROOM_INDEX = 6; // Level 7+
+        public const int ENEMY_ROOM_INDEX = 3; // Level 3+
+        public const int TREASURE_ROOM_INDEX = 6; // Level 6+
+        public const int SPIKES_ROOM_INDEX = 4; // Level 4+
 
         private void FindEnemyRooms(Room[] rooms)
         {
@@ -355,7 +355,7 @@ namespace Dungeon.Generation
 
         private void FindSpikesRooms(Room[] rooms)
         {
-            if (settings.Index < TREASURE_ROOM_INDEX)
+            if (settings.Index < SPIKES_ROOM_INDEX)
                 return;
 
             // Find random

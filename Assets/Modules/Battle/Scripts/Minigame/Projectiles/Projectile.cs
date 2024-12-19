@@ -1,4 +1,5 @@
 using BattleEntity;
+using Managers;
 using Player;
 using UnityEngine;
 using UtilsModule;
@@ -19,7 +20,7 @@ namespace Battle.Minigame.Projectiles
         }
 
         public virtual void OnHit() { }
-        public virtual int GetDamage() => 5;
+        public virtual int GetDamage() => Mathf.Max(GameManager.Instance.Level.Index / 10, 1) * 5;
 
         #region Damage
 
