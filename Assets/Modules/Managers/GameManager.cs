@@ -87,7 +87,7 @@ namespace Managers
 
             dungeonCamera.transform.position = new Vector3(
                 Level.Width / 2f,
-                -(Level.Height / 2f + 1f),
+                -(Level.Height / 2f + 0.75f),
                 dungeonCamera.transform.position.z
             );
 
