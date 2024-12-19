@@ -71,12 +71,12 @@ namespace BattleEntity
 
         private static float[,] TYPE_CHART = {
             // ATK \ DEF   NONE NORMAL UNDEAD GHOST GIANT ANIMAL
-            /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f },
+            /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f }, // NEUTRAL
             /* NORMAL */ {  1f,    1f,   0.5f, 0.5f,   1f, 1.5f }, // VERY WEAK
-            /* UNDEAD */ {  1f,    3f,   0.5f,   1f, 0.5f,   3f }, // GLASS CANNON
-            /* GHOST */  {  1f,  1.5f,   0.5f,   3f, 0.5f, 1.5f }, // SAFER GLASS CANNON
-            /* GIANT */  {  1f,  1.5f,   1.5f, 0.5f,   1f, 1.5f }, // BALANCED
-            /* ANIMAL */ {  1f,  1.5f,   0.5f,   1f, 0.5f,   3f }, // WEAK
+            /* UNDEAD */ {  1f,    3f,   0.5f, 0.5f, 0.5f,   3f }, // GLASS CANNON
+            /* GHOST */  {  1f,    1f,     1f,   3f, 0.5f, 1.5f }, // SAFER GLASS CANNON
+            /* GIANT */  {  1f,  1.5f,     3f, 0.5f,   1f, 0.5f }, // BALANCED
+            /* ANIMAL */ {  1f,  1.5f,   0.5f,   1f,   3f,   1f }, // WEAK
         };
 
         public float CalculateEffectiveness(Type attackType)
