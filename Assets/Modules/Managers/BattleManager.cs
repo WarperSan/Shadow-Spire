@@ -101,6 +101,7 @@ namespace Managers
                     OnEnter = () => StartCoroutine(OnHealPressed()),
                     IsValid = () => playerEntity.HasPotions()
                 },
+#if UNITY_EDITOR
                 // new()
                 // {
                 //    Text = "Nuke",
@@ -111,6 +112,7 @@ namespace Managers
                 //    Text = "Death",
                 //    OnEnter = () => EndBattle(false)
                 // }
+#endif
             });
         }
 
@@ -152,7 +154,7 @@ namespace Managers
         private IEnumerator HealPlayer(int amount)
         {
             playerEntity.ConsumePotion();
-            playerEntity.Heal(amount);
+            battlePlayerEntity.Heal(amount);
 
             yield return new WaitForSeconds(0.5f);
         }
