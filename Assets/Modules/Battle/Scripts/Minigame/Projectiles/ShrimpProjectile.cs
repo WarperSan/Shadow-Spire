@@ -20,7 +20,7 @@ namespace Battle.Minigame.Projectiles
 
         #region Projectile
 
-        private void Update() => transform.Translate(4.5f * Time.deltaTime * Vector2.right, Space.World);
+        private void Update() => transform.Translate(4.2f * Time.deltaTime * Vector2.right, Space.World);
 
         #endregion
     }

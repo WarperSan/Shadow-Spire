@@ -62,6 +62,9 @@ namespace Battle.Minigame.Spawners
                 if (newProjectile.TryGetComponent(out Projectile projectile))
                     projectile.SetEnemy(HandledType);
 
+                if (duration < spawnDelay)
+                    break;
+
                 yield return new WaitForSeconds(spawnDelay);
 
                 duration -= spawnDelay;

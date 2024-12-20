@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Dungeon.Drawers;
 using Dungeon.Drawers.Terrain;
 using UnityEngine;
 using Random = System.Random;
@@ -303,7 +302,7 @@ namespace Dungeon.Generation
             foreach (var room in rooms)
             {
                 // If too close from the entrance, skip
-                if (room.Depth <= 1 && settings.Index > ENEMY_ROOM_INDEX)
+                if (room.Depth <= 1)
                     continue;
 
                 validRooms.Add(room);

@@ -51,6 +51,9 @@ namespace Battle.Minigame.Spawners
         /// <inheritdoc/>
         public override IEnumerator StartSpawn(float duration)
         {
+            yield return new WaitForSeconds(0.5f);
+            duration -= 0.5f;
+
             while (duration > 0)
             {
                 var newProjectile = Instantiate(bonePrefab, projectileParent);
@@ -61,6 +64,9 @@ namespace Battle.Minigame.Spawners
 
                 if (newProjectile.TryGetComponent(out Projectile projectile))
                     projectile.SetEnemy(HandledType);
+
+                if (duration < spawnDelay)
+                    break;
 
                 yield return new WaitForSeconds(spawnDelay);
 

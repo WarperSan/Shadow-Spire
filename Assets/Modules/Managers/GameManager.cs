@@ -121,10 +121,10 @@ namespace Managers
             yield return null; // Wait 1 frame
 
             yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
+            levelIndex++;
 
             yield return EndLevelWeaponOffer();
 
-            levelIndex++;
             StartLevel();
         }
 
@@ -204,7 +204,7 @@ namespace Managers
 
         private IEnumerator EndLevelWeaponOffer()
         {
-            if ((levelIndex + 1) % 5 != 0)
+            if (levelIndex % 5 != 0)
                 yield break;
 
             yield return weaponUI.ShowWeapons();

@@ -15,13 +15,6 @@ namespace Entities
         private void Start()
         {
             InputManager.Instance.OnMovePlayer.AddListener(Move);
-
-            MaxHealth = 150;
-
-            // Update UI
-            SetHealth(MaxHealth);
-            Weapon = WeaponInstance.CreateRandom(0);
-            SetPotionCount(0);
         }
 
         #region Inputs
@@ -136,24 +129,27 @@ namespace Entities
 
         #region IDungeonReceive
 
+        private bool initialized = false;
+
         /// <inheritdoc/>
         public void OnLevelStart(DungeonResult level)
         {
-            if (weapon != null)
+            if (!initialized)
             {
-                weapon.Update(level);
-                playerInformation.SetWeapon(weapon);
+                MaxHealth = 150;
+
+                // Update UI
+                SetHealth(MaxHealth);
+                Weapon = WeaponInstance.CreateRandom(1);
+                SetPotionCount(0);
+                initialized = true;
             }
         }
 
         /// <inheritdoc/>
         public void OnLevelEnd(DungeonResult level)
         {
-            if (weapon != null)
-            {
-                weapon.Update(level);
-                playerInformation.SetWeapon(weapon);
-            }
+
         }
 
         #endregion
