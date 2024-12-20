@@ -17,6 +17,8 @@ namespace Entities
 
         #endregion
 
+        private const int ACTIVE_TURNS = 3;
+
         private int activeTurns;
         private bool canAttack;
 
@@ -31,10 +33,10 @@ namespace Entities
             if (canAttack)
             {
                 entity.TakeDamage(2);
-                activeTurns = 2;
+                activeTurns = ACTIVE_TURNS;
             }
             else
-                activeTurns = 3;
+                activeTurns = ACTIVE_TURNS + 1;
         }
 
         #endregion
@@ -44,7 +46,7 @@ namespace Entities
         public IEnumerator Think()
         {
             activeTurns--;
-            canAttack = activeTurns < 2 && activeTurns >= 0; // 0 and 1 
+            canAttack = activeTurns < ACTIVE_TURNS && activeTurns >= 0;
             spriteRenderer.sprite = canAttack ? onSprite : offSprite;
 
             yield return null;
