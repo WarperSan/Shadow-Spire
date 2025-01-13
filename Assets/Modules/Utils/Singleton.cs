@@ -21,23 +21,20 @@ namespace UtilsModule
             // Keep only one
             if (Instance != null)
             {
-                if (!CanCoexist)
-                {
-                    Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
-                    Destroy(this.gameObject);
-                }
+                Debug.LogWarning($"Another instance of {GetType().Name} has been found.");
+                Destroy(gameObject);
                 return;
             }
 
-            Instance = this.gameObject.GetComponent<T>();
+            Instance = gameObject.GetComponent<T>();
 
-            if (!this.DestroyOnLoad)
+            if (!DestroyOnLoad)
             {
-                this.transform.SetParent(null);
-                DontDestroyOnLoad(this.gameObject);
+                transform.SetParent(null);
+                DontDestroyOnLoad(gameObject);
             }
 
-            this.OnAwake();
+            OnAwake();
         }
 
         #endregion MonoBehaviour
@@ -48,11 +45,6 @@ namespace UtilsModule
         /// Defines if the singleton should be destroyed when loading a new scene
         /// </summary>
         protected virtual bool DestroyOnLoad => false;
-
-        /// <summary>
-        /// Defines if multiple instances of the singleton can coexist
-        /// </summary>
-        protected virtual bool CanCoexist => false;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called
