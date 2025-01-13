@@ -52,7 +52,14 @@ namespace UtilsModule
             behaviour.gameObject.SetActive(end > 0);
         }
 
+        /// <summary>
+        /// Fades in the given element
+        /// </summary>
         public static IEnumerator FadeIn(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 0f, 1f);
+
+        /// <summary>
+        /// Fades out the given element
+        /// </summary>
         public static IEnumerator FadeOut(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 1f, 0f);
 
         #endregion
