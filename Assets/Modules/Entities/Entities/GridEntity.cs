@@ -37,16 +37,19 @@ namespace Entities
 
         protected virtual IEnumerator ProcessTurn(ITurnable turnable)
         {
-            CoroutineWithData cd = new(this, turnable.Think());
-            yield return cd.coroutine;
+            IEnumerator think = turnable.Think();
+
+            yield return think;
+
+            object result = think.Current;
 
             if (this is IMovable movable)
             {
-                if (cd.result is Movement movement)
+                if (result is Movement movement)
                 {
                     yield return movable.ApplyMovement(movement);
                 }
-                else if (cd.result is Movement[] movements)
+                else if (result is Movement[] movements)
                 {
                     foreach (var mov in movements)
                     {
