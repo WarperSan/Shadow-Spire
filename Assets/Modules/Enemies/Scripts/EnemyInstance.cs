@@ -1,5 +1,4 @@
 using BattleEntity;
-using Dungeon.Generation;
 using Managers;
 using UnityEngine;
 
@@ -21,17 +20,15 @@ namespace Enemies
         public EnemyInstance(EnemySO enemy, int level)
         {
             _data = enemy;
-            _level = level;
+            _level = level / 10;
         }
 
         public static EnemyInstance CreateRandom(int level)
         {
-            level -= DungeonGenerator.ENEMY_ROOM_INDEX;
+            System.Random random = GameManager.Instance.Level.Random;
 
-            var random = GameManager.Instance.Level.Random;
-
-            var rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
-            var enemy = new EnemyInstance(rdmEnemy, level);
+            EnemySO rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
+            EnemyInstance enemy = new EnemyInstance(rdmEnemy, level);
 
             return enemy;
         }
@@ -41,9 +38,18 @@ namespace Enemies
         #region Getters
 
         public EnemySO GetRaw() => _data;
-        public int GetHealth() => Mathf.RoundToInt(_data.BaseHealth + _data.BaseHealth * 0.25f * Mathf.Pow(_level, 1.3f));
+
+        public int GetHealth()
+        {
+            float health = _data.BaseHealth;
+
+            health += _data.BaseHealth * 0.15f * _level;
+            health = Mathf.Max(health, 0);
+
+            return Mathf.FloorToInt(health);
+        }
         public int GetAttack() => 5;
-        public Type GetTypes() => _data.Type;
+        public Type GetTypes() => _data.BaseType;
 
         #endregion
     }

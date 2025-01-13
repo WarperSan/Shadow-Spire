@@ -7,9 +7,9 @@ namespace BattleEntity
         private PlayerEntity playerEntity;
         public BattlePlayerEntity(PlayerEntity playerEntity)
         {
-            this.Health = playerEntity.Health;
+            Health = playerEntity.Health;
             this.playerEntity = playerEntity;
-            this.Type = Type.NONE;
+            Type = Type.NONE;
         }
 
         /// <inheritdoc/>

@@ -15,7 +15,7 @@ namespace PathFinding.Graphs
 
         public T GetNode(int id)
         {
-            if (!_nodes.TryGetValue(id, out var node))
+            if (!_nodes.TryGetValue(id, out T node))
                 throw new ArgumentOutOfRangeException($"No node was found with the id '{id}'.");
             return node;
         }
@@ -38,7 +38,7 @@ namespace PathFinding.Graphs
                 throw new ArgumentException("Cannot link a node to itself.");
 
             // If key doesn't exist, error
-            if (!_nodes.TryGetValue(from, out var node))
+            if (!_nodes.TryGetValue(from, out T node))
                 throw new ArgumentException("Cannot link to a node that doesn't exist.");
 
             node.AddLink(to, cost);
@@ -60,7 +60,7 @@ namespace PathFinding.Graphs
         /// <returns>Path found or null if not found</returns>
         public int[] GetPath(int start, int end)
         {
-            Dictionary<int, int> links = this.ComputePath(start, end);
+            Dictionary<int, int> links = ComputePath(start, end);
 
             if (links == null)
                 return null;
@@ -70,9 +70,9 @@ namespace PathFinding.Graphs
                 return null;
 
             // Compile path
-            var path = new List<int>();
+            List<int> path = new List<int>();
 
-            var currentNode = end;
+            int currentNode = end;
             do
             {
                 currentNode = links[currentNode];
@@ -93,32 +93,32 @@ namespace PathFinding.Graphs
         /// <returns>Links from nodes to nodes</returns>
         protected virtual Dictionary<int, int> ComputePath(int start, int end)
         {
-            var links = new Dictionary<int, int>
+            Dictionary<int, int> links = new Dictionary<int, int>
             {
                 [start] = -1 // Comes from none
             };
 
-            var costPath = new Dictionary<int, float>
+            Dictionary<int, float> costPath = new Dictionary<int, float>
             {
                 [start] = 0 // Cost nothing
             };
 
-            var frontier = new UniquePriorityQueue<Node, float>();
+            UniquePriorityQueue<Node, float> frontier = new UniquePriorityQueue<Node, float>();
             frontier.Enqueue(GetNode(start), 0); // Add start
 
             do
             {
-                var current = frontier.Dequeue();
+                Node current = frontier.Dequeue();
 
                 if (current.Id == end)
                     break;
 
-                foreach (var next in current.GetNeighbors())
+                foreach (int next in current.GetNeighbors())
                 {
-                    var newCost = costPath[current.Id] + current.GetCost(next);
+                    float newCost = costPath[current.Id] + current.GetCost(next);
 
                     // If cost higher, skip
-                    if (costPath.TryGetValue(next, out var oldCost) && newCost >= oldCost)
+                    if (costPath.TryGetValue(next, out float oldCost) && newCost >= oldCost)
                         continue;
 
                     costPath[next] = newCost;

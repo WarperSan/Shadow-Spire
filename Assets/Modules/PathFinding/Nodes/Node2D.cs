@@ -8,7 +8,7 @@ namespace PathFinding.Nodes
 
         public Node2D(int id, Vector2 position) : base(id)
         {
-            this.Position = position;
+            Position = position;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace PathFinding.Nodes
 
         public Node(int id)
         {
-            this.Id = id;
-            this._links = new Dictionary<int, float>();
+            Id = id;
+            _links = new Dictionary<int, float>();
         }
 
         #region Links
@@ -19,15 +19,15 @@ namespace PathFinding.Nodes
         private readonly Dictionary<int, float> _links;
 
         /// <summary>Creates a link between this node and the given node</summary>
-        public void AddLink(int id, float cost) => this._links[id] = cost;
+        public void AddLink(int id, float cost) => _links[id] = cost;
 
         /// <summary>Gets the neighbours of this node</summary>
-        public int[] GetNeighbors() => this._links.Keys.ToArray();
+        public int[] GetNeighbors() => _links.Keys.ToArray();
 
         /// <summary>Gets the cost of the link between this node and the given node</summary>
         public float GetCost(int id)
         {
-            if (!this._links.TryGetValue(id, out var cost))
+            if (!_links.TryGetValue(id, out float cost))
                 throw new NullReferenceException($"The node #{Id} is not linked to the node #{id}.");
 
             return cost;
@@ -40,7 +40,7 @@ namespace PathFinding.Nodes
         public int CompareTo(Node other)
         {
             if (ReferenceEquals(this, other)) return 0;
-            return other is null ? 1 : this.Id.CompareTo(other.Id);
+            return other is null ? 1 : Id.CompareTo(other.Id);
         }
 
         #endregion

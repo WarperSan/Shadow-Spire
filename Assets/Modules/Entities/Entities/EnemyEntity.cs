@@ -24,7 +24,7 @@ namespace Entities
             Instance = new EnemyInstance(data, level);
 
             spriteRenderer.sprite = data.OverworldSprite;
-            spriteRenderer.color = data.Type.GetColor();
+            spriteRenderer.color = data.BaseType.GetColor();
 
             turnsRemaining = waitTurns = data.MovementSpeed switch
             {
@@ -82,7 +82,7 @@ namespace Entities
 
         private void UpdatePath()
         {
-            var target = Position;
+            Vector2Int target = Position;
 
             if (_data.Pathing == EnemyPathing.DIRECT)
                 target = GameManager.Instance.player.Position;
@@ -96,10 +96,10 @@ namespace Entities
 
         private Vector2Int GetRandomPosition()
         {
-            var level = GameManager.Instance.Level;
-            var rdmRoom = level.Rooms[level.Random.Next(0, level.Rooms.Length)];
+            Dungeon.Generation.DungeonResult level = GameManager.Instance.Level;
+            Dungeon.Generation.Room rdmRoom = level.Rooms[level.Random.Next(0, level.Rooms.Length)];
 
-            var positions = new List<Vector2Int>();
+            List<Vector2Int> positions = new List<Vector2Int>();
 
             for (int y = rdmRoom.Y; y < rdmRoom.Y + rdmRoom.Height; y++)
             {

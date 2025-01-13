@@ -44,9 +44,7 @@ namespace Enemies
         [Min(1)]
         public int BaseHealth = 1;
 
-        [Min(1)]
-        public int BaseAttack = 1;
-
-        public Type Type = Type.NORMAL;
+        [Tooltip("Base type of this enemy")]
+        public Type BaseType;
     }
 }

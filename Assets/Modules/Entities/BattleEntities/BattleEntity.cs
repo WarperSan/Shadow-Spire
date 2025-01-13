@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using UtilsModule;
 using Weapons;
 
 namespace BattleEntity
@@ -64,21 +62,35 @@ namespace BattleEntity
 
         public Type Type { get; protected set; }
 
-        // x0   = IMMUNE
         // x0.5 = NOT EFFECTIVE
         // x1   = NORMAL
         // x1.5 = VERY EFFECTIVE
         // x3   = SUPER EFFECTIVE
 
+        // private static float[,] TYPE_CHART = {
+        //     // ATK \ DEF   NONE NORMAL UNDEAD GHOST GIANT ANIMAL AIR
+        //     /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f,   1f }, // NEUTRAL
+        //     /* NORMAL */ {  1f,    1f,   0.5f, 0.5f,   1f, 1.5f,   1f }, // VERY WEAK
+        //     /* UNDEAD */ {  1f,    3f,   0.5f, 0.5f, 0.5f,   3f, 1.5f }, // GLASS CANNON
+        //     /* GHOST */  {  1f,    1f,     1f,   3f, 0.5f, 1.5f,   3f }, // SAFER GLASS CANNON
+        //     /* GIANT */  {  1f,  1.5f,     3f, 0.5f,   1f, 0.5f, 0.5f }, // BALANCED
+        //     /* ANIMAL */ {  1f,  1.5f,   0.5f,   1f,   3f,   1f,   1f }, // WEAK
+        //     /* AIR */    {  1f,  0.5f,     3f,   1f, 1.5f, 0.5f,   1f }, // ???
+        // };
+
+        // x0.5 = RESISTED
+        // x1   = NORMAL
+        // x2   = EFFECTIVE
+
         private static float[,] TYPE_CHART = {
             // ATK \ DEF   NONE NORMAL UNDEAD GHOST GIANT ANIMAL AIR
-            /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f,   1f }, // NEUTRAL
-            /* NORMAL */ {  1f,    1f,   0.5f, 0.5f,   1f, 1.5f,   1f }, // VERY WEAK
-            /* UNDEAD */ {  1f,    3f,   0.5f, 0.5f, 0.5f,   3f, 1.5f }, // GLASS CANNON
-            /* GHOST */  {  1f,    1f,     1f,   3f, 0.5f, 1.5f,   3f }, // SAFER GLASS CANNON
-            /* GIANT */  {  1f,  1.5f,     3f, 0.5f,   1f, 0.5f, 0.5f }, // BALANCED
-            /* ANIMAL */ {  1f,  1.5f,   0.5f,   1f,   3f,   1f,   1f }, // WEAK
-            /* AIR */    {  1f,  0.5f,     3f,   1f, 1.5f, 0.5f,   1f }, // ???
+            /* NONE */   {  1f,    1f,     1f,   1f,   1f,   1f,   1f },
+            /* NORMAL */ {  1f,    1f,     1f,   1f, 0.5f,   1f,   2f },
+            /* UNDEAD */ {  1f,    1f,     1f,   1f,   2f,   2f,   1f },
+            /* GHOST */  {  1f,    1f,     2f, 0.5f,   1f,   1f,   1f },
+            /* GIANT */  {  1f,    2f,     1f,   1f,   1f, 0.5f, 0.5f },
+            /* ANIMAL */ {  1f,  0.5f,   0.5f,   2f,   1f,   1f,   2f },
+            /* AIR */    {  1f,    1f,     2f,   1f,   1f, 0.5f,   1f },
         };
 
         public float CalculateEffectiveness(Type attackType)
@@ -92,20 +104,25 @@ namespace BattleEntity
             // Get multiplier
             float percent = 100f;
 
-            foreach (var attackIndex in attackIndexes)
+            foreach (int attackIndex in attackIndexes)
             {
-                foreach (var defenceIndex in defenceIndexes)
+                foreach (int defenceIndex in defenceIndexes)
                     percent *= TYPE_CHART[attackIndex, defenceIndex];
             }
 
+            // Limit between 50% and 500%
+            if (percent < 50f)
+                percent = 50f;
+            else if (percent > 500f)
+                percent = 500f;
 
             return percent;
         }
 
         private static int[] GetTypeIndexes(Type type)
         {
-            var types = Enum.GetValues(typeof(Type));
-            var indexes = new List<int>();
+            Array types = Enum.GetValues(typeof(Type));
+            List<int> indexes = new List<int>();
 
             for (int i = 0; i < types.Length; i++)
             {

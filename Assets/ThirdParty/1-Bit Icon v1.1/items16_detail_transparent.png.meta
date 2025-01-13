@@ -290,6 +290,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: icon_small_ring
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b0901c132eb6fe45968a87cd1034f2d
+      internalID: 32614463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -308,6 +329,7 @@ TextureImporter:
       icon_heart: 1646262719
       icon_magic_sword: 2016491466
       icon_small_potion: -1566942293
+      icon_small_ring: 32614463
       icon_sword: -611470768
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

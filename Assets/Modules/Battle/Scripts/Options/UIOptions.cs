@@ -1,5 +1,4 @@
 using UnityEngine;
-using UtilsModule;
 
 namespace Battle.Options
 {

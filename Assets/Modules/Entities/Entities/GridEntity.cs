@@ -1,7 +1,6 @@
 using System.Collections;
 using Entities.Interfaces;
 using UnityEngine;
-using UtilsModule;
 
 namespace Entities
 {

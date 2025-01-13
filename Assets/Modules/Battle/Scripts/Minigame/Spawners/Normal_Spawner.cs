@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Battle.Minigame.Projectiles;
 using BattleEntity;
 using UnityEngine;
