@@ -1,9 +1,15 @@
 using UnityEngine;
+using UtilsModule;
 
 namespace Battle.Options
 {
     public class EnemyOptions : UIOptions<EnemyOption, EnemyOptionData>
     {
+
+        /// <inheritdoc/>
+        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(rectTransform);
+
+        
         /// <inheritdoc/>
         protected override void OnMoveSelected(Vector2 dir)
         {

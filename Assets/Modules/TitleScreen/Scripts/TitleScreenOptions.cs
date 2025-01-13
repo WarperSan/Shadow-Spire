@@ -84,32 +84,7 @@ namespace TitleScreen
         #region UIOptions
 
         /// <inheritdoc/>
-        protected override void LoadOptions(TitleScreenOptionData[] options)
-        {
-            DestroyOptions();
-
-            loadedOptions = new TitleScreenOption[options.Length];
-
-            float singleY = -rectTransform.rect.size.y / options.Length;
-            float startY = (options.Length - 1) / 2f * -singleY;
-
-            for (int i = 0; i < options.Length; i++)
-            {
-                var newOption = Instantiate(optionPrefab.gameObject, transform);
-
-                if (newOption.TryGetComponent(out RectTransform rectTransform))
-                    rectTransform.anchoredPosition = new Vector2(0, startY + singleY * i);
-
-                if (newOption.TryGetComponent(out TitleScreenOption titleOption))
-                {
-                    titleOption.SetParent(this);
-                    titleOption.LoadOption(options[i]);
-                    loadedOptions[i] = titleOption;
-                }
-            }
-
-            selectedIndex = 0;
-        }
+        protected override void AlignOptions(Transform[] elements) => elements.AlignVertically(rectTransform);
 
         /// <inheritdoc/>
         protected override void OnMoveSelected(Vector2 dir) => base.OnMoveSelected(new(dir.y, dir.x));

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UtilsModule;
 
 namespace Battle.Options
 {
@@ -81,37 +82,34 @@ namespace Battle.Options
             if (options is not U[] typedOptions)
                 return;
 
-            LoadOptions(typedOptions);
-        }
-
-        protected virtual void LoadOptions(U[] options)
-        {
             DestroyOptions();
 
             loadedOptions = new T[options.Length];
-
-            float singleX = rectTransform.rect.size.x / options.Length;
-            float startX = (options.Length - 1) / 2f * -singleX;
+            Transform[] elements = new Transform[options.Length];
 
             for (int i = 0; i < options.Length; i++)
             {
                 var newOption = Instantiate(optionPrefab.gameObject, transform);
 
-                if (newOption.TryGetComponent(out RectTransform rectTransform))
-                    rectTransform.anchoredPosition = new Vector2(startX + singleX * i, 0);
-
-                newOption.transform.position = new Vector3(newOption.transform.position.x, newOption.transform.position.y, 0);
+                elements[i] = newOption.transform;
 
                 if (newOption.TryGetComponent(out T battleOption))
                 {
                     battleOption.SetParent(this);
-                    battleOption.LoadOption(options[i]);
+                    battleOption.LoadOption(typedOptions[i]);
                     loadedOptions[i] = battleOption;
                 }
             }
 
             selectedIndex = 0;
+
+            AlignOptions(elements);
         }
+
+        /// <summary>
+        /// Aligns the loaded options
+        /// </summary>
+        protected virtual void AlignOptions(Transform[] elements) { }
 
         #endregion
 
