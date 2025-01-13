@@ -8,6 +8,9 @@ namespace UtilsModule
 {
     public static class TypeUtils
     {
+        /// <summary>
+        /// Finds all the different types in the given type
+        /// </summary>
         public static Type[] GetTypes(this Type type)
         {
             var types = Enum.GetValues(typeof(Type));
@@ -21,9 +24,15 @@ namespace UtilsModule
                     indexes.Add(item);
             }
 
+            if (indexes.Count == 0)
+                indexes.Add(Type.NONE);
+
             return indexes.ToArray();
         }
 
+        /// <summary>
+        /// Finds all the icons of every types in the given type
+        /// </summary>
         public static string GetIcons(this Type type)
         {
             StringBuilder builder = new();
@@ -47,6 +56,9 @@ namespace UtilsModule
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Finds the color of the given type
+        /// </summary>
         public static Color GetColor(this Type type)
         {
             var color = type.GetTypes()[0] switch
