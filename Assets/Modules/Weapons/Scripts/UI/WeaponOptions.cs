@@ -2,7 +2,7 @@ using Battle.Options;
 using UnityEngine;
 using UtilsModule;
 
-namespace Weapons
+namespace Weapons.UI
 {
     /// <summary>
     /// Menu used for the weapon selection

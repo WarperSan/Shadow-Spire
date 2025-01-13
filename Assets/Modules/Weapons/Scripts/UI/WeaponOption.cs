@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UtilsModule;
 
-namespace Weapons
+namespace Weapons.UI
 {
     /// <summary>
     /// Data used on the weapon selection menu

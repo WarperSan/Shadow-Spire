@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Managers;
 using UnityEngine;
 
-namespace Weapons
+namespace Weapons.UI
 {
     public class WeaponSelectionUI : MonoBehaviour
     {

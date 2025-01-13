@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UtilsModule;
 using Weapons;
+using Weapons.UI;
 
 namespace Managers
 {
