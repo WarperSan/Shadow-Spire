@@ -14,7 +14,7 @@ namespace UtilsModule
         public static Type[] GetTypes(this Type type)
         {
             Array types = Enum.GetValues(typeof(Type));
-            List<Type> indexes = new List<Type>();
+            List<Type> indexes = new();
 
             for (int i = 0; i < types.Length; i++)
             {

@@ -68,7 +68,7 @@ namespace Managers
             int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
             overSeed = seed;
 
-            DungeonSettings settings = new DungeonSettings
+            DungeonSettings settings = new()
             {
                 Index = levelIndex,
                 Seed = seed,

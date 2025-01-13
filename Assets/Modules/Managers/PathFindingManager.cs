@@ -17,7 +17,7 @@ namespace Managers
         {
             int[,] ids = new int[level.Height, level.Width];
 
-            TileGraph graph = new TileGraph(ids);
+            TileGraph graph = new(ids);
 
             // Generate nodes
             for (int y = 0; y < level.Height; y++)

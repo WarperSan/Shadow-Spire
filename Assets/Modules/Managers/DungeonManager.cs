@@ -95,7 +95,7 @@ namespace Managers
         public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
         {
             // Generate level
-            System.Random random = new System.Random(settings.Seed);
+            System.Random random = new(settings.Seed);
             DungeonResult lvl = DungeonGenerator.Generate(random, settings);
 
             // Create drawers

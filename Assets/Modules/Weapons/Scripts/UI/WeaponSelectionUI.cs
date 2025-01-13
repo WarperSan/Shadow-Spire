@@ -54,7 +54,7 @@ namespace Weapons.UI
 
         private void LoadWeapons(WeaponInstance currentWeapon)
         {
-            List<WeaponOptionData> weapons = new List<WeaponOptionData>
+            List<WeaponOptionData> weapons = new()
             {
                 new()
                 {

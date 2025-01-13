@@ -85,7 +85,7 @@ namespace Battle.Minigame
             InputManager.Instance.OnMoveMinigame.AddListener(Move);
             player.canTakeDamage = true;
 
-            List<Coroutine> spawnerCoroutines = new List<Coroutine>();
+            List<Coroutine> spawnerCoroutines = new();
 
             foreach (Spawner spawner in spawners)
             {

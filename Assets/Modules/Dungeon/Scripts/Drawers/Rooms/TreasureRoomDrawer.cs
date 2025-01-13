@@ -46,7 +46,7 @@ namespace Dungeon.Drawers.Rooms
         {
             PotionPrefab = potionPrefab;
 
-            GameObject parent = new GameObject
+            GameObject parent = new()
             {
                 name = "Treasures"
             };

@@ -22,7 +22,7 @@ namespace Dungeon.Drawers.Rooms
         protected List<Vector2Int> GetValidPositions(Room room, Func<int, int, bool> predicate = null)
         {
             // Find valid positions
-            List<Vector2Int> positions = new List<Vector2Int>();
+            List<Vector2Int> positions = new();
 
             for (int y = room.Y; y < room.Y + room.Height; y++)
             {

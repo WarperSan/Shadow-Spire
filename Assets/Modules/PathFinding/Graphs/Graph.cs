@@ -70,7 +70,7 @@ namespace PathFinding.Graphs
                 return null;
 
             // Compile path
-            List<int> path = new List<int>();
+            List<int> path = new();
 
             int currentNode = end;
             do
@@ -93,17 +93,17 @@ namespace PathFinding.Graphs
         /// <returns>Links from nodes to nodes</returns>
         protected virtual Dictionary<int, int> ComputePath(int start, int end)
         {
-            Dictionary<int, int> links = new Dictionary<int, int>
+            Dictionary<int, int> links = new()
             {
                 [start] = -1 // Comes from none
             };
 
-            Dictionary<int, float> costPath = new Dictionary<int, float>
+            Dictionary<int, float> costPath = new()
             {
                 [start] = 0 // Cost nothing
             };
 
-            UniquePriorityQueue<Node, float> frontier = new UniquePriorityQueue<Node, float>();
+            UniquePriorityQueue<Node, float> frontier = new();
             frontier.Enqueue(GetNode(start), 0); // Add start
 
             do

@@ -28,8 +28,8 @@ namespace Dungeon.Generation
 
         public bool Split(System.Random rand, int minWidth, int minHeight)
         {
-            Room roomA = new Room();
-            Room roomB = new Room();
+            Room roomA = new();
+            Room roomB = new();
 
             bool hasSplitted = false;
             bool splitVertical = false;
@@ -88,8 +88,8 @@ namespace Dungeon.Generation
 
         public bool IsUnder(Room other)
         {
-            Vector2Int selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
-            Vector2Int otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
+            Vector2Int selfMax = new(X + Width - 1, Y + Height - 1);
+            Vector2Int otherMax = new(other.X + other.Width - 1, other.Y + other.Height - 1);
 
             return (other.Y - selfMax.y == 1) && // The rooms only are 1 tile apart 
                 (otherMax.x > X) && (other.X < selfMax.x); // The rooms have a common X point
@@ -97,8 +97,8 @@ namespace Dungeon.Generation
 
         public bool IsBeside(Room other)
         {
-            Vector2Int selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
-            Vector2Int otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
+            Vector2Int selfMax = new(X + Width - 1, Y + Height - 1);
+            Vector2Int otherMax = new(other.X + other.Width - 1, other.Y + other.Height - 1);
 
             return (other.X - selfMax.x == 1) && // The rooms only are 1 tile apart
                 (otherMax.y > Y) && (other.Y < selfMax.y); // The rooms have a common Y point

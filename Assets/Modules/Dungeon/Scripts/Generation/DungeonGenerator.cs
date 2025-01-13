@@ -23,7 +23,7 @@ namespace Dungeon.Generation
 
         private DungeonResult Generate()
         {
-            Room root = new Room
+            Room root = new()
             {
                 Width = settings.Width,
                 Height = settings.Height
@@ -72,7 +72,7 @@ namespace Dungeon.Generation
         /// </summary>
         private void SlicesRooms(Room root, int sliceCount, int minRoomWidth, int minRoomHeight)
         {
-            Queue<Room> rooms = new Queue<Room>();
+            Queue<Room> rooms = new();
             rooms.Enqueue(root);
 
             int slicesLeft = sliceCount;
@@ -132,7 +132,7 @@ namespace Dungeon.Generation
         /// </summary>
         private Dictionary<Room, HashSet<Room>> FindAdjacentRooms(Room[] rooms)
         {
-            Dictionary<Room, HashSet<Room>> roomLinks = new Dictionary<Room, HashSet<Room>>();
+            Dictionary<Room, HashSet<Room>> roomLinks = new();
 
             foreach (Room firstRoom in rooms)
             {
@@ -179,7 +179,7 @@ namespace Dungeon.Generation
                 Room currentRoom = roomsToExplore.Peek();
 
                 // Find all the neighbors that have not been explored
-                List<Room> neighbors = new List<Room>();
+                List<Room> neighbors = new();
 
                 foreach (Room adjacentRoom in adjacentRooms[currentRoom])
                 {
@@ -297,7 +297,7 @@ namespace Dungeon.Generation
             if (settings.Index < ENEMY_ROOM_INDEX)
                 return;
 
-            List<Room> validRooms = new List<Room>();
+            List<Room> validRooms = new();
 
             foreach (Room room in rooms)
             {

@@ -53,7 +53,7 @@ namespace Dungeon.Drawers.Rooms
         {
             SpikesPrefab = spikesPrefab;
 
-            GameObject parent = new GameObject
+            GameObject parent = new()
             {
                 name = "Spikes"
             };

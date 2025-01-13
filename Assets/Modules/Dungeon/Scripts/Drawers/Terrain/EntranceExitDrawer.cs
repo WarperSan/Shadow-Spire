@@ -101,7 +101,7 @@ namespace Dungeon.Drawers.Terrain
             if (CanPlaceEntrance(rightX, bottomY))
                 return new Vector2Int(rightX, bottomY);
 
-            List<Vector2Int> possiblePoints = new List<Vector2Int>();
+            List<Vector2Int> possiblePoints = new();
 
             for (int y = topY + 1; y < bottomY; y++)
             {
@@ -209,7 +209,7 @@ namespace Dungeon.Drawers.Terrain
             if (CanPlaceExit(leftX, topY))
                 return new Vector2Int(leftX, topY);
 
-            List<Vector2Int> possiblePoints = new List<Vector2Int>();
+            List<Vector2Int> possiblePoints = new();
 
             for (int y = topY + 1; y < bottomY; y++)
             {
@@ -261,14 +261,14 @@ namespace Dungeon.Drawers.Terrain
         public static Room FindExit(Room[] rooms, Room entrance)
         {
             Room exit = null;
-            Vector2Int entrancePosition = new Vector2Int(entrance.X, entrance.Y + (entrance.Height - 1) / 2);
+            Vector2Int entrancePosition = new(entrance.X, entrance.Y + (entrance.Height - 1) / 2);
 
             // Find furthest from entrance
             float distance = float.MinValue;
 
             for (int i = 0; i < rooms.Length; i++)
             {
-                Vector2Int newExit = new Vector2Int(rooms[i].X + (rooms[i].Width - 1) / 2, rooms[i].Y);
+                Vector2Int newExit = new(rooms[i].X + (rooms[i].Width - 1) / 2, rooms[i].Y);
                 float newDistance = Vector2.Distance(entrancePosition, newExit);
 
                 if (newDistance > distance)

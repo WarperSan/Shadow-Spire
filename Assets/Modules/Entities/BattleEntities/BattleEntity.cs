@@ -122,7 +122,7 @@ namespace BattleEntity
         private static int[] GetTypeIndexes(Type type)
         {
             Array types = Enum.GetValues(typeof(Type));
-            List<int> indexes = new List<int>();
+            List<int> indexes = new();
 
             for (int i = 0; i < types.Length; i++)
             {

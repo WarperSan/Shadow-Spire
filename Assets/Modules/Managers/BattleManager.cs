@@ -197,7 +197,7 @@ namespace Managers
             int level = GameManager.Instance.Level.Index;
             System.Random random = GameManager.Instance.Level.Random;
 
-            List<BattleEnemyEntity> enemies = new List<BattleEnemyEntity>();
+            List<BattleEnemyEntity> enemies = new();
 
             if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
                 enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));

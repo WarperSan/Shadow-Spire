@@ -99,7 +99,7 @@ namespace Entities
             Dungeon.Generation.DungeonResult level = GameManager.Instance.Level;
             Dungeon.Generation.Room rdmRoom = level.Rooms[level.Random.Next(0, level.Rooms.Length)];
 
-            List<Vector2Int> positions = new List<Vector2Int>();
+            List<Vector2Int> positions = new();
 
             for (int y = rdmRoom.Y; y < rdmRoom.Y + rdmRoom.Height; y++)
             {

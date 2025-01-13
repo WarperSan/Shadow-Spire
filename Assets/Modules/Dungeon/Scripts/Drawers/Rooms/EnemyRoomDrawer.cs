@@ -42,7 +42,7 @@ namespace Dungeon.Drawers.Rooms
         /// <inheritdoc/>
         protected override void OnProcess(Room room)
         {
-            Func<int, int, bool> validEnemyPredicate = new Func<int, int, bool>((x, y) =>
+            Func<int, int, bool> validEnemyPredicate = new((x, y) =>
             {
                 // If there is a door to the left, skip
                 if (Level.HasDoor(x - 1, y))
@@ -93,7 +93,7 @@ namespace Dungeon.Drawers.Rooms
             EnemyPool = enemyPool;
             EnemyPrefab = enemyPrefab;
 
-            GameObject parent = new GameObject
+            GameObject parent = new()
             {
                 name = "Enemies"
             };

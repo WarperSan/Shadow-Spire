@@ -28,7 +28,7 @@ namespace Enemies
             System.Random random = GameManager.Instance.Level.Random;
 
             EnemySO rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
-            EnemyInstance enemy = new EnemyInstance(rdmEnemy, level);
+            EnemyInstance enemy = new(rdmEnemy, level);
 
             return enemy;
         }

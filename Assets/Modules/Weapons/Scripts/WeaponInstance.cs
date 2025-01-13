@@ -59,7 +59,7 @@ namespace Weapons
         {
             System.Random random = GameManager.Instance.Level.Random;
 
-            List<WeaponSO> allWeapons = new List<WeaponSO>();
+            List<WeaponSO> allWeapons = new();
 
             foreach (WeaponSO item in WEAPONS)
             {
@@ -68,7 +68,7 @@ namespace Weapons
             }
 
             WeaponSO rdmWeapon = allWeapons[random.Next(0, allWeapons.Count)];
-            WeaponInstance weapon = new WeaponInstance(rdmWeapon, level);
+            WeaponInstance weapon = new(rdmWeapon, level);
 
             if (level >= 10 && random.NextDouble() < 0.3f)
                 AddRandomType(weapon);
