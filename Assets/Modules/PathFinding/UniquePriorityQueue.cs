@@ -15,12 +15,12 @@ namespace PathFinding
 
         public void Enqueue(TElement item, TPriority priority)
         {
-            var index = _elements.FindIndex(e => e.element.Equals(item));
+            int index = _elements.FindIndex(e => e.element.Equals(item));
 
             // If item already exists
             if (index != -1)
             {
-                var oldPriority = _elements[index].priority;
+                TPriority oldPriority = _elements[index].priority;
 
                 // Priority higher, skip
                 if (priority.CompareTo(oldPriority) >= 0)
@@ -50,18 +50,18 @@ namespace PathFinding
             if (Count == 0)
                 throw new InvalidOperationException("Queue is empty.");
 
-            var element = _elements[0];
+            (TElement element, TPriority priority) element = _elements[0];
             _elements[0] = _elements[Count - 1];
             _elements.RemoveAt(Count - 1);
 
-            var index = 0;
+            int index = 0;
             while (true)
             {
-                var leftChild = 2 * index + 1;
+                int leftChild = 2 * index + 1;
                 if (leftChild >= Count)
                     break;
-                var rightChild = leftChild + 1;
-                var minChild = rightChild < Count && Compare(rightChild, leftChild) < 0
+                int rightChild = leftChild + 1;
+                int minChild = rightChild < Count && Compare(rightChild, leftChild) < 0
                     ? rightChild
                     : leftChild;
 

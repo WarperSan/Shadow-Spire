@@ -19,7 +19,7 @@ namespace Battle.Options
             {
                 base.OnMoveSelected(dir); // Move once
 
-                var data = loadedOptions[selectedIndex].GetOption();
+                EnemyOptionData data = loadedOptions[selectedIndex].GetOption();
 
                 // Check if selected is alive
                 if (!data.Entity.IsDead)

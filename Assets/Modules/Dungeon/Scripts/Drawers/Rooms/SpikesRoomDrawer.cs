@@ -27,7 +27,7 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.SPIKES))
                         continue;
 
-                    var treasure = Object.Instantiate(SpikesPrefab, SpawnedParent);
+                    GameObject treasure = Object.Instantiate(SpikesPrefab, SpawnedParent);
                     treasure.transform.position = new Vector3(x, -y, 0);
                 }
             }
@@ -54,7 +54,7 @@ namespace Dungeon.Drawers.Rooms
         {
             SpikesPrefab = spikesPrefab;
 
-            var parent = new GameObject
+            GameObject parent = new GameObject
             {
                 name = "Spikes"
             };

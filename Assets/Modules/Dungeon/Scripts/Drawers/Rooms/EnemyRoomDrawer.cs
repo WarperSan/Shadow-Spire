@@ -30,7 +30,7 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.ENEMY))
                         continue;
 
-                    var enemy = Object.Instantiate(EnemyPrefab, SpawnedParent);
+                    GameObject enemy = Object.Instantiate(EnemyPrefab, SpawnedParent);
                     enemy.transform.position = new Vector3(x, -y, 0);
 
                     if (enemy.TryGetComponent(out EnemyEntity entity))
@@ -42,7 +42,7 @@ namespace Dungeon.Drawers.Rooms
         /// <inheritdoc/>
         protected override void OnProcess(Room room)
         {
-            var validEnemyPredicate = new Func<int, int, bool>((x, y) =>
+            Func<int, int, bool> validEnemyPredicate = new Func<int, int, bool>((x, y) =>
             {
                 // If there is a door to the left, skip
                 if (Level.HasDoor(x - 1, y))
@@ -64,7 +64,7 @@ namespace Dungeon.Drawers.Rooms
             });
 
             // Find valid positions
-            var positions = GetValidPositions(room, validEnemyPredicate);
+            System.Collections.Generic.List<Vector2Int> positions = GetValidPositions(room, validEnemyPredicate);
 
             // If no valid position, skip
             if (positions.Count == 0)
@@ -76,7 +76,7 @@ namespace Dungeon.Drawers.Rooms
             for (int i = 0; i < count; i++)
             {
                 int rdmIndex = Level.Random.Next(0, positions.Count);
-                var pos = positions[rdmIndex];
+                Vector2Int pos = positions[rdmIndex];
 
                 Level.Add(pos.x, pos.y, Tile.ENEMY);
 
@@ -93,7 +93,7 @@ namespace Dungeon.Drawers.Rooms
             EnemyPool = enemyPool;
             EnemyPrefab = enemyPrefab;
 
-            var parent = new GameObject
+            GameObject parent = new GameObject
             {
                 name = "Enemies"
             };

@@ -96,8 +96,8 @@ namespace Managers
         public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
         {
             // Generate level
-            var random = new System.Random(settings.Seed);
-            var lvl = DungeonGenerator.Generate(random, settings);
+            System.Random random = new System.Random(settings.Seed);
+            DungeonResult lvl = DungeonGenerator.Generate(random, settings);
 
             // Create drawers
             DrawerPipeline = new Drawer[]
@@ -121,7 +121,7 @@ namespace Managers
             lvl.Height = lvl.Grid.GetLength(0);
             lvl.Width = lvl.Grid.GetLength(1);
 
-            foreach (var drawer in DrawerPipeline)
+            foreach (Drawer drawer in DrawerPipeline)
                 drawer.Process(lvl.Rooms);
 
             // Compute graphs
@@ -133,20 +133,20 @@ namespace Managers
         public void StartLevel(DungeonResult lvl)
         {
             // Draw the level
-            foreach (var drawer in DrawerPipeline)
+            foreach (Drawer drawer in DrawerPipeline)
                 drawer.Draw(lvl.Rooms);
 
             // Notify all receivers
             Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
 
-            foreach (var receiver in Receivers)
+            foreach (IDungeonReceive receiver in Receivers)
                 receiver.OnLevelStart(lvl);
         }
 
         public void ClearDungeon()
         {
             // Clear all drawers
-            foreach (var drawer in DrawerPipeline)
+            foreach (Drawer drawer in DrawerPipeline)
                 drawer.Clear();
         }
 

@@ -51,7 +51,7 @@ namespace Entities
                 }
                 else if (result is Movement[] movements)
                 {
-                    foreach (var mov in movements)
+                    foreach (Movement mov in movements)
                     {
                         yield return movable.ApplyMovement(mov);
                         yield return new WaitForSeconds(0.1f);

@@ -21,7 +21,7 @@ namespace PathFinding.Graphs
         /// <returns>ID of the node added</returns>
         public virtual int AddNode(Vector2 position)
         {
-            var id = _nextNodeId;
+            int id = _nextNodeId;
 
             _nodes.Add(id, new Node2D(id, position));
 
@@ -33,8 +33,8 @@ namespace PathFinding.Graphs
         /// <inheritdoc/>
         protected override float GetHeuristic(int start, int end)
         {
-            var a = GetNode(start).Position;
-            var b = GetNode(end).Position;
+            Vector2 a = GetNode(start).Position;
+            Vector2 b = GetNode(end).Position;
 
             return Vector2.Distance(a, b);
         }

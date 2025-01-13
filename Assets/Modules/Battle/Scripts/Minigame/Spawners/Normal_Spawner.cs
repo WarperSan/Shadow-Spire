@@ -38,22 +38,22 @@ namespace Battle.Minigame.Spawners
         public override void Clean()
         {
             leftWall.gameObject.SetActive(false);
-            var leftPos = leftWall.transform.localPosition;
+            Vector3 leftPos = leftWall.transform.localPosition;
             leftPos.x = -OFF_WALL;
             leftWall.transform.localPosition = leftPos;
 
             rightWall.gameObject.SetActive(false);
-            var rightPos = rightWall.transform.localPosition;
+            Vector3 rightPos = rightWall.transform.localPosition;
             rightPos.x = OFF_WALL;
             rightWall.transform.localPosition = rightPos;
 
             topWall.gameObject.SetActive(false);
-            var topPos = topWall.transform.localPosition;
+            Vector3 topPos = topWall.transform.localPosition;
             topPos.y = OFF_WALL;
             topWall.transform.localPosition = topPos;
 
             bottomWall.gameObject.SetActive(false);
-            var bottomPos = bottomWall.transform.localPosition;
+            Vector3 bottomPos = bottomWall.transform.localPosition;
             bottomPos.y = -OFF_WALL;
             bottomWall.transform.localPosition = bottomPos;
         }
@@ -75,7 +75,7 @@ namespace Battle.Minigame.Spawners
         /// <inheritdoc/>
         public override IEnumerator StartSpawn(float duration)
         {
-            var parallel = new Coroutine[]
+            Coroutine[] parallel = new Coroutine[]
             {
                 StartCoroutine(TranslateTo(bottomWall.transform, new(0, -1))),
                 StartCoroutine(TranslateTo(topWall.transform, new(0, 1))),
@@ -83,13 +83,13 @@ namespace Battle.Minigame.Spawners
                 StartCoroutine(TranslateTo(rightWall.transform, new(1, 0))),
             };
 
-            foreach (var item in parallel)
+            foreach (Coroutine item in parallel)
                 yield return item;
         }
 
         private IEnumerator TranslateTo(Transform transform, Vector2 matrix)
         {
-            var pos = transform.localPosition;
+            Vector3 pos = transform.localPosition;
 
             if (matrix.x != 0)
                 pos.x = matrix.x * ON_WALL;

@@ -13,7 +13,7 @@ namespace Battle.Minigame.Projectiles
         /// <inheritdoc/>
         protected override void SetColor(Color color)
         {
-            foreach (var item in renderers)
+            foreach (SpriteRenderer item in renderers)
                 item.color = color;
         }
 

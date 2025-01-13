@@ -21,7 +21,7 @@ namespace Dungeon.Drawers.Terrain
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 room.X++; // Move room left by 1
                 room.Y++; // Move room down by 1
@@ -57,7 +57,7 @@ namespace Dungeon.Drawers.Terrain
                     if (!Level.HasWall(x, y))
                         continue;
 
-                    var index = 0;
+                    int index = 0;
 
                     if (y > 0 && Level.HasWall(x, y - 1))
                         index += 0b0001; // TOP

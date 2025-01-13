@@ -28,8 +28,8 @@ namespace Dungeon.Generation
 
         public bool Split(System.Random rand, int minWidth, int minHeight)
         {
-            var roomA = new Room();
-            var roomB = new Room();
+            Room roomA = new Room();
+            Room roomB = new Room();
 
             bool hasSplitted = false;
             bool splitVertical = false;
@@ -37,10 +37,10 @@ namespace Dungeon.Generation
             for (int i = 0; i < 10; i++)
             {
                 splitVertical = rand.Next(0, 2) == 0;
-                var percent = rand.NextDouble() * 0.4f + 0.3f; // 30-70%
+                double percent = rand.NextDouble() * 0.4f + 0.3f; // 30-70%
 
-                var newWidth = (int)Math.Floor(Width * percent);
-                var newHeight = (int)Math.Floor(Height * percent);
+                int newWidth = (int)Math.Floor(Width * percent);
+                int newHeight = (int)Math.Floor(Height * percent);
 
                 // If splitting vertically makes two big enough room
                 if (splitVertical && newWidth >= minWidth && Width - newWidth >= minWidth)
@@ -88,8 +88,8 @@ namespace Dungeon.Generation
 
         public bool IsUnder(Room other)
         {
-            var selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
-            var otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
+            Vector2Int selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
+            Vector2Int otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
 
             return (other.Y - selfMax.y == 1) && // The rooms only are 1 tile apart 
                 (otherMax.x > X) && (other.X < selfMax.x); // The rooms have a common X point
@@ -97,8 +97,8 @@ namespace Dungeon.Generation
 
         public bool IsBeside(Room other)
         {
-            var selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
-            var otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
+            Vector2Int selfMax = new Vector2Int(X + Width - 1, Y + Height - 1);
+            Vector2Int otherMax = new Vector2Int(other.X + other.Width - 1, other.Y + other.Height - 1);
 
             return (other.X - selfMax.x == 1) && // The rooms only are 1 tile apart
                 (otherMax.y > Y) && (other.Y < selfMax.y); // The rooms have a common Y point

@@ -43,7 +43,7 @@ namespace Managers
             bool _continue = true;
             while (_continue)
             {
-                foreach (var entity in turnEntities)
+                foreach (GridEntity entity in turnEntities)
                 {
                     // If player is in battle or if the level is over, skip turn
                     if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.IsPlayerDead)
@@ -59,7 +59,7 @@ namespace Managers
                     yield return entity.ExecuteTurn();
 
                     // Check for event
-                    foreach (var item in foundEntities)
+                    foreach (GridEntity item in foundEntities)
                     {
                         // If entity doesnt exist, skip
                         if (item == null)
@@ -95,16 +95,16 @@ namespace Managers
         /// <inheritdoc/>
         public void OnLevelStart(DungeonResult level)
         {
-            var player = level.Player;
+            PlayerEntity player = level.Player;
 
             foundEntities.Clear();
             turnEntities.Clear();
 
             AddEntity(player); // Make the player the first entity
 
-            var allEntities = FindObjectsOfType<GridEntity>();
+            GridEntity[] allEntities = FindObjectsOfType<GridEntity>();
 
-            foreach (var item in allEntities)
+            foreach (GridEntity item in allEntities)
             {
                 // Don't add player twice
                 if (item == player)

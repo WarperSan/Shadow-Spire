@@ -42,7 +42,7 @@ namespace Dungeon.Drawers
             int minY = int.MaxValue;
             int maxY = int.MinValue;
 
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 minX = Math.Min(minX, room.X);
                 maxX = Math.Max(maxX, room.X + room.Width);
@@ -63,7 +63,7 @@ namespace Dungeon.Drawers
             int minY = int.MaxValue;
             int maxY = int.MinValue;
 
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 minX = Math.Min(minX, room.X);
                 maxX = Math.Max(maxX, room.X + room.Width);

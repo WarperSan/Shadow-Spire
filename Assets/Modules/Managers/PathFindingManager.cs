@@ -17,7 +17,7 @@ namespace Managers
         {
             int[,] ids = new int[level.Height, level.Width];
 
-            var graph = new TileGraph(ids);
+            TileGraph graph = new TileGraph(ids);
 
             // Generate nodes
             for (int y = 0; y < level.Height; y++)
@@ -31,10 +31,10 @@ namespace Managers
             }
 
             // Generale links between room nodes
-            foreach (var room in level.Rooms)
+            foreach (Room room in level.Rooms)
             {
-                var maxX = room.X + room.Width + 1;
-                var maxY = room.Y + room.Height + 1;
+                int maxX = room.X + room.Width + 1;
+                int maxY = room.Y + room.Height + 1;
 
                 for (int y = room.Y; y < maxY; y++)
                 {
@@ -51,7 +51,7 @@ namespace Managers
                             graph.GetID(x, y - 1) // To bottom
                         };
 
-                        foreach (var next in nexts)
+                        foreach (int next in nexts)
                         {
                             if (next == NO_NODE_ID)
                                 continue;
@@ -118,14 +118,14 @@ namespace Managers
             if (path == null)
                 return null;
 
-            var graph = GetTileGraph();
+            TileGraph graph = GetTileGraph();
 
             Movement[] movements = new Movement[path.Length - 1]; // Exclude first one
 
             for (int i = 1; i < path.Length; i++)
             {
-                var current = graph.GetNode(path[i - 1]).Position;
-                var next = graph.GetNode(path[i]).Position;
+                Vector2 current = graph.GetNode(path[i - 1]).Position;
+                Vector2 next = graph.GetNode(path[i]).Position;
 
                 if (next.x < current.x)
                     movements[i - 1] = Movement.LEFT;
@@ -144,17 +144,17 @@ namespace Managers
 
         public static int[] FindPath(GridEntity origin, Vector2Int target)
         {
-            var graph = GetTileGraph();
+            TileGraph graph = GetTileGraph();
 
             // Get start ID
-            var originPos = origin.Position;
-            var start = graph.GetID(originPos.x, -originPos.y);
+            Vector2Int originPos = origin.Position;
+            int start = graph.GetID(originPos.x, -originPos.y);
 
             if (start == NO_NODE_ID)
                 return null;
 
             // Get end ID
-            var end = graph.GetID(target.x, -target.y);
+            int end = graph.GetID(target.x, -target.y);
 
             if (end == NO_NODE_ID)
                 return null;
@@ -179,13 +179,13 @@ namespace Managers
             if (GameManager.Instance == null)
                 return;
 
-            var level = GameManager.Instance.Level;
+            DungeonResult level = GameManager.Instance.Level;
 
             // If level not loaded, skip
             if (level == null)
                 return;
 
-            var graph = level.TileGraph;
+            TileGraph graph = level.TileGraph;
 
             // If graph not compiled, skip
             if (graph == null)
@@ -195,15 +195,15 @@ namespace Managers
             {
                 for (int x = 0; x < level.Width; x++)
                 {
-                    var id = graph.GetID(x, y);
+                    int id = graph.GetID(x, y);
 
                     if (id == NO_NODE_ID)
                         continue;
 
-                    var n = graph.GetNode(id);
+                    PathFinding.Nodes.Node2D n = graph.GetNode(id);
 
                     // Draw links
-                    foreach (var neighbor in n.GetNeighbors())
+                    foreach (int neighbor in n.GetNeighbors())
                     {
                         Gizmos.color = LinkCostColor.Evaluate(n.GetCost(neighbor) / 3f);
                         Gizmos.DrawLine(n.Position + new Vector2(0.5f, -0.5f), graph.GetNode(neighbor).Position + new Vector2(0.5f, -0.5f));

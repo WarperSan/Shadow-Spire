@@ -45,7 +45,7 @@ namespace Weapons
         /// <inheritdoc/>
         protected override void OnLoadOption(WeaponOptionData option)
         {
-            var instance = option.WeaponInstance;
+            WeaponInstance instance = option.WeaponInstance;
 
             icon.sprite = instance.GetIcon();
             type.text = instance.GetTypes().GetIcons();

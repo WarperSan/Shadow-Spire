@@ -49,28 +49,28 @@ namespace Battle.Minigame
             if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
                 return;
 
-            var enemyCount = 0;
+            int enemyCount = 0;
 
             // Compile types
             foreach (BattleEntity.Type item in Enum.GetValues(typeof(BattleEntity.Type)))
                 typesCount[item] = 0;
 
-            foreach (var enemy in battleEnemyEntities)
+            foreach (BattleEnemyEntity enemy in battleEnemyEntities)
             {
                 // Ignore dead enemies
                 if (enemy.IsDead)
                     continue;
 
-                foreach (var uniqueType in enemy.Type.GetTypes())
+                foreach (BattleEntity.Type uniqueType in enemy.Type.GetTypes())
                     typesCount[uniqueType]++;
 
                 enemyCount++;
             }
 
             // Set up spawners
-            foreach (var spawner in spawners)
+            foreach (Spawner spawner in spawners)
             {
-                var strength = typesCount[spawner.HandledType];
+                int strength = typesCount[spawner.HandledType];
 
                 spawner.Setup(strength);
                 spawner.enabled = strength > 0;
@@ -85,9 +85,9 @@ namespace Battle.Minigame
             InputManager.Instance.OnMoveMinigame.AddListener(Move);
             player.canTakeDamage = true;
 
-            var spawnerCoroutines = new List<Coroutine>();
+            List<Coroutine> spawnerCoroutines = new List<Coroutine>();
 
-            foreach (var spawner in spawners)
+            foreach (Spawner spawner in spawners)
             {
                 if (!spawner.enabled)
                     continue;
@@ -97,7 +97,7 @@ namespace Battle.Minigame
 
             yield return new WaitForSeconds(duration);
 
-            foreach (var item in spawnerCoroutines)
+            foreach (Coroutine item in spawnerCoroutines)
                 yield return item;
 
             player.canTakeDamage = false;
@@ -108,7 +108,7 @@ namespace Battle.Minigame
         public void CleanProjectiles()
         {
             // Destroy all projectiles
-            foreach (var spawner in spawners)
+            foreach (Spawner spawner in spawners)
             {
                 if (!spawner.enabled)
                     continue;

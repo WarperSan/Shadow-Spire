@@ -41,7 +41,7 @@ namespace Weapons
             // Disable inputs
             RemoveInputs();
 
-            var selectedOption = options.GetSelection().GetOption();
+            WeaponOptionData selectedOption = options.GetSelection().GetOption();
             GameManager.Instance.player.Weapon = selectedOption.WeaponInstance;
         }
 
@@ -54,7 +54,7 @@ namespace Weapons
 
         private void LoadWeapons(WeaponInstance currentWeapon)
         {
-            var weapons = new List<WeaponOptionData>
+            List<WeaponOptionData> weapons = new List<WeaponOptionData>
             {
                 new()
                 {

@@ -24,7 +24,7 @@ namespace Battle
 
         private UIOptions GetOptions<T>() where T : UIOptionData
         {
-            var type = typeof(T);
+            System.Type type = typeof(T);
 
             if (type == typeof(EnemyOptionData))
                 return enemyOptions;
@@ -70,13 +70,13 @@ namespace Battle
 
         public IEnumerator StartEnemyTurn(PlayerInformation playerInformation)
         {
-            var parallel = new Coroutine[]
+            Coroutine[] parallel = new Coroutine[]
             {
                 StartCoroutine(battleOptionsGroup.Fade(4, 0.1f, 1f, 0f)),
                 StartCoroutine(battleEnemiesGroup.Fade(4, 0.1f, 1f, 0.5f))
             };
 
-            foreach (var item in parallel)
+            foreach (Coroutine item in parallel)
                 yield return item;
 
             yield return playerInformation.OpenGroup(0.5f);
@@ -88,13 +88,13 @@ namespace Battle
             yield return minigameManager.HideOut();
             yield return playerInformation.CloseGroup(0.5f);
 
-            var parallel = new Coroutine[]
+            Coroutine[] parallel = new Coroutine[]
             {
                 StartCoroutine(battleOptionsGroup.Fade(4, 0.1f, 0f, 1f)),
                 StartCoroutine(battleEnemiesGroup.Fade(4, 0.1f, 0.5f, 1f))
             };
 
-            foreach (var item in parallel)
+            foreach (Coroutine item in parallel)
                 yield return item;
         }
 

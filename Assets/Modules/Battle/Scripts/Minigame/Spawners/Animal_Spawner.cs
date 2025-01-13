@@ -53,7 +53,7 @@ namespace Battle.Minigame.Spawners
         {
             while (duration > 0)
             {
-                var newProjectile = Instantiate(shrimpPrefab, projectileParent);
+                GameObject newProjectile = Instantiate(shrimpPrefab, projectileParent);
                 newProjectile.transform.localPosition = new Vector2(
                     SPAWN_X,
                     Random.Range(MIN_SPAWN_Y, MAX_SPAWN_Y)

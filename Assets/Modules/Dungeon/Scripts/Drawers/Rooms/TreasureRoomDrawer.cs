@@ -27,7 +27,7 @@ namespace Dungeon.Drawers.Rooms
                     if (!Level.Has(x, y, Tile.TREASURE))
                         continue;
 
-                    var treasure = Object.Instantiate(PotionPrefab, SpawnedParent);
+                    GameObject treasure = Object.Instantiate(PotionPrefab, SpawnedParent);
                     treasure.transform.position = new Vector3(x, -y, 0);
                 }
             }
@@ -47,7 +47,7 @@ namespace Dungeon.Drawers.Rooms
         {
             PotionPrefab = potionPrefab;
 
-            var parent = new GameObject
+            GameObject parent = new GameObject
             {
                 name = "Treasures"
             };

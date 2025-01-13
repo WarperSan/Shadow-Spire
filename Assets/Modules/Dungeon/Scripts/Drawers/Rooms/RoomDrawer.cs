@@ -22,7 +22,7 @@ namespace Dungeon.Drawers.Rooms
         protected List<Vector2Int> GetValidPositions(Room room, Func<int, int, bool> predicate = null)
         {
             // Find valid positions
-            var positions = new List<Vector2Int>();
+            List<Vector2Int> positions = new List<Vector2Int>();
 
             for (int y = room.Y; y < room.Y + room.Height; y++)
             {
@@ -50,7 +50,7 @@ namespace Dungeon.Drawers.Rooms
         /// <inheritdoc/>
         public override void Draw(Room[] rooms)
         {
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 if (room.Type != Type)
                     continue;
@@ -62,7 +62,7 @@ namespace Dungeon.Drawers.Rooms
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 if (room.Type != Type)
                     continue;

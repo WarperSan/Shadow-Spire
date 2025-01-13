@@ -89,7 +89,7 @@ namespace Battle.Options
 
             for (int i = 0; i < options.Length; i++)
             {
-                var newOption = Instantiate(optionPrefab.gameObject, transform);
+                GameObject newOption = Instantiate(optionPrefab.gameObject, transform);
 
                 elements[i] = newOption.transform;
 

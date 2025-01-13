@@ -13,8 +13,8 @@ namespace UtilsModule
         /// </summary>
         public static Type[] GetTypes(this Type type)
         {
-            var types = Enum.GetValues(typeof(Type));
-            var indexes = new List<Type>();
+            Array types = Enum.GetValues(typeof(Type));
+            List<Type> indexes = new List<Type>();
 
             for (int i = 0; i < types.Length; i++)
             {
@@ -37,7 +37,7 @@ namespace UtilsModule
         {
             StringBuilder builder = new();
 
-            var types = Enum.GetValues(typeof(Type));
+            Array types = Enum.GetValues(typeof(Type));
             foreach (Type item in types)
             {
                 if ((type & item) == 0)
@@ -61,7 +61,7 @@ namespace UtilsModule
         /// </summary>
         public static Color GetColor(this Type type)
         {
-            var color = type.GetTypes()[0] switch
+            string color = type.GetTypes()[0] switch
             {
                 Type.NONE => "#D3D3D3",
                 Type.NORMAL => "#B9E5EB",

@@ -44,7 +44,7 @@ namespace Battle.Minigame.Spawners
         public override void Setup(int strength)
         {
             // Pick a random X
-            var pos = barrel.transform.localPosition;
+            Vector3 pos = barrel.transform.localPosition;
             pos.x = MIN_X;
             barrel.transform.localPosition = pos;
 
@@ -64,7 +64,7 @@ namespace Battle.Minigame.Spawners
 
             while (duration > 0)
             {
-                var pos = barrel.transform.localPosition;
+                Vector3 pos = barrel.transform.localPosition;
                 pos.x = goingRight ? MAX_X : MIN_X;
 
                 barrel.NewPosition(pos);

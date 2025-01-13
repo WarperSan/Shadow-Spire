@@ -71,7 +71,7 @@ namespace UtilsModule
         /// </summary>
         public static void SetAlpha(this Graphic graphic, float alpha)
         {
-            var color = graphic.color;
+            Color color = graphic.color;
             color.a = alpha;
             graphic.color = color;
         }

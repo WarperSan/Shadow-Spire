@@ -47,13 +47,13 @@ namespace Dungeon.Drawers.Terrain
         /// <inheritdoc/>
         public override void Process(Room[] rooms)
         {
-            var entrancePosition = ProcessEntrance(Level.Entrance);
+            Vector2Int entrancePosition = ProcessEntrance(Level.Entrance);
             Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
 
             bool isLeft = Level.HasWall(entrancePosition.x + 1, entrancePosition.y);
             Level.Add(entrancePosition.x + (isLeft ? -1 : 1), entrancePosition.y, Tile.PLAYER);
 
-            var exitPosition = ProcessExit(Level.Exit);
+            Vector2Int exitPosition = ProcessExit(Level.Exit);
             Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
         }
 
@@ -79,11 +79,11 @@ namespace Dungeon.Drawers.Terrain
 
         private Vector2Int ProcessEntrance(Room entrance)
         {
-            var leftX = entrance.X;
-            var rightX = entrance.X + entrance.Width - 1;
+            int leftX = entrance.X;
+            int rightX = entrance.X + entrance.Width - 1;
 
-            var topY = entrance.Y;
-            var bottomY = entrance.Y + entrance.Height - 1;
+            int topY = entrance.Y;
+            int bottomY = entrance.Y + entrance.Height - 1;
 
             // If can place top left, return
             if (CanPlaceEntrance(leftX, topY))
@@ -101,7 +101,7 @@ namespace Dungeon.Drawers.Terrain
             if (CanPlaceEntrance(rightX, bottomY))
                 return new Vector2Int(rightX, bottomY);
 
-            var possiblePoints = new List<Vector2Int>();
+            List<Vector2Int> possiblePoints = new List<Vector2Int>();
 
             for (int y = topY + 1; y < bottomY; y++)
             {
@@ -187,11 +187,11 @@ namespace Dungeon.Drawers.Terrain
 
         private Vector2Int ProcessExit(Room exit)
         {
-            var leftX = exit.X;
-            var rightX = exit.X + exit.Width - 1;
+            int leftX = exit.X;
+            int rightX = exit.X + exit.Width - 1;
 
-            var topY = exit.Y;
-            var bottomY = exit.Y + exit.Height - 1;
+            int topY = exit.Y;
+            int bottomY = exit.Y + exit.Height - 1;
 
             // If can place bottom right, return
             if (CanPlaceExit(rightX, bottomY))
@@ -209,7 +209,7 @@ namespace Dungeon.Drawers.Terrain
             if (CanPlaceExit(leftX, topY))
                 return new Vector2Int(leftX, topY);
 
-            var possiblePoints = new List<Vector2Int>();
+            List<Vector2Int> possiblePoints = new List<Vector2Int>();
 
             for (int y = topY + 1; y < bottomY; y++)
             {
@@ -261,14 +261,14 @@ namespace Dungeon.Drawers.Terrain
         public static Room FindExit(Room[] rooms, Room entrance)
         {
             Room exit = null;
-            var entrancePosition = new Vector2Int(entrance.X, entrance.Y + (entrance.Height - 1) / 2);
+            Vector2Int entrancePosition = new Vector2Int(entrance.X, entrance.Y + (entrance.Height - 1) / 2);
 
             // Find furthest from entrance
             float distance = float.MinValue;
 
             for (int i = 0; i < rooms.Length; i++)
             {
-                var newExit = new Vector2Int(rooms[i].X + (rooms[i].Width - 1) / 2, rooms[i].Y);
+                Vector2Int newExit = new Vector2Int(rooms[i].X + (rooms[i].Width - 1) / 2, rooms[i].Y);
                 float newDistance = Vector2.Distance(entrancePosition, newExit);
 
                 if (newDistance > distance)

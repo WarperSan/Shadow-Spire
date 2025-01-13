@@ -84,7 +84,7 @@ namespace Entities.Interfaces
 
             position += movePos;
 
-            var level = Managers.GameManager.Instance.Level;
+            Dungeon.Generation.DungeonResult level = Managers.GameManager.Instance.Level;
 
             if (level == null)
             {

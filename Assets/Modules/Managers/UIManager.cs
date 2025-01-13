@@ -107,7 +107,7 @@ namespace Managers
         {
             yield return BattleTransition.ExecuteTransition(battleTransitionMaterial, battleTransitionTextures, 0.9f);
 
-            var loadScene = SceneManager.LoadSceneAsync("BattleScene", LoadSceneMode.Additive);
+            AsyncOperation loadScene = SceneManager.LoadSceneAsync("BattleScene", LoadSceneMode.Additive);
 
             // Wait until loaded
             while (!loadScene.isDone)

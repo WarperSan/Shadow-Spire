@@ -176,7 +176,7 @@ namespace Managers
         private void LoadEnemyOptions(WeaponInstance weapon, params BattleEnemyEntity[] entities)
         {
             battleEnemyEntities = entities;
-            var options = new EnemyOptionData[entities.Length];
+            EnemyOptionData[] options = new EnemyOptionData[entities.Length];
 
             for (int i = 0; i < options.Length; i++)
             {
@@ -194,10 +194,10 @@ namespace Managers
 
         private BattleEnemyEntity[] GenerateEnemies(EnemyEntity enemy)
         {
-            var level = GameManager.Instance.Level.Index;
-            var random = GameManager.Instance.Level.Random;
+            int level = GameManager.Instance.Level.Index;
+            System.Random random = GameManager.Instance.Level.Random;
 
-            var enemies = new List<BattleEnemyEntity>();
+            List<BattleEnemyEntity> enemies = new List<BattleEnemyEntity>();
 
             if (random.NextDouble() <= 0.9f && level - Dungeon.Generation.DungeonGenerator.ENEMY_ROOM_INDEX >= 2)
                 enemies.Add(new BattleEnemyEntity(EnemyInstance.CreateRandom(level)));
@@ -215,8 +215,8 @@ namespace Managers
             RemoveInputs();
             DisableEnemyOption();
 
-            var enemyOption = battleUI.GetSelection<EnemyOptionData, EnemyOption>();
-            var enemy = enemyOption.GetOption();
+            EnemyOption enemyOption = battleUI.GetSelection<EnemyOptionData, EnemyOption>();
+            EnemyOptionData enemy = enemyOption.GetOption();
 
             enemy.Entity.TakeAttack(enemy.Weapon);
 

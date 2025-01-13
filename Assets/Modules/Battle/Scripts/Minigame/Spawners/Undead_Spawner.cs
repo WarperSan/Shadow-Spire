@@ -56,7 +56,7 @@ namespace Battle.Minigame.Spawners
 
             while (duration > 0)
             {
-                var newProjectile = Instantiate(bonePrefab, projectileParent);
+                GameObject newProjectile = Instantiate(bonePrefab, projectileParent);
                 newProjectile.transform.localPosition = new Vector2(
                     Random.Range(MIN_SPAWN_X, MAX_SPAWN_X),
                     SPAWN_Y

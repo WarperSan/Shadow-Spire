@@ -18,7 +18,7 @@ namespace Battle.Minigame.Projectiles
         {
             _barrel.color = color;
 
-            var chainColor = color;
+            Color chainColor = color;
             chainColor.a = 0.25f;
             _chain.color = chainColor;
         }
@@ -31,7 +31,7 @@ namespace Battle.Minigame.Projectiles
 
         private void Update()
         {
-            var pos = transform.localPosition;
+            Vector3 pos = transform.localPosition;
 
             // Move Y
             if (direction.y != 0)

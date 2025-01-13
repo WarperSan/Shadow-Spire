@@ -59,7 +59,7 @@ namespace Battle.Minigame.Spawners
         {
             for (int i = 0; i < count; i++)
             {
-                var ghost = Instantiate(ghostPrefab, projectileParent);
+                GameObject ghost = Instantiate(ghostPrefab, projectileParent);
                 ghost.transform.localPosition = new Vector2(
                     Random.value <= 0.5f ? MIN_X : MAX_X,
                     Random.value <= 0.5f ? MIN_Y : MAX_Y

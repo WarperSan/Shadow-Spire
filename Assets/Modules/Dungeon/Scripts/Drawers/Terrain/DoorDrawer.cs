@@ -47,9 +47,9 @@ namespace Dungeon.Drawers.Terrain
 
             List<(Room, Room)> processedLinks = new();
 
-            foreach (var (room, adjacents) in Level.AdjacentRooms)
+            foreach ((Room room, HashSet<Room> adjacents) in Level.AdjacentRooms)
             {
-                foreach (var adjacent in adjacents)
+                foreach (Room adjacent in adjacents)
                 {
                     // If already processed, skip
                     if (processedLinks.Contains((adjacent, room)))
@@ -107,16 +107,16 @@ namespace Dungeon.Drawers.Terrain
         {
             if (adjacent.X >= room.X + room.Width)
             {
-                var minY = Mathf.Max(room.Y, adjacent.Y);
-                var maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
+                int minY = Mathf.Max(room.Y, adjacent.Y);
+                int maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
 
                 for (int y = minY; y <= maxY; y++)
                     Level.Remove(adjacent.X - 1, y, Generation.Tile.WALL);
             }
             else
             {
-                var minX = Mathf.Max(room.X, adjacent.X);
-                var maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
+                int minX = Mathf.Max(room.X, adjacent.X);
+                int maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
 
                 for (int x = minX; x <= maxX; x++)
                     Level.Remove(x, adjacent.Y - 1, Generation.Tile.WALL);
@@ -125,7 +125,7 @@ namespace Dungeon.Drawers.Terrain
 
         private bool CanRoomsCombine(RoomType typeA, RoomType typeB)
         {
-            var validTypes = new RoomType[]
+            RoomType[] validTypes = new RoomType[]
             {
                 RoomType.NORMAL,
                 RoomType.ENEMY,

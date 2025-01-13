@@ -23,7 +23,7 @@ namespace Dungeon.Generation
 
         private DungeonResult Generate()
         {
-            var root = new Room
+            Room root = new Room
             {
                 Width = settings.Width,
                 Height = settings.Height
@@ -72,21 +72,21 @@ namespace Dungeon.Generation
         /// </summary>
         private void SlicesRooms(Room root, int sliceCount, int minRoomWidth, int minRoomHeight)
         {
-            var rooms = new Queue<Room>();
+            Queue<Room> rooms = new Queue<Room>();
             rooms.Enqueue(root);
 
-            var slicesLeft = sliceCount;
+            int slicesLeft = sliceCount;
 
             while (rooms.Count > 0 && slicesLeft > 0)
             {
-                var room = rooms.Dequeue();
+                Room room = rooms.Dequeue();
 
                 // Split
                 bool sliced = room.Split(random, minRoomWidth, minRoomHeight);
 
                 if (sliced)
                 {
-                    foreach (var item in room.Children)
+                    foreach (Room item in room.Children)
                         rooms.Enqueue(item);
                     slicesLeft--;
                 }
@@ -105,12 +105,12 @@ namespace Dungeon.Generation
 
             while (roomsToExplore.Count > 0)
             {
-                var room = roomsToExplore.Pop();
+                Room room = roomsToExplore.Pop();
 
                 // If has children, keep going
                 if (room.Children != null)
                 {
-                    foreach (var item in room.Children)
+                    foreach (Room item in room.Children)
                         roomsToExplore.Push(item);
                     continue;
                 }
@@ -132,11 +132,11 @@ namespace Dungeon.Generation
         /// </summary>
         private Dictionary<Room, HashSet<Room>> FindAdjacentRooms(Room[] rooms)
         {
-            var roomLinks = new Dictionary<Room, HashSet<Room>>();
+            Dictionary<Room, HashSet<Room>> roomLinks = new Dictionary<Room, HashSet<Room>>();
 
-            foreach (var firstRoom in rooms)
+            foreach (Room firstRoom in rooms)
             {
-                foreach (var secondRoom in rooms)
+                foreach (Room secondRoom in rooms)
                 {
                     // If same room, skip
                     if (firstRoom == secondRoom)
@@ -165,7 +165,7 @@ namespace Dungeon.Generation
         private void CutConnections(Room[] rooms, Dictionary<Room, HashSet<Room>> adjacentRooms, Room entrance)
         {
             // Initialize all the depths to -1
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
                 room.Depth = -1;
 
             // Set the start depth to 0
@@ -176,12 +176,12 @@ namespace Dungeon.Generation
 
             while (roomsToExplore.Count > 0)
             {
-                var currentRoom = roomsToExplore.Peek();
+                Room currentRoom = roomsToExplore.Peek();
 
                 // Find all the neighbors that have not been explored
-                var neighbors = new List<Room>();
+                List<Room> neighbors = new List<Room>();
 
-                foreach (var adjacentRoom in adjacentRooms[currentRoom])
+                foreach (Room adjacentRoom in adjacentRooms[currentRoom])
                 {
                     if (adjacentRoom.Depth != -1)
                         continue;
@@ -197,7 +197,7 @@ namespace Dungeon.Generation
                 }
 
                 // Pick a random unexplored neighbor
-                var nextRoom = neighbors[random.Next(0, neighbors.Count)];
+                Room nextRoom = neighbors[random.Next(0, neighbors.Count)];
 
                 // Increase it's depth by 1
                 nextRoom.Depth = currentRoom.Depth + 1;
@@ -206,14 +206,14 @@ namespace Dungeon.Generation
                 roomsToExplore.Push(nextRoom);
             }
 
-            var highLoop = CreateLoop(
+            (Room, Room) highLoop = CreateLoop(
                 rooms,
                 adjacentRooms,
                 (c, f) => c.Depth > f.Depth,
                 (c, f) => c.Depth < f.Depth
             );
 
-            var lowLoop = CreateLoop(
+            (Room, Room) lowLoop = CreateLoop(
                 rooms,
                 adjacentRooms,
                 (c, f) => c.Depth < f.Depth,
@@ -221,7 +221,7 @@ namespace Dungeon.Generation
             );
 
             // Remove extra doors
-            foreach (var (room, otherRooms) in adjacentRooms)
+            foreach ((Room room, HashSet<Room> otherRooms) in adjacentRooms)
             {
                 IEnumerator<Room> _rooms = otherRooms.GetEnumerator();
                 List<Room> roomsToRemove = new();
@@ -234,7 +234,7 @@ namespace Dungeon.Generation
                 }
                 _rooms.Dispose();
 
-                foreach (var item in roomsToRemove)
+                foreach (Room item in roomsToRemove)
                     otherRooms.Remove(item);
             }
 
@@ -297,9 +297,9 @@ namespace Dungeon.Generation
             if (settings.Index < ENEMY_ROOM_INDEX)
                 return;
 
-            var validRooms = new List<Room>();
+            List<Room> validRooms = new List<Room>();
 
-            foreach (var room in rooms)
+            foreach (Room room in rooms)
             {
                 // If too close from the entrance, skip
                 if (room.Depth <= 1)
@@ -337,7 +337,7 @@ namespace Dungeon.Generation
 
             for (int i = 0; i < rooms.Length; i++)
             {
-                var room = rooms[i];
+                Room room = rooms[i];
 
                 if (room.Type != RoomType.NORMAL)
                     continue;
@@ -362,7 +362,7 @@ namespace Dungeon.Generation
 
             for (int i = 0; i < rooms.Length; i++)
             {
-                var room = rooms[i];
+                Room room = rooms[i];
 
                 if (room.Type != RoomType.NORMAL)
                     continue;

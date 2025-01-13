@@ -32,7 +32,7 @@ namespace Battle.Minigame.Projectiles
 
         private void GoOnCooldown()
         {
-            var color = _renderer.color;
+            Color color = _renderer.color;
             color.a = 0.25f;
             _renderer.color = color;
 
@@ -43,7 +43,7 @@ namespace Battle.Minigame.Projectiles
 
         private void RecoverFromCooldown()
         {
-            var color = _renderer.color;
+            Color color = _renderer.color;
             color.a = 1f;
             _renderer.color = color;
 

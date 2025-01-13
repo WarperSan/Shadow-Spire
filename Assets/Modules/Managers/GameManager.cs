@@ -67,7 +67,7 @@ namespace Managers
             int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
             overSeed = seed;
 
-            var settings = new DungeonSettings
+            DungeonSettings settings = new DungeonSettings
             {
                 Index = levelIndex,
                 Seed = seed,
@@ -173,7 +173,7 @@ namespace Managers
         {
             yield return UIManager.FadeInBlackout(1, 0);
 
-            var battle = SceneManager.UnloadSceneAsync("BattleScene");
+            AsyncOperation battle = SceneManager.UnloadSceneAsync("BattleScene");
 
             while (!battle.isDone)
                 yield return null;
@@ -219,12 +219,12 @@ namespace Managers
             dungeonManager.ClearDungeon();
             yield return null;
 
-            var title = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Single);
+            AsyncOperation title = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Single);
 
             while (!title.isDone)
                 yield return null;
 
-            var gameDeload = SceneManager.UnloadSceneAsync("Game");
+            AsyncOperation gameDeload = SceneManager.UnloadSceneAsync("Game");
 
             while (!gameDeload.isDone)
                 yield return null;
