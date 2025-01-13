@@ -31,10 +31,29 @@ namespace UtilsModule
 
         #region Predicate
 
+        /// <summary>
+        /// Checks if the given tile has a wall
+        /// </summary>
         public static bool HasWall(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.WALL);
+
+        /// <summary>
+        /// Checks if the given tile has ground
+        /// </summary>
         public static bool HasGround(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.GROUND | Tile.COVERED_GROUND);
+
+        /// <summary>
+        /// Checks if the given tile has an obstacle
+        /// </summary>
         public static bool HasObstacle(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.ENTRANCE | Tile.EXIT);
+
+        /// <summary>
+        /// Checks if the given tile is blocked
+        /// </summary>
         public static bool IsBlocked(this DungeonResult level, int x, int y) => level.HasWall(x, y) || level.HasObstacle(x, y);
+
+        /// <summary>
+        /// Checks if the given tile has a door
+        /// </summary>
         public static bool HasDoor(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.DOOR_CLOSED | Tile.DOOR_OPENED);
 
         #endregion
