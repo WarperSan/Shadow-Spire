@@ -67,11 +67,11 @@ namespace Player
 
             for (int i = 0; i < count; i++)
             {
-                yield return new WaitForSeconds(5f / 60f); // Wait 5 frames
+                yield return new WaitForSeconds(0.08f);
 
                 healthText.enabled = false;
 
-                yield return new WaitForSeconds(5f / 60f); // Wait 5 frames
+                yield return new WaitForSeconds(0.08f);
 
                 healthText.enabled = true;
             }
@@ -87,7 +87,7 @@ namespace Player
 
         private IEnumerator HealthPopup_Alpha(TextMeshProUGUI text)
         {
-            yield return new WaitForSeconds(30f / 60f); // Wait 30 frames
+            yield return new WaitForSeconds(0.5f);
             yield return text.FadeOut(32, 10f /60f / 32);
         }
 

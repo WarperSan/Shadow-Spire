@@ -1,6 +1,7 @@
 using System.Collections;
 using Battle.Minigame;
 using Battle.Options;
+using Enemies.UI;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;

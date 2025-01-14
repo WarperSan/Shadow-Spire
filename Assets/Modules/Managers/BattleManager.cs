@@ -5,6 +5,7 @@ using Battle.Minigame;
 using Battle.Options;
 using BattleEntity;
 using Enemies;
+using Enemies.UI;
 using Entities;
 using UnityEngine;
 using Weapons;

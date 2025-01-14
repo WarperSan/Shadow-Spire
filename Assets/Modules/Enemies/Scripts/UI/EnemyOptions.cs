@@ -1,8 +1,12 @@
+using Battle.Options;
 using UnityEngine;
 using UtilsModule;
 
-namespace Battle.Options
+namespace Enemies.UI
 {
+    /// <summary>
+    /// Menu used for the enemy selection
+    /// </summary>
     public class EnemyOptions : UIOptions<EnemyOption, EnemyOptionData>
     {
 

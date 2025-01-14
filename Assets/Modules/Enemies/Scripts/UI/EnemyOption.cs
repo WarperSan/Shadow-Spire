@@ -1,3 +1,5 @@
+using System.Collections;
+using Battle.Options;
 using BattleEntity;
 using TMPro;
 using UnityEngine;
@@ -5,8 +7,11 @@ using UnityEngine.UI;
 using UtilsModule;
 using Weapons;
 
-namespace Battle.Options
+namespace Enemies.UI
 {
+    /// <summary>
+    /// Data used for the enemy selection menu
+    /// </summary>
     public class EnemyOptionData : UIOptionData
     {
         public WeaponInstance Weapon;
@@ -14,7 +19,7 @@ namespace Battle.Options
     }
 
     /// <summary>
-    /// Script that handles to display a single option
+    /// Option used for the enemy selection menu
     /// </summary>
     public class EnemyOption : UIOption<EnemyOptionData>
     {
@@ -112,10 +117,24 @@ namespace Battle.Options
         [SerializeField]
         private Animator animator;
 
+        [SerializeField]
+        private RectTransform frame;
+
         private void SpawnAnimation() => animator.SetTrigger("spawnIn");
         private void SetTargetAnimation(bool isTargetted) => animator.SetBool("targetted", isTargetted);
         private void HitAnimation() => animator.SetTrigger("hit");
         private void DeathAnimation() => animator.SetTrigger("death");
+
+        private IEnumerator TargetAnimation()
+        {
+            // Continue until stopped
+            while (true)
+            {
+                frame.sizeDelta = Vector2.one * 40;
+
+                yield return null;//new WaitForSeconds
+            }
+        }
 
         #endregion
 
