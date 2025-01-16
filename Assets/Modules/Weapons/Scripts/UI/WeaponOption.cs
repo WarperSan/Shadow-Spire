@@ -2,7 +2,7 @@ using Battle.Options;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UtilsModule;
+using Utils;
 
 namespace Weapons.UI
 {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UtilsModule;
+using Utils;
 
 namespace Managers
 {

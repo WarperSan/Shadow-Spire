@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using Type = BattleEntity.Type;
 
-namespace UtilsModule
+namespace Utils
 {
     public static class TypeUtils
     {

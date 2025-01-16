@@ -1,6 +1,6 @@
 using Dungeon.Generation;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 using Object = UnityEngine.Object;
 
 namespace Dungeon.Drawers.Rooms

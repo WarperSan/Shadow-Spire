@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UtilsModule
+namespace Utils
 {
     public static class AnimationsUtils
     {

@@ -4,7 +4,7 @@ using Enemies;
 using Entities.Interfaces;
 using Managers;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Entities
 {

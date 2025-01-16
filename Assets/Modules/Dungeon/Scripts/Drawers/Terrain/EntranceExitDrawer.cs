@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Dungeon.Generation;
 using Entities;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {

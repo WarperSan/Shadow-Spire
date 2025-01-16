@@ -1,6 +1,6 @@
 using Dungeon.Generation;
 
-namespace UtilsModule
+namespace Utils
 {
     public static class DungeonResultExtension
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UtilsModule
+namespace Utils
 {
     /// <summary>
     /// Class that allows any class to be accessed from anywhere

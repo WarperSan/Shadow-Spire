@@ -3,7 +3,7 @@ using Dungeon.Generation;
 using Entities;
 using PathFinding.Graphs;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Managers
 {

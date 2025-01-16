@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dungeon.Generation;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Dungeon.Drawers.Rooms
 {

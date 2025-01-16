@@ -1,7 +1,7 @@
 using Dungeon.Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UtilsModule;
+using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {

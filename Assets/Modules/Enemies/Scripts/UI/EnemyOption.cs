@@ -2,9 +2,10 @@ using System.Collections;
 using Battle.Options;
 using BattleEntity;
 using TMPro;
+using UI.Abstract;
 using UnityEngine;
 using UnityEngine.UI;
-using UtilsModule;
+using Utils;
 using Weapons;
 
 namespace Enemies.UI
@@ -44,7 +45,7 @@ namespace Enemies.UI
         {
             SetEntity(option.Entity);
             SetEffectiveness(option.Weapon, option.Entity);
-            SpawnAnimation();
+            animations.Spawn();
         }
 
         /// <inheritdoc/>
@@ -70,7 +71,7 @@ namespace Enemies.UI
 
             types.text = entity.Type.GetIcons();
 
-            SetHealth(entity.Health);
+            SetHealth((uint)entity.Health, 0);
 
             Enemies.EnemySO enemy = entity.Enemy.GetRaw();
             sprite.sprite = enemy.FightSprite;
@@ -81,16 +82,16 @@ namespace Enemies.UI
 
         private void OnHit(int damage)
         {
-            SetDamage(damage);
-            SetHealth(loadedOption.Entity.Health);
-            HitAnimation();
+            SetDamage((uint)damage);
+            SetHealth((uint)loadedOption.Entity.Health, 0);
+            animations.Hit();
         }
 
         private void OnDeath(int damage)
         {
-            SetDamage(damage);
-            SetHealth(0);
-            DeathAnimation();
+            SetDamage((uint)damage);
+            SetHealth(0, 0);
+            animations.Death();
 
             (parent as EnemyOptions)?.FindNextValid(Vector2.right);
         }
@@ -101,13 +102,10 @@ namespace Enemies.UI
 
         [Header("Health")]
         [SerializeField]
-        private TextMeshProUGUI health;
+        private HealthBar healthBar;
 
-        [SerializeField]
-        private TextMeshProUGUI healthPopup;
-
-        private void SetHealth(int health) => this.health.text = string.Format("<sprite name=icon_heart> {0}", health);
-        private void SetDamage(int damage) => healthPopup.text = string.Format("-{0}", damage);
+        private void SetHealth(uint health, uint maxHealth) => healthBar.SetHealth(health, maxHealth);
+        private void SetDamage(uint damage) => healthBar.TakeDamage(damage);
 
         #endregion
 
@@ -118,32 +116,13 @@ namespace Enemies.UI
         private Animator animator;
 
         [SerializeField]
-        private RectTransform frame;
-
-        private void SpawnAnimation() => animator.SetTrigger("spawnIn");
-        private void SetTargetAnimation(bool isTargetted) => animator.SetBool("targetted", isTargetted);
-        private void HitAnimation() => animator.SetTrigger("hit");
-        private void DeathAnimation() => animator.SetTrigger("death");
-
-        private IEnumerator TargetAnimation()
-        {
-            // Continue until stopped
-            while (true)
-            {
-                frame.sizeDelta = Vector2.one * 40;
-
-                yield return null;//new WaitForSeconds
-            }
-        }
+        private EnemyOptionAnimations animations;
 
         #endregion
 
         #region Target
 
         [Header("Target")]
-        [SerializeField]
-        private GameObject target;
-
         [SerializeField]
         private TextMeshProUGUI targetEffectiveness;
 
@@ -161,8 +140,10 @@ namespace Enemies.UI
 
         private void SetTargetted(bool isTarget)
         {
-            target.SetActive(isTarget);
-            SetTargetAnimation(isTarget);
+            if (isTarget)
+                animations.EnableTarget();
+            else
+                animations.DisableTarget();
         }
 
         private string GetEffectivenessColor(float percent)

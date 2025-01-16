@@ -1,6 +1,6 @@
 using Battle.Options;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Weapons.UI
 {

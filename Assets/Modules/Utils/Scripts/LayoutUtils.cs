@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UtilsModule
+namespace Utils
 {
     public static class LayoutUtils
     {

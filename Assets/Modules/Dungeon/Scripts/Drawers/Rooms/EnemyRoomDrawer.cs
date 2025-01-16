@@ -3,7 +3,7 @@ using Dungeon.Generation;
 using Enemies;
 using Entities;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 using Object = UnityEngine.Object;
 
 namespace Dungeon.Drawers.Rooms

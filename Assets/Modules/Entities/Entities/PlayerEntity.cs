@@ -77,14 +77,14 @@ namespace Entities
         private void SetHealth(int health)
         {
             Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
-            playerInformation.SetHealth(Health, MaxHealth);
+            playerInformation.SetHealth((uint)Health, (uint)MaxHealth);
             GameManager.Instance.IsPlayerDead = Health <= 0;
         }
 
         public void TakeDamage(int damage)
         {
             SetHealth(Health - damage);
-            playerInformation.HitHealth(damage);
+            playerInformation.HitHealth((uint)damage);
         }
 
         public void Heal(int amount) => SetHealth(Health + amount);

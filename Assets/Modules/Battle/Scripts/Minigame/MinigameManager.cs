@@ -6,7 +6,7 @@ using BattleEntity;
 using Managers;
 using Player;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Battle.Minigame
 {

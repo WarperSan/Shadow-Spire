@@ -5,7 +5,7 @@ using Enemies.UI;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
-using UtilsModule;
+using Utils;
 
 namespace Battle
 {

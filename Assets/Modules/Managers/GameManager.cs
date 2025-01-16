@@ -4,7 +4,7 @@ using Enemies;
 using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UtilsModule;
+using Utils;
 using Weapons;
 using Weapons.UI;
 

@@ -2,7 +2,7 @@ using System.Collections;
 using Battle.Minigame.Projectiles;
 using BattleEntity;
 using UnityEngine;
-using UtilsModule;
+using Utils;
 
 namespace Battle.Minigame.Spawners
 {
