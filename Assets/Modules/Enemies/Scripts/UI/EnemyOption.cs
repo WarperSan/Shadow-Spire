@@ -1,5 +1,3 @@
-using System.Collections;
-using Battle.Options;
 using BattleEntity;
 using TMPro;
 using UI.Abstract;
@@ -112,9 +110,6 @@ namespace Enemies.UI
         #region Animations
 
         [Header("Animations")]
-        [SerializeField]
-        private Animator animator;
-
         [SerializeField]
         private EnemyOptionAnimations animations;
 

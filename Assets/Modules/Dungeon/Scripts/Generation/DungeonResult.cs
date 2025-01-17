@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Entities;
+using GridEntities.Entities;
 using PathFinding.Graphs;
 
 namespace Dungeon.Generation

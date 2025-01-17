@@ -3,7 +3,6 @@ using TMPro;
 using UI.Abstract;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 using Weapons;
 using Weapons.UI;
 

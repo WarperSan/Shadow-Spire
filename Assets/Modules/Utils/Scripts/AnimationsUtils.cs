@@ -22,6 +22,36 @@ namespace Utils
 
         #endregion
 
+        #region Rotate
+
+        public static IEnumerator RotateLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end)
+        {
+            Vector3 valuePerTick = (end - start) / ticksCount;
+
+            for (int i = 0; i < ticksCount; i++)
+            {
+                transform.localRotation = Quaternion.Euler(start + valuePerTick * (i + 1));
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+        #endregion
+
+        #region Scale
+
+        public static IEnumerator ScaleLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end)
+        {
+            Vector3 valuePerTick = (end - start) / ticksCount;
+
+            for (int i = 0; i < ticksCount; i++)
+            {
+                transform.localScale = start + valuePerTick * (i + 1);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+        #endregion
+
         #region Fade
 
         /// <summary>

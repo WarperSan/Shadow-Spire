@@ -1,4 +1,4 @@
-using Battle.Options;
+using UI.Abstract;
 using UnityEngine;
 using Utils;
 
@@ -9,10 +9,8 @@ namespace Enemies.UI
     /// </summary>
     public class EnemyOptions : UIOptions<EnemyOption, EnemyOptionData>
     {
-
         /// <inheritdoc/>
-        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(rectTransform);
-
+        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(Rect);
         
         /// <inheritdoc/>
         protected override void OnMoveSelected(Vector2 dir)

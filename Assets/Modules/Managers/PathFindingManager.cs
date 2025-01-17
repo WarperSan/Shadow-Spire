@@ -1,6 +1,7 @@
 using System;
 using Dungeon.Generation;
-using Entities;
+using GridEntities.Abstract;
+using GridEntities.Interfaces;
 using PathFinding.Graphs;
 using UnityEngine;
 using Utils;

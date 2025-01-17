@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Battle;
-using Battle.Minigame;
-using Battle.Options;
 using BattleEntity;
 using Enemies;
 using Enemies.UI;
-using Entities;
+using GridEntities.Entities;
+using UI.Battle;
 using UnityEngine;
 using Weapons;
 

@@ -1,6 +1,6 @@
 using System.Collections;
-using Battle;
 using TMPro;
+using UI.Battle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

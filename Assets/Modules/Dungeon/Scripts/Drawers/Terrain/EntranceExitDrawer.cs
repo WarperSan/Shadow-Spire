@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Dungeon.Generation;
-using Entities;
+using GridEntities.Entities;
+using GridEntities.Interfaces;
 using UnityEngine;
 using Utils;
 

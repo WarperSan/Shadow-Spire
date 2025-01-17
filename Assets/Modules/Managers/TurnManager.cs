@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dungeon.Generation;
-using Entities;
-using Entities.Interfaces;
+using GridEntities.Abstract;
+using GridEntities.Entities;
+using GridEntities.Interfaces;
 using UnityEngine;
 
 namespace Managers

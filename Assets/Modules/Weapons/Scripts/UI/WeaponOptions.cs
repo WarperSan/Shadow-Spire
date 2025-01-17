@@ -1,4 +1,4 @@
-using Battle.Options;
+using UI.Abstract;
 using UnityEngine;
 using Utils;
 
@@ -10,6 +10,6 @@ namespace Weapons.UI
     public class WeaponOptions : UIOptions<WeaponOption, WeaponOptionData>
     {
         /// <inheritdoc/>
-        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(rectTransform);
+        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(Rect);
     }
 }
