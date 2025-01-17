@@ -131,7 +131,41 @@ namespace Managers
 
         private IEnumerator Appear_Spin()
         {
-            yield return transform.ScaleLocal(30, 0.017f, Vector3.zero, Vector3.one);
+            Coroutine[] parallel = new Coroutine[] {
+                StartCoroutine(AnimationsUtils.Animate(
+                    values =>
+                    {
+                        transform.localScale = new Vector3(values[0], values[1], values[2]);
+                    },
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f), // x
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f), // y
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f)  // z
+                )),
+                StartCoroutine(AnimationsUtils.Animate(
+                    values =>
+                    {
+                        transform.localRotation = Quaternion.Euler(values[0], values[1], values[2]);
+                    },
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 0),   // x
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 0),   // y
+                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 720)  // z
+                ))
+            };
+
+
+            foreach (var item in parallel)
+                yield return item;
+
+            yield return AnimationsUtils.Animate(
+                values =>
+                {
+                    transform.localScale = new Vector3(values[0], values[1], values[2]);
+                },
+                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f), // x
+                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f), // y
+                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f)  // z
+            );
+            //yield return transform.ScaleLocal(30, 0.017f, Vector3.zero, Vector3.one);
         }
 
         public IEnumerator Disappear()
