@@ -50,7 +50,7 @@ namespace Weapons.UI
 		[SerializeField]
 		private WeaponOptions options;
 
-		private bool _hasSelected = false;
+		private bool _hasSelected;
 
 		private void LoadWeapons(WeaponInstance currentWeapon)
 		{

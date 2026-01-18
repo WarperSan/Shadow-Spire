@@ -1,7 +1,7 @@
-using GridEntities.Abstract;
-using GridEntities.Interfaces;
+using Entities.Grid.Abstract;
+using Entities.Grid.Interfaces;
 
-namespace GridEntities.Entities
+namespace Entities.Grid.Entities
 {
 	public class PotionEntity : GridEntity, IEventable<PlayerEntity>
 	{

@@ -1,7 +1,7 @@
 using System.Collections;
 using Dungeon.Generation;
 using Enemies;
-using GridEntities.Entities;
+using Entities.Grid.Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;

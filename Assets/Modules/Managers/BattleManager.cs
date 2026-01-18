@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using BattleEntity;
 using Enemies;
 using Enemies.UI;
-using GridEntities.Entities;
+using Entities.Battle.Entities;
+using Entities.Grid.Entities;
 using UI.Battle;
 using UnityEngine;
 using Weapons;

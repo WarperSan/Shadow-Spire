@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Enemies;
-using GridEntities.Abstract;
-using GridEntities.Interfaces;
+using Entities.Grid.Abstract;
+using Entities.Grid.Interfaces;
 using Managers;
 using UnityEngine;
 using Utils;
 
-namespace GridEntities.Entities
+namespace Entities.Grid.Entities
 {
 	public class EnemyEntity : GridEntity, ITurnable, IMovable, IEventable
 	{

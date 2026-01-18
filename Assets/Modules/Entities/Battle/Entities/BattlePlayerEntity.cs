@@ -1,6 +1,7 @@
-﻿using GridEntities.Entities;
+﻿using Entities.Battle.Abstract;
+using Entities.Grid.Entities;
 
-namespace BattleEntity
+namespace Entities.Battle.Entities
 {
 	/// <summary>
 	/// Battle entity that represents the <see cref="PlayerEntity"/>

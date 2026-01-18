@@ -1,13 +1,13 @@
 using System.Collections;
 using Dungeon.Generation;
-using GridEntities.Abstract;
-using GridEntities.Interfaces;
+using Entities.Grid.Abstract;
+using Entities.Grid.Interfaces;
 using Managers;
 using Player;
 using UnityEngine;
 using Weapons;
 
-namespace GridEntities.Entities
+namespace Entities.Grid.Entities
 {
 	public class PlayerEntity : GridEntity, ITurnable, IMovable, IDungeonReceive
 	{
@@ -20,7 +20,7 @@ namespace GridEntities.Entities
 
 		#region Inputs
 
-		private Movement? _requestMove = null;
+		private Movement? _requestMove;
 
 		private void Move(Vector2 dir)
 		{
@@ -115,7 +115,7 @@ namespace GridEntities.Entities
 
 		[Header("Potions")]
 		[SerializeField]
-		private int potionCount = 0;
+		private int potionCount;
 
 		private void SetPotionCount(int amount)
 		{
@@ -131,7 +131,7 @@ namespace GridEntities.Entities
 
 		#region IDungeonReceive
 
-		private bool _initialized = false;
+		private bool _initialized;
 
 		/// <inheritdoc/>
 		public void OnLevelStart(DungeonResult level)

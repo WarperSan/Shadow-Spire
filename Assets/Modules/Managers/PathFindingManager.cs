@@ -1,7 +1,7 @@
 using System;
 using Dungeon.Generation;
-using GridEntities.Abstract;
-using GridEntities.Interfaces;
+using Entities.Grid.Abstract;
+using Entities.Grid.Interfaces;
 using PathFinding.Graphs;
 using UnityEngine;
 using UnityEngine.Serialization;

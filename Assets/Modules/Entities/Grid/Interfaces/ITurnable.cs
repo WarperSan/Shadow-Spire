@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace GridEntities.Interfaces
+namespace Entities.Grid.Interfaces
 {
 	/// <summary>
 	/// Defines an entity that can act on a turn

@@ -4,7 +4,7 @@ using UnityEngine;
 using Weapons;
 using Type = Enemies.Type;
 
-namespace BattleEntity
+namespace Entities.Battle.Abstract
 {
 	/// <summary>
 	/// Class that represent an entity in the battle simulation

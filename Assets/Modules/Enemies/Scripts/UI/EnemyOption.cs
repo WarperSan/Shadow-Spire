@@ -1,4 +1,4 @@
-using BattleEntity;
+using Entities.Battle.Entities;
 using TMPro;
 using UI.Abstract;
 using UnityEngine;

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Battle.Spawners;
-using BattleEntity;
+using Entities.Battle.Entities;
 using Player;
 using UnityEngine;
 using Utils;

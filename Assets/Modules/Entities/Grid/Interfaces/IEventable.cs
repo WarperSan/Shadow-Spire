@@ -1,6 +1,6 @@
-using GridEntities.Abstract;
+using Entities.Grid.Abstract;
 
-namespace GridEntities.Interfaces
+namespace Entities.Grid.Interfaces
 {
 	/// <summary>
 	/// Defines an entity that can receive events from movement
@@ -21,7 +21,7 @@ namespace GridEntities.Interfaces
 	/// <summary>
 	/// Wrapper for <see cref="IEventable"/> that receive events from movement from entities of type <typeparamref name="T"/>
 	/// </summary>
-	public interface IEventable<T> : IEventable where T : GridEntity
+	public interface IEventable<in T> : IEventable where T : GridEntity
 	{
 		/// <inheritdoc/>
 		void IEventable.OnEntityLand(GridEntity entity)

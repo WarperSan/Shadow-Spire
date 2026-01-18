@@ -1,9 +1,9 @@
 using System.Collections;
-using GridEntities.Abstract;
+using Entities.Grid.Abstract;
 using UnityEngine;
 using Utils;
 
-namespace GridEntities.Interfaces
+namespace Entities.Grid.Interfaces
 {
 	/// <summary>
 	/// Every possible movements
@@ -83,23 +83,14 @@ namespace GridEntities.Interfaces
 			if (this is GridEntity gridEntity)
 				position = gridEntity.Position;
 
-			switch (movement)
+			movePos = movement switch
 			{
-				case Movement.Left:
-					movePos = new Vector2Int(-1, 0);
-					break;
-				case Movement.Right:
-					movePos = new Vector2Int(1, 0);
-					break;
-				case Movement.Up:
-					movePos = new Vector2Int(0, 1);
-					break;
-				case Movement.Down:
-					movePos = new Vector2Int(0, -1);
-					break;
-				default:
-					break;
-			}
+				Movement.Left  => new Vector2Int(-1, 0),
+				Movement.Right => new Vector2Int(1, 0),
+				Movement.Up    => new Vector2Int(0, 1),
+				Movement.Down  => new Vector2Int(0, -1),
+				_              => movePos
+			};
 
 			position += movePos;
 

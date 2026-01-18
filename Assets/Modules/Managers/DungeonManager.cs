@@ -3,7 +3,7 @@ using Dungeon.Drawers;
 using Dungeon.Drawers.Rooms;
 using Dungeon.Drawers.Terrain;
 using Dungeon.Generation;
-using GridEntities.Entities;
+using Entities.Grid.Entities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

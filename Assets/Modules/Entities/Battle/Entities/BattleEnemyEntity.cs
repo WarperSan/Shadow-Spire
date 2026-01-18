@@ -1,7 +1,8 @@
 ﻿using Enemies;
+using Entities.Battle.Abstract;
 using UnityEngine.Events;
 
-namespace BattleEntity
+namespace Entities.Battle.Entities
 {
 	/// <summary>
 	/// Battle entity that represents <see cref="EnemyInstance"/>

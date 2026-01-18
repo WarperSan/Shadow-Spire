@@ -1,9 +1,9 @@
 using System.Collections;
-using GridEntities.Abstract;
-using GridEntities.Interfaces;
+using Entities.Grid.Abstract;
+using Entities.Grid.Interfaces;
 using UnityEngine;
 
-namespace GridEntities.Entities
+namespace Entities.Grid.Entities
 {
 	public class SpikesEntity : GridEntity, ITurnable, IEventable<PlayerEntity>
 	{

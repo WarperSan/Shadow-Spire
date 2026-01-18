@@ -1,6 +1,6 @@
 using Dungeon.Generation;
 using Enemies;
-using GridEntities.Entities;
+using Entities.Grid.Entities;
 using UnityEngine;
 using Utils;
 using Object = UnityEngine.Object;

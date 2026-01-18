@@ -1,8 +1,8 @@
 using System.Collections;
-using GridEntities.Interfaces;
+using Entities.Grid.Interfaces;
 using UnityEngine;
 
-namespace GridEntities.Abstract
+namespace Entities.Grid.Abstract
 {
 	public abstract class GridEntity : MonoBehaviour
 	{
