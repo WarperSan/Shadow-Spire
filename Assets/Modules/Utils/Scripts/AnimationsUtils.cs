@@ -5,161 +5,265 @@ using UnityEngine.UI;
 
 namespace Utils
 {
-    public static class AnimationsUtils
-    {
-        #region Curves
+	public static class AnimationsUtils
+	{
+		#region Curves
 
-        public static AnimationCurve Linear(float timeStart, float valueStart, float timeEnd, float valueEnd)
-            => AnimationCurve.Linear(timeStart, valueStart, timeEnd, valueEnd);
+		public static AnimationCurve Linear(
+			float timeStart,
+			float valueStart,
+			float timeEnd,
+			float valueEnd
+		) => AnimationCurve.Linear(timeStart,
+			valueStart,
+			timeEnd,
+			valueEnd);
 
-        public static AnimationCurve EaseInOut(float timeStart, float valueStart, float timeEnd, float valueEnd)
-            => AnimationCurve.EaseInOut(timeStart, valueStart, timeEnd, valueEnd);
+		public static AnimationCurve EaseInOut(
+			float timeStart,
+			float valueStart,
+			float timeEnd,
+			float valueEnd
+		) => AnimationCurve.EaseInOut(timeStart,
+			valueStart,
+			timeEnd,
+			valueEnd);
 
-        public static AnimationCurve Tick(float timeStart, float valueStart, float valueEnd, int ticksCount, float delay)
-        {
-            if (ticksCount <= 0 || delay <= 0)
-            {
-                Keyframe keyframe = new(timeStart, valueEnd);
-                return new AnimationCurve(keyframe);
-            }
+		public static AnimationCurve Tick(
+			float timeStart,
+			float valueStart,
+			float valueEnd,
+			int   ticksCount,
+			float delay
+		)
+		{
+			if (ticksCount <= 0 || delay <= 0)
+			{
+				Keyframe keyframe = new(timeStart, valueEnd);
+				return new AnimationCurve(keyframe);
+			}
 
-            float variation = (valueEnd - valueStart) / ticksCount;
+			float variation = (valueEnd - valueStart) / ticksCount;
 
-            Keyframe[] keys = new Keyframe[ticksCount + 2];
-            keys[0] = new Keyframe(timeStart, valueStart, Mathf.Infinity, Mathf.Infinity); // Start
-            keys[^1] = new Keyframe(timeStart + ticksCount * delay, valueEnd, Mathf.Infinity, Mathf.Infinity); // End
+			Keyframe[] keys = new Keyframe[ticksCount + 2];
 
-            for (int i = 1; i < keys.Length - 1; i++)
-                keys[i] = new Keyframe(timeStart + i * delay, valueStart + i * variation, Mathf.Infinity, Mathf.Infinity);
+			keys[0] = new Keyframe(timeStart,
+				valueStart,
+				Mathf.Infinity,
+				Mathf.Infinity); // Start
 
-            return new AnimationCurve(keys);
-        }
+			keys[^1] = new Keyframe(timeStart + ticksCount * delay,
+				valueEnd,
+				Mathf.Infinity,
+				Mathf.Infinity); // End
 
-        #endregion
+			for (int i = 1; i < keys.Length - 1; i++)
+				keys[i] = new Keyframe(timeStart + i * delay,
+					valueStart + i * variation,
+					Mathf.Infinity,
+					Mathf.Infinity);
 
-        #region Animate
+			return new AnimationCurve(keys);
+		}
 
-        public static IEnumerator Animate(Action<float[]> setValues, params AnimationCurve[] curves)
-        {
-            // Find end time
-            float endTime = 0;
+		#endregion
 
-            foreach (var item in curves)
-                endTime = Mathf.Max(item.keys[^1].time, endTime);
+		#region Animate
 
-            float time = 0;
-            float[] values = new float[curves.Length];
+		public static IEnumerator Animate(Action<float[]> setValues, params AnimationCurve[] curves)
+		{
+			// Find end time
+			float endTime = 0;
 
-            while (time < endTime)
-            {
-                // Update values
-                for (int i = 0; i < values.Length; i++)
-                    values[i] = curves[i].Evaluate(time);
+			foreach (AnimationCurve item in curves)
+				endTime = Mathf.Max(item.keys[^1].time, endTime);
 
-                // Set values
-                setValues?.Invoke(values);
+			float time = 0;
+			float[] values = new float[curves.Length];
 
-                // Wait 1 frame
-                yield return null;
-                time += Time.deltaTime;
-            }
+			while (time < endTime)
+			{
+				// Update values
+				for (int i = 0; i < values.Length; i++)
+					values[i] = curves[i].Evaluate(time);
 
-            // Update values
-            for (int i = 0; i < values.Length; i++)
-                values[i] = curves[i].Evaluate(time);
+				// Set values
+				setValues?.Invoke(values);
 
-            // Set values
-            setValues?.Invoke(values);
-        }
+				// Wait 1 frame
+				yield return null;
 
-        #endregion
+				time += Time.deltaTime;
+			}
 
-        #region Translate
+			// Update values
+			for (int i = 0; i < values.Length; i++)
+				values[i] = curves[i].Evaluate(time);
 
-        public static IEnumerator TranslateLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end) => Animate(
-            values => transform.localPosition = new Vector3(values[0], values[1], values[2]),
-            Tick(0, start.x, end.x, ticksCount, delay),
-            Tick(0, start.y, end.y, ticksCount, delay),
-            Tick(0, start.z, end.z, ticksCount, delay)
-        );
+			// Set values
+			setValues?.Invoke(values);
+		}
 
-        #endregion
+		#endregion
 
-        #region Rotate
+		#region Translate
 
-        public static IEnumerator RotateLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end) => Animate(
-            values => transform.localRotation = Quaternion.Euler(values[0], values[1], values[2]),
-            Tick(0, start.x, end.x, ticksCount, delay),
-            Tick(0, start.y, end.y, ticksCount, delay),
-            Tick(0, start.z, end.z, ticksCount, delay)
-        );
+		public static IEnumerator TranslateLocal(
+			this Transform transform,
+			int            ticksCount,
+			float          delay,
+			Vector3        start,
+			Vector3        end
+		) => Animate(
+			values => transform.localPosition = new Vector3(values[0], values[1], values[2]),
+			Tick(0,
+				start.x,
+				end.x,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.y,
+				end.y,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.z,
+				end.z,
+				ticksCount,
+				delay)
+		);
 
-        #endregion
+		#endregion
 
-        #region Scale
+		#region Rotate
 
-        public static IEnumerator ScaleLocal(this Transform transform, int ticksCount, float delay, Vector3 start, Vector3 end) => Animate(
-            values => transform.localScale = new Vector3(values[0], values[1], values[2]),
-            Tick(0, start.x, end.x, ticksCount, delay),
-            Tick(0, start.y, end.y, ticksCount, delay),
-            Tick(0, start.z, end.z, ticksCount, delay)
-        );
+		public static IEnumerator RotateLocal(
+			this Transform transform,
+			int            ticksCount,
+			float          delay,
+			Vector3        start,
+			Vector3        end
+		) => Animate(
+			values => transform.localRotation = Quaternion.Euler(values[0], values[1], values[2]),
+			Tick(0,
+				start.x,
+				end.x,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.y,
+				end.y,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.z,
+				end.z,
+				ticksCount,
+				delay)
+		);
 
-        #endregion
+		#endregion
 
-        #region Fade
+		#region Scale
 
-        /// <summary>
-        /// Fades the given element
-        /// </summary>
-        public static IEnumerator Fade(this Behaviour behaviour, int ticksCount, float delay, float start, float end)
-        {
-            start = Mathf.Clamp01(start);
-            end = Mathf.Clamp01(end);
+		public static IEnumerator ScaleLocal(
+			this Transform transform,
+			int            ticksCount,
+			float          delay,
+			Vector3        start,
+			Vector3        end
+		) => Animate(
+			values => transform.localScale = new Vector3(values[0], values[1], values[2]),
+			Tick(0,
+				start.x,
+				end.x,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.y,
+				end.y,
+				ticksCount,
+				delay),
+			Tick(0,
+				start.z,
+				end.z,
+				ticksCount,
+				delay)
+		);
 
-            Action<float> setAlpha = null;
+		#endregion
 
-            if (behaviour is Graphic graphic)
-                setAlpha = (a) => graphic.SetAlpha(a);
-            else if (behaviour is CanvasGroup canvasGroup)
-                setAlpha = (a) => canvasGroup.alpha = a;
+		#region Fade
 
-            setAlpha?.Invoke(start);
-            behaviour.gameObject.SetActive(true);
+		/// <summary>
+		/// Fades the given element
+		/// </summary>
+		public static IEnumerator Fade(
+			this Behaviour behaviour,
+			int            ticksCount,
+			float          delay,
+			float          start,
+			float          end
+		)
+		{
+			start = Mathf.Clamp01(start);
+			end = Mathf.Clamp01(end);
 
-            yield return Animate(
-                values => setAlpha?.Invoke(values[0]),
-                Tick(0, start, end, ticksCount, delay)
-            );
+			Action<float> setAlpha = null;
 
-            behaviour.gameObject.SetActive(end > 0);
-            yield return null;
-        }
+			if (behaviour is Graphic graphic)
+				setAlpha = (a) => graphic.SetAlpha(a);
+			else if (behaviour is CanvasGroup canvasGroup)
+				setAlpha = (a) => canvasGroup.alpha = a;
+			else if (behaviour is AudioSource audioSource)
+				setAlpha = (a) => audioSource.volume = a;
 
-        /// <summary>
-        /// Fades in the given element
-        /// </summary>
-        public static IEnumerator FadeIn(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 0f, 1f);
+			setAlpha?.Invoke(start);
+			behaviour.gameObject.SetActive(true);
 
-        /// <summary>
-        /// Fades out the given element
-        /// </summary>
-        public static IEnumerator FadeOut(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount, delay, 1f, 0f);
+			yield return Animate(
+				values => setAlpha?.Invoke(values[0]),
+				Tick(0,
+					start,
+					end,
+					ticksCount,
+					delay)
+			);
 
-        #endregion
+			behaviour.gameObject.SetActive(end > 0);
+			yield return null;
+		}
 
-        #region Graphic
+		/// <summary>
+		/// Fades in the given element
+		/// </summary>
+		public static IEnumerator FadeIn(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount,
+			delay,
+			0f,
+			1f);
 
-        /// <summary>
-        /// Sets the alpha value of this graphic
-        /// </summary>
-        public static void SetAlpha(this Graphic graphic, float alpha)
-        {
-            Color color = graphic.color;
-            color.a = alpha;
-            graphic.color = color;
-        }
+		/// <summary>
+		/// Fades out the given element
+		/// </summary>
+		public static IEnumerator FadeOut(this Behaviour behaviour, int ticksCount, float delay) => behaviour.Fade(ticksCount,
+			delay,
+			1f,
+			0f);
 
-        #endregion
-    }
+		#endregion
+
+		#region Graphic
+
+		/// <summary>
+		/// Sets the alpha value of this graphic
+		/// </summary>
+		public static void SetAlpha(this Graphic graphic, float alpha)
+		{
+			Color color = graphic.color;
+			color.a = alpha;
+			graphic.color = color;
+		}
+
+		#endregion
+	}
 }

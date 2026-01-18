@@ -5,54 +5,55 @@ using UnityEngine;
 
 namespace GridEntities.Entities
 {
-    public class SpikesEntity : GridEntity, ITurnable, IEventable<PlayerEntity>
-    {
-        #region Fields
+	public class SpikesEntity : GridEntity, ITurnable, IEventable<PlayerEntity>
+	{
+		#region Fields
 
-        [Header("Fields")]
-        [SerializeField]
-        private Sprite offSprite;
+		[Header("Fields")]
+		[SerializeField]
+		private Sprite offSprite;
 
-        [SerializeField]
-        private Sprite onSprite;
+		[SerializeField]
+		private Sprite onSprite;
 
-        #endregion
+		#endregion
 
-        private const int ACTIVE_TURNS = 3;
+		private const int ACTIVE_TURNS = 3;
 
-        private int activeTurns;
-        private bool canAttack;
+		private int activeTurns;
+		private bool canAttack;
 
-        #region IEventable
+		#region IEventable
 
-        /// <inheritdoc/>
-        public void OnEntityLand(PlayerEntity entity) { /* Spikes can't move on another entity */ }
+		/// <inheritdoc/>
+		public void OnEntityLand(PlayerEntity entity)
+		{ /* Spikes can't move on another entity */
+		}
 
-        /// <inheritdoc/>
-        public void OnEntityLanded(PlayerEntity entity)
-        {
-            if (canAttack)
-            {
-                entity.TakeDamage(2);
-                activeTurns = ACTIVE_TURNS;
-            }
-            else
-                activeTurns = ACTIVE_TURNS + 1;
-        }
+		/// <inheritdoc/>
+		public void OnEntityLanded(PlayerEntity entity)
+		{
+			if (canAttack)
+			{
+				entity.TakeDamage(2);
+				activeTurns = ACTIVE_TURNS;
+			} else
+				activeTurns = ACTIVE_TURNS + 1;
+		}
 
-        #endregion
+		#endregion
 
-        #region ITurnable
+		#region ITurnable
 
-        public IEnumerator Think()
-        {
-            activeTurns--;
-            canAttack = activeTurns < ACTIVE_TURNS && activeTurns >= 0;
-            spriteRenderer.sprite = canAttack ? onSprite : offSprite;
+		public IEnumerator Think()
+		{
+			activeTurns--;
+			canAttack = activeTurns < ACTIVE_TURNS && activeTurns >= 0;
+			spriteRenderer.sprite = canAttack ? onSprite : offSprite;
 
-            yield return null;
-        }
+			yield return null;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

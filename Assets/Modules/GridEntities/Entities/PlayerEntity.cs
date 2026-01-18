@@ -9,150 +9,150 @@ using Weapons;
 
 namespace GridEntities.Entities
 {
-    public class PlayerEntity : GridEntity, ITurnable, IMovable, IDungeonReceive
-    {
-        public PlayerInformation playerInformation;
+	public class PlayerEntity : GridEntity, ITurnable, IMovable, IDungeonReceive
+	{
+		public PlayerInformation playerInformation;
 
-        private void Start()
-        {
-            InputManager.Instance.OnMovePlayer.AddListener(Move);
-        }
+		private void Start()
+		{
+			InputManager.Instance.OnMovePlayer.AddListener(Move);
+		}
 
-        #region Inputs
+		#region Inputs
 
-        private Movement? requestMove = null;
+		private Movement? requestMove = null;
 
-        private void Move(Vector2 dir)
-        {
-            Movement movement;
+		private void Move(Vector2 dir)
+		{
+			Movement movement;
 
-            if (dir.x > 0)
-                movement = Movement.RIGHT;
-            else if (dir.x < 0)
-                movement = Movement.LEFT;
-            else if (dir.y > 0)
-                movement = Movement.UP;
-            else
-                movement = Movement.DOWN;
+			if (dir.x > 0)
+				movement = Movement.RIGHT;
+			else if (dir.x < 0)
+				movement = Movement.LEFT;
+			else if (dir.y > 0)
+				movement = Movement.UP;
+			else
+				movement = Movement.DOWN;
 
-            // If can apply movement, register
-            if ((this as IMovable).CanMove(movement))
-                requestMove = movement;
-        }
+			// If can apply movement, register
+			if ((this as IMovable).CanMove(movement))
+				requestMove = movement;
+		}
 
-        #endregion
+		#endregion
 
-        #region ITurnable
+		#region ITurnable
 
-        /// <inheritdoc/>
-        public void OnTurnStarted()
-        {
-            requestMove = null; // Clear previous moves
-        }
+		/// <inheritdoc/>
+		public void OnTurnStarted()
+		{
+			requestMove = null; // Clear previous moves
+		}
 
-        /// <inheritdoc/>
-        IEnumerator ITurnable.Think()
-        {
-            while (requestMove == null)
-                yield return null;
+		/// <inheritdoc/>
+		IEnumerator ITurnable.Think()
+		{
+			while (requestMove == null)
+				yield return null;
 
-            yield return requestMove.Value;
-        }
+			yield return requestMove.Value;
+		}
 
-        #endregion
+		#endregion
 
-        #region IMovable
+		#region IMovable
 
-        /// <inheritdoc/>
-        void IMovable.OnMoveStart(Movement movement)
-        {
-            FlipByMovement(movement);
-        }
+		/// <inheritdoc/>
+		void IMovable.OnMoveStart(Movement movement)
+		{
+			FlipByMovement(movement);
+		}
 
-        #endregion
+		#endregion
 
-        #region Health
+		#region Health
 
-        public int MaxHealth { get; set; }
-        public int Health { get; set; }
-        private void SetHealth(int health)
-        {
-            Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
-            playerInformation.SetHealth((uint)Health, (uint)MaxHealth);
-            GameManager.Instance.IsPlayerDead = Health <= 0;
-        }
+		public int MaxHealth { get; set; }
+		public int Health    { get; set; }
 
-        public void TakeDamage(int damage)
-        {
-            SetHealth(Health - damage);
-            playerInformation.HitHealth((uint)damage);
-        }
+		private void SetHealth(int health)
+		{
+			Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
+			playerInformation.SetHealth((uint)Health, (uint)MaxHealth);
+			GameManager.Instance.IsPlayerDead = Health <= 0;
+		}
 
-        public void Heal(int amount) => SetHealth(Health + amount);
+		public void TakeDamage(int damage)
+		{
+			SetHealth(Health - damage);
+			playerInformation.HitHealth((uint)damage);
+		}
 
-        #endregion
+		public void Heal(int amount) => SetHealth(Health + amount);
 
-        #region Weapon
+		#endregion
 
-        [Header("Weapon")]
-        [SerializeField]
-        private WeaponInstance weapon;
+		#region Weapon
 
-        public WeaponInstance Weapon
-        {
-            get => weapon;
-            set
-            {
-                playerInformation.SetWeapon(value);
-                weapon = value;
-            }
-        }
+		[Header("Weapon")]
+		[SerializeField]
+		private WeaponInstance weapon;
 
-        #endregion
+		public WeaponInstance Weapon
+		{
+			get => weapon;
+			set
+			{
+				playerInformation.SetWeapon(value);
+				weapon = value;
+			}
+		}
 
-        #region Potions
+		#endregion
 
-        [Header("Potions")]
-        [SerializeField]
-        private int potionCount = 0;
+		#region Potions
 
-        private void SetPotionCount(int amount)
-        {
-            potionCount = amount;
-            playerInformation.SetPotionCount(potionCount);
-        }
+		[Header("Potions")]
+		[SerializeField]
+		private int potionCount = 0;
 
-        public void CollectPotion() => SetPotionCount(potionCount + 1);
-        public void ConsumePotion() => SetPotionCount(potionCount - 1);
-        public bool HasPotions() => potionCount > 0;
+		private void SetPotionCount(int amount)
+		{
+			potionCount = amount;
+			playerInformation.SetPotionCount(potionCount);
+		}
 
-        #endregion
+		public void CollectPotion() => SetPotionCount(potionCount + 1);
+		public void ConsumePotion() => SetPotionCount(potionCount - 1);
+		public bool HasPotions()    => potionCount > 0;
 
-        #region IDungeonReceive
+		#endregion
 
-        private bool initialized = false;
+		#region IDungeonReceive
 
-        /// <inheritdoc/>
-        public void OnLevelStart(DungeonResult level)
-        {
-            if (!initialized)
-            {
-                MaxHealth = 150;
+		private bool initialized = false;
 
-                // Update UI
-                SetHealth(MaxHealth);
-                Weapon = WeaponInstance.CreateRandom(1);
-                SetPotionCount(0);
-                initialized = true;
-            }
-        }
+		/// <inheritdoc/>
+		public void OnLevelStart(DungeonResult level)
+		{
+			if (!initialized)
+			{
+				MaxHealth = 150;
 
-        /// <inheritdoc/>
-        public void OnLevelEnd(DungeonResult level)
-        {
+				// Update UI
+				SetHealth(MaxHealth);
+				Weapon = WeaponInstance.CreateRandom(1);
+				SetPotionCount(0);
+				initialized = true;
+			}
+		}
 
-        }
+		/// <inheritdoc/>
+		public void OnLevelEnd(DungeonResult level)
+		{
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

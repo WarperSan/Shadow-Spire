@@ -5,85 +5,86 @@ using Utils;
 
 namespace Managers
 {
-    [RequireComponent(typeof(PlayerInput))]
-    public class InputManager : Singleton<InputManager>
-    {
-        [Header("Player")]
-        public UnityEvent<Vector2> OnMovePlayer;
+	[RequireComponent(typeof(PlayerInput))]
+	public class InputManager : Singleton<InputManager>
+	{
+		[Header("Player")]
+		public UnityEvent<Vector2> OnMovePlayer;
 
-        [Header("UI")]
-        public UnityEvent<Vector2> OnMoveUI;
-        public UnityEvent OnEnterUI;
-        public UnityEvent OnEscapeUI;
+		[Header("UI")]
+		public UnityEvent<Vector2> OnMoveUI;
 
-        [Header("Minigame")]
-        public UnityEvent<Vector2> OnMoveMinigame;
+		public UnityEvent OnEnterUI;
+		public UnityEvent OnEscapeUI;
 
-        #region Inputs
+		[Header("Minigame")]
+		public UnityEvent<Vector2> OnMoveMinigame;
 
-        private PlayerInput input;
+		#region Inputs
 
-        public void SwitchToPlayer() => input.SwitchCurrentActionMap("Player");
-        public void SwitchToMiniGame() => input.SwitchCurrentActionMap("Minigame-Player");
-        public void SwitchToUI() => input.SwitchCurrentActionMap("UI");
+		private PlayerInput input;
 
-        #endregion
+		public void SwitchToPlayer()   => input.SwitchCurrentActionMap("Player");
+		public void SwitchToMiniGame() => input.SwitchCurrentActionMap("Minigame-Player");
+		public void SwitchToUI()       => input.SwitchCurrentActionMap("UI");
 
-        #region Events
+		#endregion
 
-        public void MovePlayer(InputAction.CallbackContext context)
-        {
-            if (!context.started)
-                return;
+		#region Events
 
-            Vector2 dir = context.ReadValue<Vector2>();
-            OnMovePlayer?.Invoke(dir);
-        }
+		public void MovePlayer(InputAction.CallbackContext context)
+		{
+			if (!context.started)
+				return;
 
-        public void MoveUI(InputAction.CallbackContext context)
-        {
-            if (!context.started)
-                return;
+			Vector2 dir = context.ReadValue<Vector2>();
+			OnMovePlayer?.Invoke(dir);
+		}
 
-            Vector2 dir = context.ReadValue<Vector2>();
-            OnMoveUI?.Invoke(dir);
-        }
+		public void MoveUI(InputAction.CallbackContext context)
+		{
+			if (!context.started)
+				return;
 
-        public void MoveMinigame(InputAction.CallbackContext context)
-        {
-            Vector2 dir = context.ReadValue<Vector2>();
-            OnMoveMinigame?.Invoke(dir);
-        }
+			Vector2 dir = context.ReadValue<Vector2>();
+			OnMoveUI?.Invoke(dir);
+		}
 
-        public void EnterUI(InputAction.CallbackContext context)
-        {
-            if (!context.started)
-                return;
+		public void MoveMinigame(InputAction.CallbackContext context)
+		{
+			Vector2 dir = context.ReadValue<Vector2>();
+			OnMoveMinigame?.Invoke(dir);
+		}
 
-            OnEnterUI?.Invoke();
-        }
+		public void EnterUI(InputAction.CallbackContext context)
+		{
+			if (!context.started)
+				return;
 
-        public void EscapeUI(InputAction.CallbackContext context)
-        {
-            if (!context.started)
-                return;
+			OnEnterUI?.Invoke();
+		}
 
-            OnEscapeUI?.Invoke();
-        }
+		public void EscapeUI(InputAction.CallbackContext context)
+		{
+			if (!context.started)
+				return;
 
-        #endregion
+			OnEscapeUI?.Invoke();
+		}
 
-        #region Singleton
+		#endregion
 
-        /// <inheritdoc/>
-        protected override bool DestroyOnLoad => true;
+		#region Singleton
 
-        /// <inheritdoc/>
-        protected override void OnAwake()
-        {
-            input = GetComponent<PlayerInput>();
-        }
+		/// <inheritdoc/>
+		protected override bool DestroyOnLoad => true;
 
-        #endregion
-    }
+		/// <inheritdoc/>
+		protected override void OnAwake()
+		{
+			input = GetComponent<PlayerInput>();
+		}
+
+		#endregion
+	}
 }

@@ -4,53 +4,54 @@ using UnityEngine;
 
 namespace Enemies
 {
-    public class EnemyInstance
-    {
-        public static EnemySO[] ENEMIES;
+	public class EnemyInstance
+	{
+		public static EnemySO[] ENEMIES;
 
-        #region Data
+		#region Data
 
-        private EnemySO _data;
-        private int _level;
+		private EnemySO _data;
+		private int _level;
 
-        #endregion
+		#endregion
 
-        #region Constructors
+		#region Constructors
 
-        public EnemyInstance(EnemySO enemy, int level)
-        {
-            _data = enemy;
-            _level = level / 10;
-        }
+		public EnemyInstance(EnemySO enemy, int level)
+		{
+			_data = enemy;
+			_level = level / 10;
+		}
 
-        public static EnemyInstance CreateRandom(int level)
-        {
-            System.Random random = GameManager.Instance.Level.Random;
+		public static EnemyInstance CreateRandom(int level)
+		{
+			System.Random random = GameManager.Instance.Level.Random;
 
-            EnemySO rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
-            EnemyInstance enemy = new(rdmEnemy, level);
+			EnemySO rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
+			EnemyInstance enemy = new(rdmEnemy, level);
 
-            return enemy;
-        }
+			return enemy;
+		}
 
-        #endregion
+		#endregion
 
-        #region Getters
+		#region Getters
 
-        public EnemySO GetRaw() => _data;
+		public EnemySO GetRaw() => _data;
 
-        public int GetHealth()
-        {
-            float health = _data.BaseHealth;
+		public int GetHealth()
+		{
+			float health = _data.BaseHealth;
 
-            health += _data.BaseHealth * 0.15f * _level;
-            health = Mathf.Max(health, 0);
+			health += _data.BaseHealth * 0.15f * _level;
+			health = Mathf.Max(health, 0);
 
-            return Mathf.FloorToInt(health);
-        }
-        public int GetAttack() => 5;
-        public Type GetTypes() => _data.BaseType;
+			return Mathf.FloorToInt(health);
+		}
 
-        #endregion
-    }
+		public int  GetAttack() => 5;
+		public Type GetTypes()  => _data.BaseType;
+
+		#endregion
+	}
 }

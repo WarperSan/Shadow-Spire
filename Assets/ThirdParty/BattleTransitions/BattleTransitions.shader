@@ -1,79 +1,79 @@
 ﻿Shader "Hidden/BattleTransitions"
 {
-	Properties
-	{
-		_TransitionTex("Transition Texture", 2D) = "white" {}
-		_Cutoff("Cutoff", Range(0, 1)) = 0
-		_Color ("Main Color", Color) = (0, 0, 0, 1)
-	}
-	SubShader
-	{
-		Tags
-		{ 
-			"Queue"="Overlay" 
-			"RenderType"="Transparent"
-		}
-		
-		// No culling or depth
-		Cull Off ZWrite Off ZTest Always
+    Properties
+    {
+        _TransitionTex("Transition Texture", 2D) = "white" {}
+        _Cutoff("Cutoff", Range(0, 1)) = 0
+        _Color ("Main Color", Color) = (0, 0, 0, 1)
+    }
+    SubShader
+    {
+        Tags
+        {
+            "Queue"="Overlay"
+            "RenderType"="Transparent"
+        }
 
-		Pass
-		{
-			// Enabling alpha blending
-			Blend SrcAlpha OneMinusSrcAlpha
+        // No culling or depth
+        Cull Off ZWrite Off ZTest Always
 
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
+        Pass
+        {
+            // Enabling alpha blending
+            Blend SrcAlpha OneMinusSrcAlpha
 
-			#include "UnityCG.cginc"
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
+            #include "UnityCG.cginc"
 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				float2 uv1 : TEXCOORD1;
-				float4 vertex : SV_POSITION;
-			};
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
 
-			float4 _MainTex_TexelSize;
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float2 uv1 : TEXCOORD1;
+                float4 vertex : SV_POSITION;
+            };
 
-			v2f vert(appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
-				o.uv1 = v.uv;
+            float4 _MainTex_TexelSize;
 
-				#if UNITY_UV_STARTS_AT_TOP
-				if (_MainTex_TexelSize.y < 0)
-					o.uv1.y = 1 - o.uv1.y;
-				#endif
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                o.uv1 = v.uv;
 
-				return o;
-			}
+                #if UNITY_UV_STARTS_AT_TOP
+                if (_MainTex_TexelSize.y < 0)
+                    o.uv1.y = 1 - o.uv1.y;
+                #endif
 
-			sampler2D _TransitionTex;
+                return o;
+            }
 
-			float _Cutoff;
-			fixed4 _Color;
+            sampler2D _TransitionTex;
 
-			// Fragment shader (calculates final color)
-			fixed4 frag(v2f i) : SV_Target
-			{
-				fixed4 col = (1, 1, 1, 0);
-				fixed4 transit = tex2D(_TransitionTex, i.uv1);
+            float _Cutoff;
+            fixed4 _Color;
 
-				if (transit.b < _Cutoff)
-					return lerp(col, _Color, 1);
-				return col;
-			}					
-			ENDCG
-		}
-	}
+            // Fragment shader (calculates final color)
+            fixed4 frag(v2f i) : SV_Target
+            {
+                fixed4 col = (1, 1, 1, 0);
+                fixed4 transit = tex2D(_TransitionTex, i.uv1);
+
+                if (transit.b < _Cutoff)
+                    return lerp(col, _Color, 1);
+                return col;
+            }
+            ENDCG
+        }
+    }
 }

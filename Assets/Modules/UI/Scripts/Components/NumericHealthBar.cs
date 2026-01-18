@@ -5,112 +5,113 @@ using UnityEngine;
 
 namespace UI.Components
 {
-    public class NumericHealthBar : HealthBar
-    {
-        #region Fields
+	public class NumericHealthBar : HealthBar
+	{
+		#region Fields
 
-#pragma warning disable IDE0044 // Add readonly modifier
+		#pragma warning disable IDE0044 // Add readonly modifier
 
-        [Header("Fields")]
-        [SerializeField]
-        private TMP_Text _text;
+		[Header("Fields")]
+		[SerializeField]
+		private TMP_Text _text;
 
-        [SerializeField]
-        private Transform popupContainer;
+		[SerializeField]
+		private Transform popupContainer;
 
-        [SerializeField]
-        private DamagePopup popupPrefab;
+		[SerializeField]
+		private DamagePopup popupPrefab;
 
-        [SerializeField]
-        private bool useBlink;
+		[SerializeField]
+		private bool useBlink;
 
-#pragma warning restore IDE0044 // Add readonly modifier
+		#pragma warning restore IDE0044 // Add readonly modifier
 
-        private string format;
+		private string format;
 
-        #endregion
+		#endregion
 
-        #region UIComponent
+		#region UIComponent
 
-        /// <inheritdoc/>
-        protected override void OnAwake()
-        {
-            base.OnAwake();
+		/// <inheritdoc/>
+		protected override void OnAwake()
+		{
+			base.OnAwake();
 
-            format = _text.text;
-        }
+			format = _text.text;
+		}
 
-        #endregion
+		#endregion
 
-        #region HealthBar
+		#region HealthBar
 
-        /// <inheritdoc/>
-        public override void SetHealth(uint health, uint maxHealth)
-        {
-            _text.text = string.Format(format, health, maxHealth);
-        }
+		/// <inheritdoc/>
+		public override void SetHealth(uint health, uint maxHealth)
+		{
+			_text.text = string.Format(format, health, maxHealth);
+		}
 
-        /// <inheritdoc/>
-        public override void HealDamage(uint amount) { }
+		/// <inheritdoc/>
+		public override void HealDamage(uint amount) { }
 
-        /// <inheritdoc/>
-        public override void TakeDamage(uint amount)
-        {
-            if (useBlink)
-                Blink(3);
+		/// <inheritdoc/>
+		public override void TakeDamage(uint amount)
+		{
+			if (useBlink)
+				Blink(3);
 
-            Damage(amount);
-        }
+			Damage(amount);
+		}
 
-        #endregion
+		#endregion
 
-        #region Animations
+		#region Animations
 
-        private Coroutine blinkCoroutine;
+		private Coroutine blinkCoroutine;
 
-        private void Blink(int count)
-        {
-            if (blinkCoroutine != null)
-                StopCoroutine(blinkCoroutine);
+		private void Blink(int count)
+		{
+			if (blinkCoroutine != null)
+				StopCoroutine(blinkCoroutine);
 
-            blinkCoroutine = StartCoroutine(BlinkCoroutine(count));
-        }
+			blinkCoroutine = StartCoroutine(BlinkCoroutine(count));
+		}
 
-        private IEnumerator BlinkCoroutine(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                yield return new WaitForSeconds(0.08f);
+		private IEnumerator BlinkCoroutine(int count)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				yield return new WaitForSeconds(0.08f);
 
-                _text.enabled = false;
+				_text.enabled = false;
 
-                yield return new WaitForSeconds(0.08f);
+				yield return new WaitForSeconds(0.08f);
 
-                _text.enabled = true;
-            }
+				_text.enabled = true;
+			}
 
-            // Clear coroutine
-            blinkCoroutine = null;
-        }
+			// Clear coroutine
+			blinkCoroutine = null;
+		}
 
-        private void Damage(uint amount)
-        {
-            StartCoroutine(DamagePopup(amount));
-        }
+		private void Damage(uint amount)
+		{
+			StartCoroutine(DamagePopup(amount));
+		}
 
-        private IEnumerator DamagePopup(uint amount)
-        {
-            var popup = Instantiate(popupPrefab.gameObject, popupContainer);
+		private IEnumerator DamagePopup(uint amount)
+		{
+			GameObject popup = Instantiate(popupPrefab.gameObject, popupContainer);
 
-            yield return null; // Wait for load
+			yield return null; // Wait for load
 
-            if (popup.TryGetComponent(out DamagePopup damage))
-                yield return damage.StartAnimation(amount);
+			if (popup.TryGetComponent(out DamagePopup damage))
+				yield return damage.StartAnimation(amount);
 
-            yield return null;
-            Destroy(popup);
-        }
+			yield return null;
 
-        #endregion
-    }
+			Destroy(popup);
+		}
+
+		#endregion
+	}
 }

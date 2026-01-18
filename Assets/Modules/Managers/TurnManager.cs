@@ -8,118 +8,119 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class TurnManager : MonoBehaviour, IDungeonReceive
-    {
-        #region Entities
+	public class TurnManager : MonoBehaviour, IDungeonReceive
+	{
+		#region Entities
 
-        private readonly List<GridEntity> turnEntities = new();
-        private readonly List<GridEntity> foundEntities = new();
+		private readonly List<GridEntity> turnEntities = new();
+		private readonly List<GridEntity> foundEntities = new();
 
-        public void AddEntity(GridEntity entity)
-        {
-            foundEntities.Add(entity);
+		public void AddEntity(GridEntity entity)
+		{
+			foundEntities.Add(entity);
 
-            if (entity is not ITurnable)
-                return;
+			if (entity is not ITurnable)
+				return;
 
-            turnEntities.Add(entity);
-        }
+			turnEntities.Add(entity);
+		}
 
-        public void RemoveEntity(GridEntity entity)
-        {
-            foundEntities.Remove(entity);
+		public void RemoveEntity(GridEntity entity)
+		{
+			foundEntities.Remove(entity);
 
-            if (entity is not ITurnable)
-                return;
+			if (entity is not ITurnable)
+				return;
 
-            turnEntities.Remove(entity);
-        }
+			turnEntities.Remove(entity);
+		}
 
-        #endregion
+		#endregion
 
-        #region Turn
+		#region Turn
 
-        private IEnumerator ProcessTurn()
-        {
-            bool _continue = true;
-            while (_continue)
-            {
-                foreach (GridEntity entity in turnEntities)
-                {
-                    // If player is in battle or if the level is over, skip turn
-                    if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.IsPlayerDead)
-                    {
-                        _continue = false;
-                        break;
-                    }
+		private IEnumerator ProcessTurn()
+		{
+			bool _continue = true;
 
-                    // If entity doesnt exist, skip
-                    if (entity == null)
-                        continue;
+			while (_continue)
+			{
+				foreach (GridEntity entity in turnEntities)
+				{
+					// If player is in battle or if the level is over, skip turn
+					if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.IsPlayerDead)
+					{
+						_continue = false;
+						break;
+					}
 
-                    yield return entity.ExecuteTurn();
+					// If entity doesnt exist, skip
+					if (entity == null)
+						continue;
 
-                    // Check for event
-                    foreach (GridEntity item in foundEntities)
-                    {
-                        // If entity doesnt exist, skip
-                        if (item == null)
-                            continue;
+					yield return entity.ExecuteTurn();
 
-                        // If checking self, skip
-                        if (item == entity)
-                            continue;
+					// Check for event
+					foreach (GridEntity item in foundEntities)
+					{
+						// If entity doesnt exist, skip
+						if (item == null)
+							continue;
 
-                        // If not on the same position, skip
-                        if (item.Position != entity.Position)
-                            continue;
+						// If checking self, skip
+						if (item == entity)
+							continue;
 
-                        if (entity is IEventable landOn)
-                            landOn.OnEntityLand(item);
+						// If not on the same position, skip
+						if (item.Position != entity.Position)
+							continue;
 
-                        if (item is IEventable landedOn)
-                            landedOn.OnEntityLanded(entity);
-                    }
-                }
-            }
+						if (entity is IEventable landOn)
+							landOn.OnEntityLand(item);
 
-            if (GameManager.Instance.IsPlayerDead)
-                GameManager.Instance.Defeat();
-        }
+						if (item is IEventable landedOn)
+							landedOn.OnEntityLanded(entity);
+					}
+				}
+			}
 
-        public void StartTurn() => StartCoroutine(ProcessTurn());
+			if (GameManager.Instance.IsPlayerDead)
+				GameManager.Instance.Defeat();
+		}
 
-        #endregion
+		public void StartTurn() => StartCoroutine(ProcessTurn());
 
-        #region IDungeonReceive
+		#endregion
 
-        /// <inheritdoc/>
-        public void OnLevelStart(DungeonResult level)
-        {
-            PlayerEntity player = level.Player;
+		#region IDungeonReceive
 
-            foundEntities.Clear();
-            turnEntities.Clear();
+		/// <inheritdoc/>
+		public void OnLevelStart(DungeonResult level)
+		{
+			PlayerEntity player = level.Player;
 
-            AddEntity(player); // Make the player the first entity
+			foundEntities.Clear();
+			turnEntities.Clear();
 
-            GridEntity[] allEntities = FindObjectsOfType<GridEntity>();
+			AddEntity(player); // Make the player the first entity
 
-            foreach (GridEntity item in allEntities)
-            {
-                // Don't add player twice
-                if (item == player)
-                    continue;
+			GridEntity[] allEntities = FindObjectsByType<GridEntity>(FindObjectsSortMode.None);
 
-                AddEntity(item);
-            }
+			foreach (GridEntity item in allEntities)
+			{
+				// Don't add player twice
+				if (item == player)
+					continue;
 
-            StartTurn();
-        }
+				AddEntity(item);
+			}
 
-        /// <inheritdoc/>
-        public void OnLevelEnd(DungeonResult level) { }
+			StartTurn();
+		}
 
-        #endregion
-    }
+		/// <inheritdoc/>
+		public void OnLevelEnd(DungeonResult level) { }
+
+		#endregion
+	}
 }

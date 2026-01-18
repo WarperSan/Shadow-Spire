@@ -9,181 +9,211 @@ using Utils;
 
 namespace Managers
 {
-    public class MinigameManager : MonoBehaviour
-    {
-        #region Fields
+	public class MinigameManager : MonoBehaviour
+	{
+		#region Fields
 
-        [Header("Fields")]
-        [SerializeField]
-        private GameObject projectile;
+		[Header("Fields")]
+		[SerializeField]
+		private GameObject projectile;
 
-        [SerializeField]
-        private MinigamePlayer player;
+		[SerializeField]
+		private MinigamePlayer player;
 
-        [SerializeField]
-        private Spawner[] spawners;
+		[SerializeField]
+		private Spawner[] spawners;
 
-        [SerializeField]
-        private Transform projectilesParent;
+		[SerializeField]
+		private Transform projectilesParent;
 
-        [SerializeField]
-        private Animator animator;
+		[SerializeField]
+		private Animator animator;
 
-        #endregion
+		#endregion
 
-        #region Data
+		#region Data
 
-        private Dictionary<BattleEntity.Type, int> typesCount = new();
-        private float duration;
+		private Dictionary<BattleEntity.Type, int> typesCount = new();
+		private float duration;
 
-        #endregion
+		#endregion
 
-        #region Manager
+		#region Manager
 
-        public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity, BattleManager battleManager)
-        {
-            player.battleManager = battleManager;
-            player.ResetSelf();
+		public void SetupProjectiles(BattleEnemyEntity[] battleEnemyEntities, BattlePlayerEntity playerEntity, BattleManager battleManager)
+		{
+			player.battleManager = battleManager;
+			player.ResetSelf();
 
-            if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
-                return;
+			if (battleEnemyEntities == null || battleEnemyEntities.Length == 0)
+				return;
 
-            int enemyCount = 0;
+			int enemyCount = 0;
 
-            // Compile types
-            foreach (BattleEntity.Type item in Enum.GetValues(typeof(BattleEntity.Type)))
-                typesCount[item] = 0;
+			// Compile types
+			foreach (BattleEntity.Type item in Enum.GetValues(typeof(BattleEntity.Type)))
+				typesCount[item] = 0;
 
-            foreach (BattleEnemyEntity enemy in battleEnemyEntities)
-            {
-                // Ignore dead enemies
-                if (enemy.IsDead)
-                    continue;
+			foreach (BattleEnemyEntity enemy in battleEnemyEntities)
+			{
+				// Ignore dead enemies
+				if (enemy.IsDead)
+					continue;
 
-                foreach (BattleEntity.Type uniqueType in enemy.Type.GetTypes())
-                    typesCount[uniqueType]++;
+				foreach (BattleEntity.Type uniqueType in enemy.Type.GetTypes())
+					typesCount[uniqueType]++;
 
-                enemyCount++;
-            }
+				enemyCount++;
+			}
 
-            // Set up spawners
-            foreach (Spawner spawner in spawners)
-            {
-                int strength = typesCount[spawner.HandledType];
+			// Set up spawners
+			foreach (Spawner spawner in spawners)
+			{
+				int strength = typesCount[spawner.HandledType];
 
-                spawner.Setup(strength);
-                spawner.enabled = strength > 0;
-            }
+				spawner.Setup(strength);
+				spawner.enabled = strength > 0;
+			}
 
-            duration = 3.5f * enemyCount;
-        }
+			duration = 3.5f * enemyCount;
+		}
 
-        public IEnumerator SpawnProjectiles()
-        {
-            InputManager.Instance.SwitchToMiniGame();
-            InputManager.Instance.OnMoveMinigame.AddListener(Move);
-            player.canTakeDamage = true;
+		public IEnumerator SpawnProjectiles()
+		{
+			InputManager.Instance.SwitchToMiniGame();
+			InputManager.Instance.OnMoveMinigame.AddListener(Move);
+			player.canTakeDamage = true;
 
-            List<Coroutine> spawnerCoroutines = new();
+			List<Coroutine> spawnerCoroutines = new();
 
-            foreach (Spawner spawner in spawners)
-            {
-                if (!spawner.enabled)
-                    continue;
+			foreach (Spawner spawner in spawners)
+			{
+				if (!spawner.enabled)
+					continue;
 
-                spawnerCoroutines.Add(StartCoroutine(spawner.StartSpawn(duration)));
-            }
+				spawnerCoroutines.Add(StartCoroutine(spawner.StartSpawn(duration)));
+			}
 
-            yield return new WaitForSeconds(duration);
+			yield return new WaitForSeconds(duration);
 
-            foreach (Coroutine item in spawnerCoroutines)
-                yield return item;
+			foreach (Coroutine item in spawnerCoroutines)
+				yield return item;
 
-            player.canTakeDamage = false;
-            InputManager.Instance.OnMoveMinigame.RemoveListener(Move);
-            InputManager.Instance.SwitchToUI();
-        }
+			player.canTakeDamage = false;
+			InputManager.Instance.OnMoveMinigame.RemoveListener(Move);
+			InputManager.Instance.SwitchToUI();
+		}
 
-        public void CleanProjectiles()
-        {
-            // Destroy all projectiles
-            foreach (Spawner spawner in spawners)
-            {
-                if (!spawner.enabled)
-                    continue;
+		public void CleanProjectiles()
+		{
+			// Destroy all projectiles
+			foreach (Spawner spawner in spawners)
+			{
+				if (!spawner.enabled)
+					continue;
 
-                spawner.Clean();
-                spawner.enabled = false;
-            }
+				spawner.Clean();
+				spawner.enabled = false;
+			}
 
-            // Remove all the compiled data
-            duration = -1;
-        }
+			// Remove all the compiled data
+			duration = -1;
+		}
 
-        #endregion
+		#endregion
 
-        #region Animations
+		#region Animations
 
-        public IEnumerator Appear()
-        {
-            yield return Appear_Spin();
-        }
+		public IEnumerator Appear()
+		{
+			yield return Appear_Spin();
+		}
 
-        private IEnumerator Appear_Spin()
-        {
-            Coroutine[] parallel = new Coroutine[] {
-                StartCoroutine(AnimationsUtils.Animate(
-                    values =>
-                    {
-                        transform.localScale = new Vector3(values[0], values[1], values[2]);
-                    },
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f), // x
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f), // y
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 1.1f)  // z
-                )),
-                StartCoroutine(AnimationsUtils.Animate(
-                    values =>
-                    {
-                        transform.localRotation = Quaternion.Euler(values[0], values[1], values[2]);
-                    },
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 0),   // x
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 0),   // y
-                    AnimationsUtils.EaseInOut(0, 0, 30 * 0.017f, 720)  // z
-                ))
-            };
+		private IEnumerator Appear_Spin()
+		{
+			Coroutine[] parallel = new Coroutine[]
+			{
+				StartCoroutine(AnimationsUtils.Animate(
+					values =>
+					{
+						transform.localScale = new Vector3(values[0], values[1], values[2]);
+					},
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						1.1f), // x
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						1.1f), // y
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						1.1f) // z
+				)),
+				StartCoroutine(AnimationsUtils.Animate(
+					values =>
+					{
+						transform.localRotation = Quaternion.Euler(values[0], values[1], values[2]);
+					},
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						0), // x
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						0), // y
+					AnimationsUtils.EaseInOut(0,
+						0,
+						30 * 0.017f,
+						720) // z
+				))
+			};
 
+			foreach (Coroutine item in parallel)
+				yield return item;
 
-            foreach (var item in parallel)
-                yield return item;
+			yield return AnimationsUtils.Animate(
+				values =>
+				{
+					transform.localScale = new Vector3(values[0], values[1], values[2]);
+				},
+				AnimationsUtils.EaseInOut(0,
+					1.1f,
+					15 * 0.017f,
+					1f), // x
+				AnimationsUtils.EaseInOut(0,
+					1.1f,
+					15 * 0.017f,
+					1f), // y
+				AnimationsUtils.EaseInOut(0,
+					1.1f,
+					15 * 0.017f,
+					1f) // z
+			);
+			//yield return transform.ScaleLocal(30, 0.017f, Vector3.zero, Vector3.one);
+		}
 
-            yield return AnimationsUtils.Animate(
-                values =>
-                {
-                    transform.localScale = new Vector3(values[0], values[1], values[2]);
-                },
-                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f), // x
-                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f), // y
-                AnimationsUtils.EaseInOut(0, 1.1f, 15 * 0.017f, 1f)  // z
-            );
-            //yield return transform.ScaleLocal(30, 0.017f, Vector3.zero, Vector3.one);
-        }
+		public IEnumerator Disappear()
+		{
+			yield return Disappear_ScaleDown();
+		}
 
-        public IEnumerator Disappear()
-        {
-            yield return Disappear_ScaleDown();
-        }
+		private IEnumerator Disappear_ScaleDown()
+		{
+			yield return transform.ScaleLocal(15,
+				0.017f,
+				Vector3.one,
+				Vector3.zero);
+		}
 
-        private IEnumerator Disappear_ScaleDown()
-        {
-            yield return transform.ScaleLocal(15, 0.017f, Vector3.one, Vector3.zero);
-        }
+		#endregion
 
-        #endregion
+		#region Inputs
 
-        #region Inputs
+		public void Move(Vector2 dir) => player.Move(dir);
 
-        public void Move(Vector2 dir) => player.Move(dir);
-
-        #endregion
-    }
+		#endregion
+	}
 }

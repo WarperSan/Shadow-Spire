@@ -4,134 +4,144 @@ using PathFinding.Nodes;
 
 namespace PathFinding.Graphs
 {
-    public abstract class Graph<T> where T : Node
-    {
-        #region Nodes
+	public abstract class Graph<T> where T : Node
+	{
+		#region Nodes
 
-        /// <summary>
-        /// ID of the node (KEY) with the node itself (VALUE)
-        /// </summary>
-        protected readonly Dictionary<int, T> _nodes = new();
+		/// <summary>
+		/// ID of the node (KEY) with the node itself (VALUE)
+		/// </summary>
+		protected readonly Dictionary<int, T> _nodes = new();
 
-        public T GetNode(int id)
-        {
-            if (!_nodes.TryGetValue(id, out T node))
-                throw new ArgumentOutOfRangeException($"No node was found with the id '{id}'.");
-            return node;
-        }
+		public T GetNode(int id)
+		{
+			if (!_nodes.TryGetValue(id, out T node))
+				throw new ArgumentOutOfRangeException($"No node was found with the id '{id}'.");
 
-        #endregion
+			return node;
+		}
 
-        #region Link
+		#endregion
 
-        /// <summary>
-        /// Creates a link from a node to another one
-        /// </summary>
-        /// <param name="from">Index of the node to start from</param>
-        /// <param name="to">Index of the node to end at</param>
-        /// <param name="cost">Cost of the path</param>
-        /// <param name="isBidirectional">Determines if the link is bidirectional</param>
-        public void AddLink(int from, int to, float cost, bool isBidirectional)
-        {
-            // If same points, error
-            if (from == to)
-                throw new ArgumentException("Cannot link a node to itself.");
+		#region Link
 
-            // If key doesn't exist, error
-            if (!_nodes.TryGetValue(from, out T node))
-                throw new ArgumentException("Cannot link to a node that doesn't exist.");
+		/// <summary>
+		/// Creates a link from a node to another one
+		/// </summary>
+		/// <param name="from">Index of the node to start from</param>
+		/// <param name="to">Index of the node to end at</param>
+		/// <param name="cost">Cost of the path</param>
+		/// <param name="isBidirectional">Determines if the link is bidirectional</param>
+		public void AddLink(
+			int   from,
+			int   to,
+			float cost,
+			bool  isBidirectional
+		)
+		{
+			// If same points, error
+			if (from == to)
+				throw new ArgumentException("Cannot link a node to itself.");
 
-            node.AddLink(to, cost);
+			// If key doesn't exist, error
+			if (!_nodes.TryGetValue(from, out T node))
+				throw new ArgumentException("Cannot link to a node that doesn't exist.");
 
-            // If bidirectional, add reverse
-            if (isBidirectional)
-                AddLink(to, from, cost, false);
-        }
+			node.AddLink(to, cost);
 
-        #endregion
+			// If bidirectional, add reverse
+			if (isBidirectional)
+				AddLink(to,
+					from,
+					cost,
+					false);
+		}
 
-        #region Algorithm
+		#endregion
 
-        /// <summary>
-        /// Finds a path from the given node to the other given node
-        /// </summary>
-        /// <param name="start">Start of the path</param>
-        /// <param name="end">End of the path</param>
-        /// <returns>Path found or null if not found</returns>
-        public int[] GetPath(int start, int end)
-        {
-            Dictionary<int, int> links = ComputePath(start, end);
+		#region Algorithm
 
-            if (links == null)
-                return null;
+		/// <summary>
+		/// Finds a path from the given node to the other given node
+		/// </summary>
+		/// <param name="start">Start of the path</param>
+		/// <param name="end">End of the path</param>
+		/// <returns>Path found or null if not found</returns>
+		public int[] GetPath(int start, int end)
+		{
+			Dictionary<int, int> links = ComputePath(start, end);
 
-            // If not path found, skip
-            if (!links.ContainsKey(end))
-                return null;
+			if (links == null)
+				return null;
 
-            // Compile path
-            List<int> path = new();
+			// If not path found, skip
+			if (!links.ContainsKey(end))
+				return null;
 
-            int currentNode = end;
-            do
-            {
-                currentNode = links[currentNode];
-                path.Add(currentNode);
-            } while (currentNode != -1);
+			// Compile path
+			List<int> path = new();
 
-            path.RemoveAt(path.Count - 1); // Remove last (-1)
-            path.Reverse(); // Reverse the order (start -> end)
-            path.Add(end); // Add end node
-            return path.ToArray();
-        }
+			int currentNode = end;
 
-        protected abstract float GetHeuristic(int start, int end);
+			do
+			{
+				currentNode = links[currentNode];
+				path.Add(currentNode);
+			} while (currentNode != -1);
 
-        /// <summary>
-        /// Finds the path between the two given nodes
-        /// </summary>
-        /// <returns>Links from nodes to nodes</returns>
-        protected virtual Dictionary<int, int> ComputePath(int start, int end)
-        {
-            Dictionary<int, int> links = new()
-            {
-                [start] = -1 // Comes from none
-            };
+			path.RemoveAt(path.Count - 1); // Remove last (-1)
+			path.Reverse();                // Reverse the order (start -> end)
+			path.Add(end);                 // Add end node
+			return path.ToArray();
+		}
 
-            Dictionary<int, float> costPath = new()
-            {
-                [start] = 0 // Cost nothing
-            };
+		protected abstract float GetHeuristic(int start, int end);
 
-            UniquePriorityQueue<Node, float> frontier = new();
-            frontier.Enqueue(GetNode(start), 0); // Add start
+		/// <summary>
+		/// Finds the path between the two given nodes
+		/// </summary>
+		/// <returns>Links from nodes to nodes</returns>
+		protected virtual Dictionary<int, int> ComputePath(int start, int end)
+		{
+			Dictionary<int, int> links = new()
+			{
+				[start] = -1 // Comes from none
+			};
 
-            do
-            {
-                Node current = frontier.Dequeue();
+			Dictionary<int, float> costPath = new()
+			{
+				[start] = 0 // Cost nothing
+			};
 
-                if (current.Id == end)
-                    break;
+			UniquePriorityQueue<Node, float> frontier = new();
+			frontier.Enqueue(GetNode(start), 0); // Add start
 
-                foreach (int next in current.GetNeighbors())
-                {
-                    float newCost = costPath[current.Id] + current.GetCost(next);
+			do
+			{
+				Node current = frontier.Dequeue();
 
-                    // If cost higher, skip
-                    if (costPath.TryGetValue(next, out float oldCost) && newCost >= oldCost)
-                        continue;
+				if (current.Id == end)
+					break;
 
-                    costPath[next] = newCost;
-                    links[next] = current.Id;
+				foreach (int next in current.GetNeighbors())
+				{
+					float newCost = costPath[current.Id] + current.GetCost(next);
 
-                    // Continue this path
-                    frontier.Enqueue(GetNode(next), newCost + GetHeuristic(next, end));
-                }
-            } while (frontier.Count > 0);
+					// If cost higher, skip
+					if (costPath.TryGetValue(next, out float oldCost) && newCost >= oldCost)
+						continue;
 
-            return links;
-        }
+					costPath[next] = newCost;
+					links[next] = current.Id;
 
-        #endregion
-    }
+					// Continue this path
+					frontier.Enqueue(GetNode(next), newCost + GetHeuristic(next, end));
+				}
+			} while (frontier.Count > 0);
+
+			return links;
+		}
+
+		#endregion
+	}
 }

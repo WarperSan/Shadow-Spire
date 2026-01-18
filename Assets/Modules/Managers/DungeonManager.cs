@@ -9,146 +9,154 @@ using UnityEngine.Tilemaps;
 
 namespace Managers
 {
-    public class DungeonManager : MonoBehaviour
-    {
-        #region Ground
+	public class DungeonManager : MonoBehaviour
+	{
+		#region Ground
 
-        [Header("Ground")]
-        [SerializeField]
-        private Tilemap groundMap;
+		[Header("Ground")]
+		[SerializeField]
+		private Tilemap groundMap;
 
-        [SerializeField]
-        private TileBase groundTile;
+		[SerializeField]
+		private TileBase groundTile;
 
-        #endregion
+		#endregion
 
-        #region Walls
+		#region Walls
 
-        [Header("Walls")]
-        [SerializeField]
-        private Tilemap wallMap;
+		[Header("Walls")]
+		[SerializeField]
+		private Tilemap wallMap;
 
-        // TOP    = 0b0001 = 1
-        // RIGHT  = 0b0010 = 2
-        // BOTTOM = 0b0100 = 4
-        // LEFT   = 0b1000 = 8
-        [SerializeField]
-        private TileBase[] wallTiles;
+		// TOP    = 0b0001 = 1
+		// RIGHT  = 0b0010 = 2
+		// BOTTOM = 0b0100 = 4
+		// LEFT   = 0b1000 = 8
+		[SerializeField]
+		private TileBase[] wallTiles;
 
-        #endregion
+		#endregion
 
-        #region Doors
+		#region Doors
 
-        [Header("Doors")]
-        [SerializeField]
-        private TileBase openedDoorTile;
+		[Header("Doors")]
+		[SerializeField]
+		private TileBase openedDoorTile;
 
-        [SerializeField]
-        private TileBase closedDoorTile;
+		[SerializeField]
+		private TileBase closedDoorTile;
 
-        #endregion
+		#endregion
 
-        #region Entities
+		#region Entities
 
-        [Header("Entities")]
+		[Header("Entities")]
+		[SerializeField]
+		private EntranceEntity entrance;
 
-        [SerializeField]
-        private EntranceEntity entrance;
+		[SerializeField]
+		private ExitEntity exit;
 
-        [SerializeField]
-        private ExitEntity exit;
+		#endregion
 
-        #endregion
+		#region Spawn Items
 
-        #region Spawn Items
+		[Header("Spawn Items")]
+		[SerializeField]
+		private Transform spawnItemsParent;
 
-        [Header("Spawn Items")]
-        [SerializeField]
-        private Transform spawnItemsParent;
+		#endregion
 
-        #endregion
+		#region Enemies
 
-        #region Enemies
+		[Header("Enemies")]
+		[SerializeField]
+		private GameObject enemyPrefab;
 
-        [Header("Enemies")]
-        [SerializeField]
-        private GameObject enemyPrefab;
+		[SerializeField]
+		private GameObject spikesPrefab;
 
-        [SerializeField]
-        private GameObject spikesPrefab;
+		#endregion
 
-        #endregion
+		#region Treasures
 
-        #region Treasures
+		[Header("Treasures")]
+		[SerializeField]
+		private GameObject potionPrefab;
 
-        [Header("Treasures")]
-        [SerializeField]
-        private GameObject potionPrefab;
+		#endregion
 
-        #endregion
+		#region Generation
 
-        #region Generation
+		private Drawer[] DrawerPipeline;
+		private IDungeonReceive[] Receivers;
 
-        private Drawer[] DrawerPipeline;
-        private IDungeonReceive[] Receivers;
+		public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
+		{
+			// Generate level
+			System.Random random = new(settings.Seed);
+			DungeonResult lvl = DungeonGenerator.Generate(random, settings);
 
-        public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
-        {
-            // Generate level
-            System.Random random = new(settings.Seed);
-            DungeonResult lvl = DungeonGenerator.Generate(random, settings);
+			// Create drawers
+			DrawerPipeline = new Drawer[]
+			{
+				// Terrain
+				new WallDrawer(lvl, wallMap, wallTiles),
+				new DoorDrawer(lvl,
+					wallMap,
+					openedDoorTile,
+					closedDoorTile),
+				new EntranceExitDrawer(lvl,
+					entrance,
+					exit,
+					player),
+				new GroundDrawer(lvl, groundMap, groundTile),
 
-            // Create drawers
-            DrawerPipeline = new Drawer[]
-            {
-                // Terrain
-                new WallDrawer(lvl, wallMap, wallTiles),
-                new DoorDrawer(lvl, wallMap, openedDoorTile, closedDoorTile),
-                new EntranceExitDrawer(lvl, entrance, exit, player),
-                new GroundDrawer(lvl, groundMap, groundTile),
+				// Rooms
+				new EnemyRoomDrawer(lvl,
+					enemyPrefab,
+					Enemies.EnemyInstance.ENEMIES,
+					spawnItemsParent),
+				new TreasureRoomDrawer(lvl, potionPrefab, spawnItemsParent),
+				new SpikesRoomDrawer(lvl, spikesPrefab, spawnItemsParent)
+			};
 
-                // Rooms
-                new EnemyRoomDrawer(lvl, enemyPrefab, Enemies.EnemyInstance.ENEMIES, spawnItemsParent),
-                new TreasureRoomDrawer(lvl, potionPrefab, spawnItemsParent),
-                new SpikesRoomDrawer(lvl, spikesPrefab, spawnItemsParent),
-            };
+			// Process the level
+			lvl.Player = player;
+			lvl.Random = random;
+			lvl.Grid = Drawer.CreateEmpty(lvl.Rooms);
+			lvl.Height = lvl.Grid.GetLength(0);
+			lvl.Width = lvl.Grid.GetLength(1);
 
-            // Process the level
-            lvl.Player = player;
-            lvl.Random = random;
-            lvl.Grid = Drawer.CreateEmpty(lvl.Rooms);
-            lvl.Height = lvl.Grid.GetLength(0);
-            lvl.Width = lvl.Grid.GetLength(1);
+			foreach (Drawer drawer in DrawerPipeline)
+				drawer.Process(lvl.Rooms);
 
-            foreach (Drawer drawer in DrawerPipeline)
-                drawer.Process(lvl.Rooms);
+			// Compute graphs
+			lvl.TileGraph = PathFindingManager.ComputeTileGraph(lvl);
 
-            // Compute graphs
-            lvl.TileGraph = PathFindingManager.ComputeTileGraph(lvl);
+			return lvl;
+		}
 
-            return lvl;
-        }
+		public void StartLevel(DungeonResult lvl)
+		{
+			// Draw the level
+			foreach (Drawer drawer in DrawerPipeline)
+				drawer.Draw(lvl.Rooms);
 
-        public void StartLevel(DungeonResult lvl)
-        {
-            // Draw the level
-            foreach (Drawer drawer in DrawerPipeline)
-                drawer.Draw(lvl.Rooms);
+			// Notify all receivers
+			Receivers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDungeonReceive>().ToArray();
 
-            // Notify all receivers
-            Receivers = FindObjectsOfType<MonoBehaviour>().Where(m => m is IDungeonReceive).Select(m => m as IDungeonReceive).ToArray();
+			foreach (IDungeonReceive receiver in Receivers)
+				receiver.OnLevelStart(lvl);
+		}
 
-            foreach (IDungeonReceive receiver in Receivers)
-                receiver.OnLevelStart(lvl);
-        }
+		public void ClearDungeon()
+		{
+			// Clear all drawers
+			foreach (Drawer drawer in DrawerPipeline)
+				drawer.Clear();
+		}
 
-        public void ClearDungeon()
-        {
-            // Clear all drawers
-            foreach (Drawer drawer in DrawerPipeline)
-                drawer.Clear();
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }

@@ -8,162 +8,162 @@ using Weapons;
 
 namespace Enemies.UI
 {
-    /// <summary>
-    /// Data used for the enemy selection menu
-    /// </summary>
-    public class EnemyOptionData : UIOptionData
-    {
-        public WeaponInstance Weapon;
-        public BattleEnemyEntity Entity;
-    }
+	/// <summary>
+	/// Data used for the enemy selection menu
+	/// </summary>
+	public class EnemyOptionData : UIOptionData
+	{
+		public WeaponInstance Weapon;
+		public BattleEnemyEntity Entity;
+	}
 
-    /// <summary>
-    /// Option used for the enemy selection menu
-    /// </summary>
-    public class EnemyOption : UIOption<EnemyOptionData>
-    {
-        #region Fields
+	/// <summary>
+	/// Option used for the enemy selection menu
+	/// </summary>
+	public class EnemyOption : UIOption<EnemyOptionData>
+	{
+		#region Fields
 
-        [Header("Fields")]
-        [SerializeField]
-        private Image sprite;
+		[Header("Fields")]
+		[SerializeField]
+		private Image sprite;
 
-        [SerializeField]
-        private Image shadow;
+		[SerializeField]
+		private Image shadow;
 
-        [SerializeField]
-        private TextMeshProUGUI types;
+		[SerializeField]
+		private TextMeshProUGUI types;
 
-        #endregion
+		#endregion
 
-        #region API
+		#region API
 
-        /// <inheritdoc/>
-        protected override void OnLoadOption(EnemyOptionData option)
-        {
-            SetEntity(option.Entity);
-            SetEffectiveness(option.Weapon, option.Entity);
-            animations.Spawn();
-        }
+		/// <inheritdoc/>
+		protected override void OnLoadOption(EnemyOptionData option)
+		{
+			SetEntity(option.Entity);
+			SetEffectiveness(option.Weapon, option.Entity);
+			animations.Spawn();
+		}
 
-        /// <inheritdoc/>
-        public override void Select()
-        {
-            SetTargetted(true);
-        }
+		/// <inheritdoc/>
+		public override void Select()
+		{
+			SetTargetted(true);
+		}
 
-        /// <inheritdoc/>
-        public override void Deselect()
-        {
-            SetTargetted(false);
-        }
+		/// <inheritdoc/>
+		public override void Deselect()
+		{
+			SetTargetted(false);
+		}
 
-        #endregion
+		#endregion
 
-        #region Entity
+		#region Entity
 
-        private void SetEntity(BattleEnemyEntity entity)
-        {
-            entity.Hit.AddListener(OnHit);
-            entity.Death.AddListener(OnDeath);
+		private void SetEntity(BattleEnemyEntity entity)
+		{
+			entity.Hit.AddListener(OnHit);
+			entity.Death.AddListener(OnDeath);
 
-            types.text = entity.Type.GetIcons();
+			types.text = entity.Type.GetIcons();
 
-            SetHealth((uint)entity.Health, 0);
+			SetHealth((uint)entity.Health, 0);
 
-            Enemies.EnemySO enemy = entity.Enemy.GetRaw();
-            sprite.sprite = enemy.FightSprite;
+			EnemySO enemy = entity.Enemy.GetRaw();
+			sprite.sprite = enemy.FightSprite;
 
-            shadow.sprite = enemy.FightShadowSprite;
-            shadow.enabled = shadow.sprite != null;
-        }
+			shadow.sprite = enemy.FightShadowSprite;
+			shadow.enabled = shadow.sprite != null;
+		}
 
-        private void OnHit(int damage)
-        {
-            SetDamage((uint)damage);
-            SetHealth((uint)loadedOption.Entity.Health, 0);
-            animations.Hit();
-        }
+		private void OnHit(int damage)
+		{
+			SetDamage((uint)damage);
+			SetHealth((uint)loadedOption.Entity.Health, 0);
+			animations.Hit();
+		}
 
-        private void OnDeath(int damage)
-        {
-            SetDamage((uint)damage);
-            SetHealth(0, 0);
-            animations.Death();
+		private void OnDeath(int damage)
+		{
+			SetDamage((uint)damage);
+			SetHealth(0, 0);
+			animations.Death();
 
-            (parent as EnemyOptions)?.FindNextValid(Vector2.right);
-        }
+			(parent as EnemyOptions)?.FindNextValid(Vector2.right);
+		}
 
-        #endregion
+		#endregion
 
-        #region Health
+		#region Health
 
-        [Header("Health")]
-        [SerializeField]
-        private HealthBar healthBar;
+		[Header("Health")]
+		[SerializeField]
+		private HealthBar healthBar;
 
-        private void SetHealth(uint health, uint maxHealth) => healthBar.SetHealth(health, maxHealth);
-        private void SetDamage(uint damage) => healthBar.TakeDamage(damage);
+		private void SetHealth(uint health, uint maxHealth) => healthBar.SetHealth(health, maxHealth);
+		private void SetDamage(uint damage) => healthBar.TakeDamage(damage);
 
-        #endregion
+		#endregion
 
-        #region Animations
+		#region Animations
 
-        [Header("Animations")]
-        [SerializeField]
-        private EnemyOptionAnimations animations;
+		[Header("Animations")]
+		[SerializeField]
+		private EnemyOptionAnimations animations;
 
-        #endregion
+		#endregion
 
-        #region Target
+		#region Target
 
-        [Header("Target")]
-        [SerializeField]
-        private TextMeshProUGUI targetEffectiveness;
+		[Header("Target")]
+		[SerializeField]
+		private TextMeshProUGUI targetEffectiveness;
 
-        private void SetEffectiveness(WeaponInstance weapon, BattleEnemyEntity entity)
-        {
-            float percent = entity.CalculateEffectiveness(weapon.GetTypes());
+		private void SetEffectiveness(WeaponInstance weapon, BattleEnemyEntity entity)
+		{
+			float percent = entity.CalculateEffectiveness(weapon.GetTypes());
 
-            targetEffectiveness.text = string.Format(
-                "<sprite name={0}> <color={1}>{2}</color>%",
-                weapon.GetIcon().name,
-                GetEffectivenessColor(percent),
-                percent
-            );
-        }
+			targetEffectiveness.text = string.Format(
+				"<sprite name={0}> <color={1}>{2}</color>%",
+				weapon.GetIcon().name,
+				GetEffectivenessColor(percent),
+				percent
+			);
+		}
 
-        private void SetTargetted(bool isTarget)
-        {
-            if (isTarget)
-                animations.EnableTarget();
-            else
-                animations.DisableTarget();
-        }
+		private void SetTargetted(bool isTarget)
+		{
+			if (isTarget)
+				animations.EnableTarget();
+			else
+				animations.DisableTarget();
+		}
 
-        private string GetEffectivenessColor(float percent)
-        {
-            if (percent >= 450)
-                return "#FF6CC6";
+		private string GetEffectivenessColor(float percent)
+		{
+			if (percent >= 450)
+				return "#FF6CC6";
 
-            if (percent >= 250)
-                return "orange";
+			if (percent >= 250)
+				return "orange";
 
-            if (percent >= 150)
-                return "purple";
+			if (percent >= 150)
+				return "purple";
 
-            if (percent > 100)
-                return "green";
+			if (percent > 100)
+				return "green";
 
-            if (percent == 100)
-                return "white";
+			if (percent == 100)
+				return "white";
 
-            if (percent >= 75)
-                return "#A0A0A0";
+			if (percent >= 75)
+				return "#A0A0A0";
 
-            return "#505050";
-        }
+			return "#505050";
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

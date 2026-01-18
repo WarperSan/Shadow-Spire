@@ -10,235 +10,236 @@ using Weapons.UI;
 
 namespace Managers
 {
-    public class GameManager : Singleton<GameManager>
-    {
-        private void Start()
-        {
-            WeaponInstance.WEAPONS = Resources.LoadAll<WeaponSO>("Weapons");
-            EnemyInstance.ENEMIES = Resources.LoadAll<EnemySO>("Enemies");
+	public class GameManager : Singleton<GameManager>
+	{
+		private void Start()
+		{
+			WeaponInstance.WEAPONS = Resources.LoadAll<WeaponSO>("Weapons");
+			EnemyInstance.ENEMIES = Resources.LoadAll<EnemySO>("Enemies");
 
-            StartLevel();
-        }
+			StartLevel();
+		}
 
-        #region Player
+		#region Player
 
-        public PlayerEntity player;
-        public bool IsPlayerDead;
+		public PlayerEntity player;
+		public bool IsPlayerDead;
 
-        public void Defeat() => StartCoroutine(DeathSequence(true));
+		public void Defeat() => StartCoroutine(DeathSequence(true));
 
-        private IEnumerator DeathSequence(bool fromOverworld)
-        {
-            yield return UIManager.DeathSequence(Level.Index + 1, fromOverworld);
-            yield return ReturnToTitle();
-        }
+		private IEnumerator DeathSequence(bool fromOverworld)
+		{
+			yield return UIManager.DeathSequence(Level.Index + 1, fromOverworld);
+			yield return ReturnToTitle();
+		}
 
-        #endregion
+		#endregion
 
-        #region UI
+		#region UI
 
-        [Header("UI")]
-        public UIManager UIManager;
+		[Header("UI")]
+		public UIManager UIManager;
 
-        #endregion
+		#endregion
 
-        #region Dungeon
+		#region Dungeon
 
-        [Header("Dungeon")]
-        [SerializeField]
-        private DungeonManager dungeonManager;
+		[Header("Dungeon")]
+		[SerializeField]
+		private DungeonManager dungeonManager;
 
-        [SerializeField]
-        private int levelIndex = 1;
+		[SerializeField]
+		private int levelIndex = 1;
 
-        [SerializeField]
-        private Camera dungeonCamera;
+		[SerializeField]
+		private Camera dungeonCamera;
 
-        public int overSeed;
-        public bool useSeed;
+		public int overSeed;
+		public bool useSeed;
 
-        public DungeonResult Level { get; private set; }
-        public bool IsLevelOver { get; private set; }
+		public DungeonResult Level       { get; private set; }
+		public bool          IsLevelOver { get; private set; }
 
-        public void StartLevel()
-        {
-            Level = null;
-            IsLevelOver = false;
+		public void StartLevel()
+		{
+			Level = null;
+			IsLevelOver = false;
 
-            int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
-            overSeed = seed;
+			int seed = useSeed ? overSeed : Random.Range(int.MinValue, int.MaxValue);
+			overSeed = seed;
 
-            DungeonSettings settings = new()
-            {
-                Index = levelIndex,
-                Seed = seed,
-                Width = Mathf.Min(4 + (levelIndex - 1) * 2, 17),
-                Height = Mathf.Min(4 + (levelIndex - 1) * 2, 8),
-                MinimumRoomHeight = levelIndex <= 2 ? 2 : 3,
-                MinimumRoomWidth = levelIndex <= 2 ? 2 : 3,
-                SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
-                AddHighLoop = levelIndex % 10 == 0,
-                AddLowLoop = levelIndex % 4 == 0
-            };
+			DungeonSettings settings = new()
+			{
+				Index = levelIndex,
+				Seed = seed,
+				Width = Mathf.Min(4 + (levelIndex - 1) * 2, 17),
+				Height = Mathf.Min(4 + (levelIndex - 1) * 2, 8),
+				MinimumRoomHeight = levelIndex <= 2 ? 2 : 3,
+				MinimumRoomWidth = levelIndex <= 2 ? 2 : 3,
+				SliceCount = Mathf.FloorToInt(levelIndex * 1.2f),
+				AddHighLoop = levelIndex % 10 == 0,
+				AddLowLoop = levelIndex % 4 == 0
+			};
 
-            Debug.Log("Seed: " + seed);
+			Debug.Log("Seed: " + seed);
 
-            Level = dungeonManager.GenerateLevel(settings, player);
-            dungeonManager.StartLevel(Level);
+			Level = dungeonManager.GenerateLevel(settings, player);
+			dungeonManager.StartLevel(Level);
 
-            dungeonCamera.transform.position = new Vector3(
-                Level.Width / 2f,
-                -(Level.Height / 2f + 0.75f),
-                dungeonCamera.transform.position.z
-            );
+			dungeonCamera.transform.position = new Vector3(
+				Level.Width / 2f,
+				-(Level.Height / 2f + 0.75f),
+				dungeonCamera.transform.position.z
+			);
 
-            StartCoroutine(StartLevelSequence());
-        }
+			StartCoroutine(StartLevelSequence());
+		}
 
-        public IEnumerator StartLevelSequence()
-        {
-            UIManager.SetLevel(levelIndex);
+		public IEnumerator StartLevelSequence()
+		{
+			UIManager.SetLevel(levelIndex);
 
-            yield return UIManager.FadeOutBlackout();
-            yield return new WaitForSeconds(0.2f);
+			yield return UIManager.FadeOutBlackout();
+			yield return new WaitForSeconds(0.2f);
 
-            InputManager.Instance.SwitchToPlayer();
-        }
+			InputManager.Instance.SwitchToPlayer();
+		}
 
-        public void EndLevel()
-        {
-            IsLevelOver = true;
-            InputManager.Instance.SwitchToUI();
-            StartCoroutine(EndLevelSequence());
-        }
+		public void EndLevel()
+		{
+			IsLevelOver = true;
+			InputManager.Instance.SwitchToUI();
+			StartCoroutine(EndLevelSequence());
+		}
 
-        private IEnumerator EndLevelSequence()
-        {
-            yield return new WaitForSeconds(0.2f);
+		private IEnumerator EndLevelSequence()
+		{
+			yield return new WaitForSeconds(0.2f);
 
-            yield return UIManager.FadeInBlackout();
+			yield return UIManager.FadeInBlackout();
 
-            dungeonManager.ClearDungeon();
-            yield return null; // Wait 1 frame
+			dungeonManager.ClearDungeon();
+			yield return null; // Wait 1 frame
 
-            yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
-            levelIndex++;
+			yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
 
-            yield return EndLevelWeaponOffer();
+			levelIndex++;
 
-            StartLevel();
-        }
+			yield return EndLevelWeaponOffer();
 
-        #endregion
+			StartLevel();
+		}
 
-        #region Turn
+		#endregion
 
-        [Header("Turn")]
-        [SerializeField]
-        private TurnManager turnManager;
+		#region Turn
 
-        #endregion
+		[Header("Turn")]
+		[SerializeField]
+		private TurnManager turnManager;
 
-        #region Battle
+		#endregion
 
-        [Header("Battle")]
-        [SerializeField]
-        private BattleManager battleManager;
+		#region Battle
 
-        public bool IsInBattle { get; private set; }
+		[Header("Battle")]
+		[SerializeField]
+		private BattleManager battleManager;
 
-        public void StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
-        {
-            if (IsInBattle)
-                return;
+		public bool IsInBattle { get; private set; }
 
-            IsInBattle = true;
-            InputManager.Instance.SwitchToUI();
-            StartCoroutine(StartBattleCoroutine(enemyEntity, playerEntity));
-        }
+		public void StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
+		{
+			if (IsInBattle)
+				return;
 
-        public void EndBattle(bool isVictory, EnemyEntity enemy)
-        {
-            IsInBattle = false;
+			IsInBattle = true;
+			InputManager.Instance.SwitchToUI();
+			StartCoroutine(StartBattleCoroutine(enemyEntity, playerEntity));
+		}
 
-            StartCoroutine(EndBattleCoroutine(isVictory, enemy));
-        }
+		public void EndBattle(bool isVictory, EnemyEntity enemy)
+		{
+			IsInBattle = false;
 
-        private IEnumerator StartBattleCoroutine(EnemyEntity enemyEntity, PlayerEntity playerEntity)
-        {
-            yield return UIManager.StartBattleTransition();
-            yield return battleManager.StartBattle(enemyEntity, playerEntity);
-        }
+			StartCoroutine(EndBattleCoroutine(isVictory, enemy));
+		}
 
-        private IEnumerator EndBattleCoroutine(bool isVictory, EnemyEntity enemy)
-        {
-            yield return UIManager.FadeInBlackout(1, 0);
+		private IEnumerator StartBattleCoroutine(EnemyEntity enemyEntity, PlayerEntity playerEntity)
+		{
+			yield return UIManager.StartBattleTransition();
+			yield return battleManager.StartBattle(enemyEntity, playerEntity);
+		}
 
-            AsyncOperation battle = SceneManager.UnloadSceneAsync("BattleScene");
+		private IEnumerator EndBattleCoroutine(bool isVictory, EnemyEntity enemy)
+		{
+			yield return UIManager.FadeInBlackout(1, 0);
 
-            while (!battle.isDone)
-                yield return null;
+			AsyncOperation battle = SceneManager.UnloadSceneAsync("BattleScene");
 
-            if (!isVictory)
-            {
-                yield return DeathSequence(false);
-                yield break;
-            }
+			while (!battle.isDone)
+				yield return null;
 
-            Destroy(enemy.gameObject);
+			if (!isVictory)
+			{
+				yield return DeathSequence(false);
 
-            yield return new WaitForSeconds(1f);
+				yield break;
+			}
 
-            yield return UIManager.FadeOutBlackout();
+			Destroy(enemy.gameObject);
 
-            turnManager.StartTurn();
-            InputManager.Instance.SwitchToPlayer();
-        }
+			yield return new WaitForSeconds(1f);
 
-        #endregion
+			yield return UIManager.FadeOutBlackout();
 
-        #region Weapons
+			turnManager.StartTurn();
+			InputManager.Instance.SwitchToPlayer();
+		}
 
-        [Header("Weapons")]
-        [SerializeField]
-        private WeaponSelectionUI weaponUI;
+		#endregion
 
-        private IEnumerator EndLevelWeaponOffer()
-        {
-            if (levelIndex % 5 != 0)
-                yield break;
+		#region Weapons
 
-            yield return weaponUI.ShowWeapons();
-        }
+		[Header("Weapons")]
+		[SerializeField]
+		private WeaponSelectionUI weaponUI;
 
-        #endregion
+		private IEnumerator EndLevelWeaponOffer()
+		{
+			if (levelIndex % 5 != 0)
+				yield break;
 
-        #region Scenes
+			yield return weaponUI.ShowWeapons();
+		}
 
-        public IEnumerator ReturnToTitle()
-        {
-            dungeonManager.ClearDungeon();
-            yield return null;
+		#endregion
 
-            AsyncOperation title = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Single);
+		#region Scenes
 
-            while (!title.isDone)
-                yield return null;
+		public IEnumerator ReturnToTitle()
+		{
+			dungeonManager.ClearDungeon();
+			yield return null;
 
-            AsyncOperation gameDeload = SceneManager.UnloadSceneAsync("Game");
+			AsyncOperation title = SceneManager.LoadSceneAsync("TitleScreen", LoadSceneMode.Single);
 
-            while (!gameDeload.isDone)
-                yield return null;
-        }
+			while (!title.isDone)
+				yield return null;
 
+			AsyncOperation gameDeload = SceneManager.UnloadSceneAsync("Game");
 
-        #endregion
+			while (!gameDeload.isDone)
+				yield return null;
+		}
 
-        #region Singleton
+		#endregion
 
-        /// <inheritdoc/>
-        protected override bool DestroyOnLoad => true;
+		#region Singleton
 
-        #endregion
-    }
+		/// <inheritdoc/>
+		protected override bool DestroyOnLoad => true;
+
+		#endregion
+	}
 }

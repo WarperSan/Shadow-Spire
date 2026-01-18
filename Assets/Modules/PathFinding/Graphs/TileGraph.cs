@@ -3,40 +3,40 @@ using UnityEngine;
 
 namespace PathFinding.Graphs
 {
-    public class TileGraph : Graph<Node2D>
-    {
-        public TileGraph(int[,] ids)
-        {
-            _ids = ids;
-        }
+	public class TileGraph : Graph<Node2D>
+	{
+		public TileGraph(int[,] ids)
+		{
+			_ids = ids;
+		}
 
-        private int _nextNodeId;
-        private int[,] _ids;
+		private int _nextNodeId;
+		private int[,] _ids;
 
-        public int GetID(int x, int y) => _ids[y, x];
+		public int GetID(int x, int y) => _ids[y, x];
 
-        /// <summary>
-        /// Adds a node to this graph
-        /// </summary>
-        /// <returns>ID of the node added</returns>
-        public virtual int AddNode(Vector2 position)
-        {
-            int id = _nextNodeId;
+		/// <summary>
+		/// Adds a node to this graph
+		/// </summary>
+		/// <returns>ID of the node added</returns>
+		public virtual int AddNode(Vector2 position)
+		{
+			int id = _nextNodeId;
 
-            _nodes.Add(id, new Node2D(id, position));
+			_nodes.Add(id, new Node2D(id, position));
 
-            _nextNodeId++;
+			_nextNodeId++;
 
-            return id;
-        }
+			return id;
+		}
 
-        /// <inheritdoc/>
-        protected override float GetHeuristic(int start, int end)
-        {
-            Vector2 a = GetNode(start).Position;
-            Vector2 b = GetNode(end).Position;
+		/// <inheritdoc/>
+		protected override float GetHeuristic(int start, int end)
+		{
+			Vector2 a = GetNode(start).Position;
+			Vector2 b = GetNode(end).Position;
 
-            return Vector2.Distance(a, b);
-        }
-    }
+			return Vector2.Distance(a, b);
+		}
+	}
 }

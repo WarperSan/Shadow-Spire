@@ -3,49 +3,49 @@ using UnityEngine;
 
 namespace UI.Abstract
 {
-    public abstract class UIOptionData
-    {
-        public Action OnEnter;
-        public Action OnEscape;
-    }
+	public abstract class UIOptionData
+	{
+		public Action OnEnter;
+		public Action OnEscape;
+	}
 
-    public abstract class UIOption<T> : MonoBehaviour where T : UIOptionData
-    {
-        #region Parent
+	public abstract class UIOption<T> : MonoBehaviour where T : UIOptionData
+	{
+		#region Parent
 
-        protected UIOptions parent;
+		protected UIOptions parent;
 
-        public void SetParent(UIOptions parent) => this.parent = parent;
+		public void SetParent(UIOptions parent) => this.parent = parent;
 
-        #endregion
+		#endregion
 
-        #region Load
+		#region Load
 
-        protected T loadedOption;
-        public T GetOption() => loadedOption;
+		protected T loadedOption;
+		public T GetOption() => loadedOption;
 
-        public void LoadOption(T option)
-        {
-            loadedOption = option;
-            OnLoadOption(option);
-        }
+		public void LoadOption(T option)
+		{
+			loadedOption = option;
+			OnLoadOption(option);
+		}
 
-        protected virtual void OnLoadOption(T option) { }
+		protected virtual void OnLoadOption(T option) { }
 
-        #endregion
+		#endregion
 
-        #region Selection
+		#region Selection
 
-        public abstract void Select();
-        public abstract void Deselect();
+		public abstract void Select();
+		public abstract void Deselect();
 
-        #endregion
+		#endregion
 
-        #region Input
+		#region Input
 
-        public void Enter() => loadedOption.OnEnter?.Invoke();
-        public void Escape() => loadedOption.OnEscape?.Invoke();
+		public void Enter()  => loadedOption.OnEnter?.Invoke();
+		public void Escape() => loadedOption.OnEscape?.Invoke();
 
-        #endregion
-    }
+		#endregion
+	}
 }

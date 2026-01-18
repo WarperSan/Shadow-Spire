@@ -2,26 +2,27 @@ using UnityEngine;
 
 namespace Battle.Utils
 {
-    public class TimeToLive : MonoBehaviour
-    {
-        [SerializeField] float lifetime = 10.0f;
-        float initTime;
+	public class TimeToLive : MonoBehaviour
+	{
+		[SerializeField]
+		private float lifetime = 10.0f;
 
-        private void OnEnable()
-        {
-            initTime = Time.time;
-        }
+		private float initTime;
 
-        private void OnDisable()
-        {
-            Destroy(gameObject);
-        }
+		private void OnEnable()
+		{
+			initTime = Time.time;
+		}
 
-        void Update()
-        {
-            if (Time.time > initTime + lifetime)
-                enabled = false;
-        }
-    }
+		private void OnDisable()
+		{
+			Destroy(gameObject);
+		}
 
+		private void Update()
+		{
+			if (Time.time > initTime + lifetime)
+				enabled = false;
+		}
+	}
 }

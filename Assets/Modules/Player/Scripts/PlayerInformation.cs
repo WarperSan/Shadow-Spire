@@ -8,91 +8,91 @@ using Weapons.UI;
 
 namespace Player
 {
-    public class PlayerInformation : MonoBehaviour
-    {
-        private RectTransform rectTransform;
+	public class PlayerInformation : MonoBehaviour
+	{
+		private RectTransform rectTransform;
 
-        private void Awake()
-        {
-            rectTransform = GetComponent<RectTransform>();
-        }
+		private void Awake()
+		{
+			rectTransform = GetComponent<RectTransform>();
+		}
 
-        #region Weapon
+		#region Weapon
 
-        [Header("Weapon")]
-        [SerializeField]
-        private WeaponOption weaponOption;
+		[Header("Weapon")]
+		[SerializeField]
+		private WeaponOption weaponOption;
 
-        public void SetWeapon(WeaponInstance weapon) => weaponOption.LoadOption(new WeaponOptionData() { WeaponInstance = weapon });
+		public void SetWeapon(WeaponInstance weapon) => weaponOption.LoadOption(new WeaponOptionData { WeaponInstance = weapon });
 
-        #endregion
+		#endregion
 
-        #region Health
+		#region Health
 
-        [Header("Health")]
-        [SerializeField]
-        private HealthBar playerHealthBar;
+		[Header("Health")]
+		[SerializeField]
+		private HealthBar playerHealthBar;
 
-        public void SetHealth(uint health, uint maxHealth)
-        {
-            playerHealthBar.SetHealth(health, maxHealth);
+		public void SetHealth(uint health, uint maxHealth)
+		{
+			playerHealthBar.SetHealth(health, maxHealth);
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-        }
+			LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+		}
 
-        public void HitHealth(uint amount)
-        {
-            playerHealthBar.TakeDamage(amount);
-        }
+		public void HitHealth(uint amount)
+		{
+			playerHealthBar.TakeDamage(amount);
+		}
 
-        #endregion
+		#endregion
 
-        #region Potion
+		#region Potion
 
-        [Header("Potion")]
-        [SerializeField]
-        private TextMeshProUGUI potionCountText;
+		[Header("Potion")]
+		[SerializeField]
+		private TextMeshProUGUI potionCountText;
 
-        public void SetPotionCount(int count) => potionCountText.text = string.Format("x{0}", count);
+		public void SetPotionCount(int count) => potionCountText.text = string.Format("x{0}", count);
 
-        #endregion
+		#endregion
 
-        #region Group
+		#region Group
 
-        [Header("Group")]
-        [SerializeField]
-        private HorizontalLayoutGroup groupUI;
+		[Header("Group")]
+		[SerializeField]
+		private HorizontalLayoutGroup groupUI;
 
-        public IEnumerator OpenGroup(float time)
-        {
-            const int TICKS = 16;
-            const float SPACING = 225;
+		public IEnumerator OpenGroup(float time)
+		{
+			const int TICKS = 16;
+			const float SPACING = 225;
 
-            for (int i = 1; i <= TICKS; i++)
-            {
-                groupUI.spacing = SPACING / TICKS * i;
-                yield return new WaitForSeconds(time / TICKS);
-            }
+			for (int i = 1; i <= TICKS; i++)
+			{
+				groupUI.spacing = SPACING / TICKS * i;
+				yield return new WaitForSeconds(time / TICKS);
+			}
 
-            groupUI.spacing = SPACING;
-        }
+			groupUI.spacing = SPACING;
+		}
 
-        public IEnumerator CloseGroup(float time)
-        {
-            const int TICKS = 16;
-            const float SPACING = 0;
+		public IEnumerator CloseGroup(float time)
+		{
+			const int TICKS = 16;
+			const float SPACING = 0;
 
-            float startSpacing = groupUI.spacing;
+			float startSpacing = groupUI.spacing;
 
-            for (int i = 1; i <= TICKS; i++)
-            {
-                groupUI.spacing = startSpacing - startSpacing / TICKS * i;
-                yield return new WaitForSeconds(time / TICKS);
-            }
+			for (int i = 1; i <= TICKS; i++)
+			{
+				groupUI.spacing = startSpacing - startSpacing / TICKS * i;
+				yield return new WaitForSeconds(time / TICKS);
+			}
 
-            groupUI.spacing = SPACING;
-        }
+			groupUI.spacing = SPACING;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

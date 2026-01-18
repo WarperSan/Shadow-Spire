@@ -4,31 +4,31 @@ using Utils;
 
 namespace Enemies.UI
 {
-    /// <summary>
-    /// Menu used for the enemy selection
-    /// </summary>
-    public class EnemyOptions : UIOptions<EnemyOption, EnemyOptionData>
-    {
-        /// <inheritdoc/>
-        protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(Rect);
-        
-        /// <inheritdoc/>
-        protected override void OnMoveSelected(Vector2 dir)
-        {
-            int startIndex = selectedIndex;
+	/// <summary>
+	/// Menu used for the enemy selection
+	/// </summary>
+	public class EnemyOptions : UIOptions<EnemyOption, EnemyOptionData>
+	{
+		/// <inheritdoc/>
+		protected override void AlignOptions(Transform[] elements) => elements.AlignHorizontally(Rect);
 
-            do
-            {
-                base.OnMoveSelected(dir); // Move once
+		/// <inheritdoc/>
+		protected override void OnMoveSelected(Vector2 dir)
+		{
+			int startIndex = selectedIndex;
 
-                EnemyOptionData data = loadedOptions[selectedIndex].GetOption();
+			do
+			{
+				base.OnMoveSelected(dir); // Move once
 
-                // Check if selected is alive
-                if (!data.Entity.IsDead)
-                    break;
-            } while (selectedIndex != startIndex);
-        }
+				EnemyOptionData data = loadedOptions[selectedIndex].GetOption();
 
-        public void FindNextValid(Vector2 dir) => OnMoveSelected(dir);
-    }
+				// Check if selected is alive
+				if (!data.Entity.IsDead)
+					break;
+			} while (selectedIndex != startIndex);
+		}
+
+		public void FindNextValid(Vector2 dir) => OnMoveSelected(dir);
+	}
 }
