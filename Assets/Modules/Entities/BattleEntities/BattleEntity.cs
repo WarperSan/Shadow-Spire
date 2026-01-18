@@ -2,21 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Weapons;
+using Type = Enemies.Type;
 
 namespace BattleEntity
 {
-	[Flags]
-	public enum Type
-	{
-		NONE = 0,
-		NORMAL = 1 << 1,
-		UNDEAD = 1 << 2,
-		GHOST = 1 << 3,
-		GIANT = 1 << 4,
-		ANIMAL = 1 << 5,
-		AIR = 1 << 6
-	}
-
+	/// <summary>
+	/// Class that represent an entity in the battle simulation
+	/// </summary>
 	public abstract class BattleEntity
 	{
 		public int Attack { get; protected set; }
@@ -82,7 +74,7 @@ namespace BattleEntity
 		// x1   = NORMAL
 		// x2   = EFFECTIVE
 
-		private static float[,] TYPE_CHART =
+		private static readonly float[,] TypeChart =
 		{
 			// ATK \ DEF   NONE NORMAL UNDEAD GHOST GIANT ANIMAL AIR
 			/* NONE */ { 1f, 1f, 1f, 1f, 1f, 1f, 1f },
@@ -99,7 +91,7 @@ namespace BattleEntity
 			// Find index of attack type
 			int[] attackIndexes = GetTypeIndexes(attackType);
 
-			// Find index of defence type
+			// Find index of defense type
 			int[] defenceIndexes = GetTypeIndexes(Type);
 
 			// Get multiplier
@@ -108,7 +100,7 @@ namespace BattleEntity
 			foreach (int attackIndex in attackIndexes)
 			{
 				foreach (int defenceIndex in defenceIndexes)
-					percent *= TYPE_CHART[attackIndex, defenceIndex];
+					percent *= TypeChart[attackIndex, defenceIndex];
 			}
 
 			// Limit between 50% and 500%

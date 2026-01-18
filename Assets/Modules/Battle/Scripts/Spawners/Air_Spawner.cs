@@ -1,12 +1,12 @@
 using System.Collections;
 using Battle.Projectiles;
-using BattleEntity;
+using Enemies;
 using Player;
 using UnityEngine;
 
 namespace Battle.Spawners
 {
-	public class Air_Spawner : Spawner
+	public class AirSpawner : Spawner
 	{
 		#region Fields
 
@@ -24,9 +24,9 @@ namespace Battle.Spawners
 
 		#region Data
 
-		private Vector2 pushingDirection;
-		private float pushingForce;
-		private float spawnDelay;
+		private Vector2 _pushingDirection;
+		private float _pushingForce;
+		private float _spawnDelay;
 
 		#endregion
 
@@ -37,7 +37,7 @@ namespace Battle.Spawners
 		private const float SPAWN_Y = 3.5f;
 
 		/// <inheritdoc/>
-		public override Type HandledType => Type.AIR;
+		public override Type HandledType => Type.Air;
 
 		/// <inheritdoc/>
 		public override void Clean()
@@ -45,10 +45,10 @@ namespace Battle.Spawners
 			foreach (Transform item in projectileParent)
 				Destroy(item.gameObject);
 
-			player.pushingDirection -= pushingDirection;
-			pushingDirection = Vector2.zero;
-			pushingForce = 0;
-			spawnDelay = 0;
+			player.pushingDirection -= _pushingDirection;
+			_pushingDirection = Vector2.zero;
+			_pushingForce = 0;
+			_spawnDelay = 0;
 		}
 
 		/// <inheritdoc/>
@@ -57,20 +57,20 @@ namespace Battle.Spawners
 			strength = 3;
 
 			float angle = Random.Range(-10 * strength, 10 * strength) - 90;
-			pushingForce = Random.Range(0.01f, 0.2f) * strength;
+			_pushingForce = Random.Range(0.01f, 0.2f) * strength;
 
-			pushingDirection = new Vector2(
+			_pushingDirection = new Vector2(
 				Mathf.Cos(angle * Mathf.Deg2Rad),
 				Mathf.Sign(angle * Mathf.Deg2Rad)
-			) * pushingForce;
+			) * _pushingForce;
 
-			spawnDelay = 3.5f / strength;
+			_spawnDelay = 3.5f / strength;
 		}
 
 		/// <inheritdoc/>
 		public override IEnumerator StartSpawn(float duration)
 		{
-			player.pushingDirection += pushingDirection;
+			player.pushingDirection += _pushingDirection;
 
 			yield return null;
 
@@ -86,12 +86,12 @@ namespace Battle.Spawners
 				if (newProjectile.TryGetComponent(out LeafProjectile projectile))
 				{
 					projectile.SetEnemy(HandledType);
-					projectile.push = pushingDirection;
+					projectile.push = _pushingDirection;
 				}
 
-				yield return new WaitForSeconds(spawnDelay);
+				yield return new WaitForSeconds(_spawnDelay);
 
-				duration -= spawnDelay;
+				duration -= _spawnDelay;
 			}
 		}
 

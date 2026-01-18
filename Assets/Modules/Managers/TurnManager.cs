@@ -12,27 +12,27 @@ namespace Managers
 	{
 		#region Entities
 
-		private readonly List<GridEntity> turnEntities = new();
-		private readonly List<GridEntity> foundEntities = new();
+		private readonly List<GridEntity> _turnEntities = new();
+		private readonly List<GridEntity> _foundEntities = new();
 
 		public void AddEntity(GridEntity entity)
 		{
-			foundEntities.Add(entity);
+			_foundEntities.Add(entity);
 
 			if (entity is not ITurnable)
 				return;
 
-			turnEntities.Add(entity);
+			_turnEntities.Add(entity);
 		}
 
 		public void RemoveEntity(GridEntity entity)
 		{
-			foundEntities.Remove(entity);
+			_foundEntities.Remove(entity);
 
 			if (entity is not ITurnable)
 				return;
 
-			turnEntities.Remove(entity);
+			_turnEntities.Remove(entity);
 		}
 
 		#endregion
@@ -41,16 +41,16 @@ namespace Managers
 
 		private IEnumerator ProcessTurn()
 		{
-			bool _continue = true;
+			bool @continue = true;
 
-			while (_continue)
+			while (@continue)
 			{
-				foreach (GridEntity entity in turnEntities)
+				foreach (GridEntity entity in _turnEntities)
 				{
 					// If player is in battle or if the level is over, skip turn
-					if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.IsPlayerDead)
+					if (GameManager.Instance.IsInBattle || GameManager.Instance.IsLevelOver || GameManager.Instance.isPlayerDead)
 					{
-						_continue = false;
+						@continue = false;
 						break;
 					}
 
@@ -61,7 +61,7 @@ namespace Managers
 					yield return entity.ExecuteTurn();
 
 					// Check for event
-					foreach (GridEntity item in foundEntities)
+					foreach (GridEntity item in _foundEntities)
 					{
 						// If entity doesnt exist, skip
 						if (item == null)
@@ -84,7 +84,7 @@ namespace Managers
 				}
 			}
 
-			if (GameManager.Instance.IsPlayerDead)
+			if (GameManager.Instance.isPlayerDead)
 				GameManager.Instance.Defeat();
 		}
 
@@ -99,8 +99,8 @@ namespace Managers
 		{
 			PlayerEntity player = level.Player;
 
-			foundEntities.Clear();
-			turnEntities.Clear();
+			_foundEntities.Clear();
+			_turnEntities.Clear();
 
 			AddEntity(player); // Make the player the first entity
 

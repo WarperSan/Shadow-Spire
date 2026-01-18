@@ -11,7 +11,7 @@ namespace PathFinding.Graphs
 		}
 
 		private int _nextNodeId;
-		private int[,] _ids;
+		private readonly int[,] _ids;
 
 		public int GetID(int x, int y) => _ids[y, x];
 
@@ -23,7 +23,7 @@ namespace PathFinding.Graphs
 		{
 			int id = _nextNodeId;
 
-			_nodes.Add(id, new Node2D(id, position));
+			Nodes.Add(id, new Node2D(id, position));
 
 			_nextNodeId++;
 

@@ -1,12 +1,12 @@
 using System.Collections;
 using Battle.Projectiles;
-using BattleEntity;
+using Enemies;
 using UnityEngine;
 using Utils;
 
 namespace Battle.Spawners
 {
-	public class Normal_Spawner : Spawner
+	public class NormalSpawner : Spawner
 	{
 		#region Fields
 
@@ -31,7 +31,7 @@ namespace Battle.Spawners
 		private const float ON_WALL = 2.5f;
 
 		/// <inheritdoc/>
-		public override Type HandledType => Type.NORMAL;
+		public override Type HandledType => Type.Normal;
 
 		/// <inheritdoc/>
 		public override void Clean()

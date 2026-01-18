@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Battle.Projectiles
 {
@@ -6,54 +7,56 @@ namespace Battle.Projectiles
 	{
 		#region Renderer
 
+		[FormerlySerializedAs("_barrel")]
 		[Header("Renderer")]
 		[SerializeField]
-		private SpriteRenderer _barrel;
+		private SpriteRenderer barrel;
 
+		[FormerlySerializedAs("_chain")]
 		[SerializeField]
-		private SpriteRenderer _chain;
+		private SpriteRenderer chain;
 
 		/// <inheritdoc/>
 		protected override void SetColor(Color color)
 		{
-			_barrel.color = color;
+			barrel.color = color;
 
 			Color chainColor = color;
 			chainColor.a = 0.25f;
-			_chain.color = chainColor;
+			chain.color = chainColor;
 		}
 
 		#endregion
 
-		private float nextX;
-		private float nextY;
-		private Vector2 direction;
+		private float _nextX;
+		private float _nextY;
+		private Vector2 _direction;
 
 		private void Update()
 		{
 			Vector3 pos = transform.localPosition;
 
 			// Move Y
-			if (direction.y != 0)
+			if (_direction.y != 0)
 			{
-				pos.y += 6 * Time.deltaTime * direction.y;
+				pos.y += 6 * Time.deltaTime * _direction.y;
 
-				if (direction.y == -1 && pos.y <= nextY || direction.y == 1 && pos.y >= nextY)
+				if (_direction.y == -1 && pos.y <= _nextY || _direction.y == 1 && pos.y >= _nextY)
 				{
-					pos.y = nextY;
-					direction.y = 0;
+					pos.y = _nextY;
+					_direction.y = 0;
 				}
 			}
 
 			// Move X
-			if (direction.x != 0)
+			if (_direction.x != 0)
 			{
-				pos.x += 3 * Time.deltaTime * direction.x;
+				pos.x += 3 * Time.deltaTime * _direction.x;
 
-				if (direction.x == -1 && pos.x <= nextX || direction.x == 1 && pos.x >= nextX)
+				if (_direction.x == -1 && pos.x <= _nextX || _direction.x == 1 && pos.x >= _nextX)
 				{
-					pos.x = nextX;
-					direction.x = 0;
+					pos.x = _nextX;
+					_direction.x = 0;
 				}
 			}
 
@@ -64,12 +67,12 @@ namespace Battle.Projectiles
 
 		public void NewPosition(Vector2 position)
 		{
-			nextX = position.x;
-			nextY = position.y;
+			_nextX = position.x;
+			_nextY = position.y;
 
-			direction = new Vector2(
-				transform.localPosition.x == nextX ? 0 : Mathf.Sign(nextX - transform.localPosition.x),
-				transform.localPosition.y == nextY ? 0 : Mathf.Sign(nextY - transform.localPosition.y)
+			_direction = new Vector2(
+				transform.localPosition.x == _nextX ? 0 : Mathf.Sign(_nextX - transform.localPosition.x),
+				transform.localPosition.y == _nextY ? 0 : Mathf.Sign(_nextY - transform.localPosition.y)
 			);
 		}
 	}

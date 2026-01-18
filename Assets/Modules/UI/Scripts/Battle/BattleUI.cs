@@ -42,7 +42,7 @@ namespace UI.Battle
 		public void Escape<T>() where T : UIOptionData                                => GetOptions<T>()?.Escape();
 		public void ShowSelection<T>() where T : UIOptionData                         => GetOptions<T>()?.ShowSelection();
 		public void HideSelection<T>() where T : UIOptionData                         => GetOptions<T>()?.HideSelection();
-		public U    GetSelection<T, U>() where T : UIOptionData where U : UIOption<T> => GetOptions<T>()?.GetSelection<T, U>();
+		public TU    GetSelection<T, TU>() where T : UIOptionData where TU : UIOption<T> => GetOptions<T>()?.GetSelection<T, TU>();
 
 		#endregion
 

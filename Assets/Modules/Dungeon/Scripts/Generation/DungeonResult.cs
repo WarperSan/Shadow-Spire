@@ -8,38 +8,41 @@ namespace Dungeon.Generation
 	[Flags]
 	public enum Tile
 	{
-		NONE = 0,
-		GROUND = 1 << 1,
-		COVERED_GROUND = 1 << 2,
+		None = 0,
+		Ground = 1 << 1,
+		CoveredGround = 1 << 2,
 
 		// 1 << 3
-		// 1 << 4
-		WALL = 1 << 5,
+		// 1 << 4
+		Wall = 1 << 5,
 
 		// 1 << 6
 		// 1 << 7
 		// 1 << 8
-		DOOR_CLOSED = 1 << 9,
-		DOOR_OPENED = 1 << 10,
+		DoorClosed = 1 << 9,
+		DoorOpened = 1 << 10,
 
 		// 1 << 11
 		// 1 << 12
-		ENTRANCE = 1 << 13,
-		EXIT = 1 << 14,
+		Entrance = 1 << 13,
+		Exit = 1 << 14,
 
 		// 1 << 15
 		// 1 << 16
-		PLAYER = 1 << 17,
-		ENEMY = 1 << 18,
+		Player = 1 << 17,
+		Enemy = 1 << 18,
 
 		// 1 << 19
 		// 1 << 20
 		// 1 << 21
 		// 1 << 22
-		TREASURE = 1 << 23,
-		SPIKES = 1 << 24
+		Treasure = 1 << 23,
+		Spikes = 1 << 24
 	}
 
+	/// <summary>
+	/// Result of the dungeon generation
+	/// </summary>
 	public class DungeonResult
 	{
 		#region Rooms

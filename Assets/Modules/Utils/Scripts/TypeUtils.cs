@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using Type = BattleEntity.Type;
+using Type = Enemies.Type;
 
 namespace Utils
 {
@@ -25,7 +25,7 @@ namespace Utils
 			}
 
 			if (indexes.Count == 0)
-				indexes.Add(Type.NONE);
+				indexes.Add(Type.None);
 
 			return indexes.ToArray();
 		}
@@ -63,13 +63,13 @@ namespace Utils
 		{
 			string color = type.GetTypes()[0] switch
 			{
-				Type.NONE   => "#D3D3D3",
-				Type.NORMAL => "#B9E5EB",
-				Type.UNDEAD => "#6BD36B",
-				Type.GHOST  => "#AA74FF",
-				Type.GIANT  => "#FF5E47",
-				Type.ANIMAL => "#FF8B00",
-				Type.AIR    => "#00FFD1",
+				Type.None   => "#D3D3D3",
+				Type.Normal => "#B9E5EB",
+				Type.Undead => "#6BD36B",
+				Type.Ghost  => "#AA74FF",
+				Type.Giant  => "#FF5E47",
+				Type.Animal => "#FF8B00",
+				Type.Air    => "#00FFD1",
 				_           => "white"
 			};
 

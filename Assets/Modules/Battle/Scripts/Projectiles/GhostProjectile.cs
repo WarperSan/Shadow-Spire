@@ -1,41 +1,46 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Battle.Projectiles
 {
 	public class GhostProjectile : Projectile
 	{
+		[FormerlySerializedAs("_collider")]
 		[SerializeField]
-		private Collider2D _collider;
+		private Collider2D collider;
 
-		public float Speed = 0.75f;
-		public float Cooldown = 1.5f;
-		public Transform Player;
+		[FormerlySerializedAs("Speed")]
+		public float speed = 0.75f;
+		[FormerlySerializedAs("Cooldown")]
+		public float cooldown = 1.5f;
+		[FormerlySerializedAs("Player")]
+		public Transform player;
 
 		#region Behaviour
 
 		private float _cooldown;
-		private bool onCooldown;
+		private bool _onCooldown;
 
 		private void GoOnCooldown()
 		{
-			Color color = _color;
+			Color color = Color;
 			color.a = 0.25f;
 			SetColor(color);
 
-			onCooldown = true;
-			_cooldown = Cooldown;
-			_collider.enabled = false;
+			_onCooldown = true;
+			_cooldown = cooldown;
+			collider.enabled = false;
 		}
 
 		private void RecoverFromCooldown()
 		{
-			Color color = _color;
+			Color color = Color;
 			color.a = 1f;
 			SetColor(color);
 
 			_cooldown = 0f;
-			onCooldown = false;
-			_collider.enabled = true;
+			_onCooldown = false;
+			collider.enabled = true;
 		}
 
 		#endregion
@@ -47,7 +52,7 @@ namespace Battle.Projectiles
 
 		private void Update()
 		{
-			if (onCooldown)
+			if (_onCooldown)
 			{
 				_cooldown -= Time.deltaTime;
 
@@ -57,10 +62,10 @@ namespace Battle.Projectiles
 				RecoverFromCooldown();
 			}
 
-			transform.Translate(Speed * Time.deltaTime * (Player.position - transform.position).normalized);
+			transform.Translate(speed * Time.deltaTime * (player.position - transform.position).normalized);
 
-			foreach (SpriteRenderer item in _renderers)
-				item.flipX = Player.position.x > transform.position.x;
+			foreach (SpriteRenderer item in renderers)
+				item.flipX = player.position.x > transform.position.x;
 		}
 
 		#endregion

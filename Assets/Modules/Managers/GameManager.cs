@@ -4,6 +4,7 @@ using Enemies;
 using GridEntities.Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Utils;
 using Weapons;
 using Weapons.UI;
@@ -14,8 +15,8 @@ namespace Managers
 	{
 		private void Start()
 		{
-			WeaponInstance.WEAPONS = Resources.LoadAll<WeaponSO>("Weapons");
-			EnemyInstance.ENEMIES = Resources.LoadAll<EnemySO>("Enemies");
+			WeaponInstance.Weapons = Resources.LoadAll<WeaponSo>("Weapons");
+			EnemyInstance.Enemies = Resources.LoadAll<EnemySo>("Enemies");
 
 			StartLevel();
 		}
@@ -23,13 +24,14 @@ namespace Managers
 		#region Player
 
 		public PlayerEntity player;
-		public bool IsPlayerDead;
+		[FormerlySerializedAs("IsPlayerDead")]
+		public bool isPlayerDead;
 
 		public void Defeat() => StartCoroutine(DeathSequence(true));
 
 		private IEnumerator DeathSequence(bool fromOverworld)
 		{
-			yield return UIManager.DeathSequence(Level.Index + 1, fromOverworld);
+			yield return uiManager.DeathSequence(Level.Index + 1, fromOverworld);
 			yield return ReturnToTitle();
 		}
 
@@ -37,8 +39,9 @@ namespace Managers
 
 		#region UI
 
+		[FormerlySerializedAs("UIManager")]
 		[Header("UI")]
-		public UIManager UIManager;
+		public UIManager uiManager;
 
 		#endregion
 
@@ -97,9 +100,9 @@ namespace Managers
 
 		public IEnumerator StartLevelSequence()
 		{
-			UIManager.SetLevel(levelIndex);
+			uiManager.SetLevel(levelIndex);
 
-			yield return UIManager.FadeOutBlackout();
+			yield return uiManager.FadeOutBlackout();
 			yield return new WaitForSeconds(0.2f);
 
 			InputManager.Instance.SwitchToPlayer();
@@ -116,12 +119,12 @@ namespace Managers
 		{
 			yield return new WaitForSeconds(0.2f);
 
-			yield return UIManager.FadeInBlackout();
+			yield return uiManager.FadeInBlackout();
 
 			dungeonManager.ClearDungeon();
 			yield return null; // Wait 1 frame
 
-			yield return UIManager.ShowNextLevel(levelIndex, levelIndex + 1);
+			yield return uiManager.ShowNextLevel(levelIndex, levelIndex + 1);
 
 			levelIndex++;
 
@@ -167,13 +170,13 @@ namespace Managers
 
 		private IEnumerator StartBattleCoroutine(EnemyEntity enemyEntity, PlayerEntity playerEntity)
 		{
-			yield return UIManager.StartBattleTransition();
+			yield return uiManager.StartBattleTransition();
 			yield return battleManager.StartBattle(enemyEntity, playerEntity);
 		}
 
 		private IEnumerator EndBattleCoroutine(bool isVictory, EnemyEntity enemy)
 		{
-			yield return UIManager.FadeInBlackout(1, 0);
+			yield return uiManager.FadeInBlackout(1, 0);
 
 			AsyncOperation battle = SceneManager.UnloadSceneAsync("BattleScene");
 
@@ -191,7 +194,7 @@ namespace Managers
 
 			yield return new WaitForSeconds(1f);
 
-			yield return UIManager.FadeOutBlackout();
+			yield return uiManager.FadeOutBlackout();
 
 			turnManager.StartTurn();
 			InputManager.Instance.SwitchToPlayer();

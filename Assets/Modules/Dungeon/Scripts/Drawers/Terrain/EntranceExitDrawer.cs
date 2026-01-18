@@ -7,9 +7,12 @@ using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {
+	/// <summary>
+	/// Drawer that places the <see cref="EntranceEntity"/> and the <see cref="ExitEntity"/> in the dungeon
+	/// </summary>
 	public class EntranceExitDrawer : Drawer
 	{
-		private readonly PlayerEntity player;
+		private readonly PlayerEntity _player;
 
 		#region Drawer
 
@@ -20,9 +23,9 @@ namespace Dungeon.Drawers.Terrain
 			PlayerEntity   player
 		) : base(level)
 		{
-			this.entrance = entrance;
-			this.exit = exit;
-			this.player = player;
+			_entrance = entrance;
+			_exit = exit;
+			_player = player;
 		}
 
 		/// <inheritdoc/>
@@ -35,16 +38,16 @@ namespace Dungeon.Drawers.Terrain
 			{
 				for (int x = 0; x < width; x++)
 				{
-					if (Level.Has(x, y, Tile.ENTRANCE))
+					if (Level.Has(x, y, Tile.Entrance))
 						PlaceEntrance(x, y);
 
-					if (Level.Has(x, y, Tile.EXIT))
+					if (Level.Has(x, y, Tile.Exit))
 						PlaceExit(x, y);
 
-					if (Level.Has(x, y, Tile.PLAYER))
+					if (Level.Has(x, y, Tile.Player))
 					{
-						player.transform.position = new Vector3(x, -y, 0);
-						player.FlipByMovement(Level.Has(x + 1, y, Tile.ENTRANCE) ? Movement.LEFT : Movement.RIGHT);
+						_player.transform.position = new Vector3(x, -y, 0);
+						_player.FlipByMovement(Level.Has(x + 1, y, Tile.Entrance) ? Movement.Left : Movement.Right);
 					}
 				}
 			}
@@ -54,33 +57,33 @@ namespace Dungeon.Drawers.Terrain
 		public override void Process(Room[] rooms)
 		{
 			Vector2Int entrancePosition = ProcessEntrance(Level.Entrance);
-			Level.Add(entrancePosition.x, entrancePosition.y, Tile.ENTRANCE);
+			Level.Add(entrancePosition.x, entrancePosition.y, Tile.Entrance);
 
 			bool isLeft = Level.HasWall(entrancePosition.x + 1, entrancePosition.y);
-			Level.Add(entrancePosition.x + (isLeft ? -1 : 1), entrancePosition.y, Tile.PLAYER);
+			Level.Add(entrancePosition.x + (isLeft ? -1 : 1), entrancePosition.y, Tile.Player);
 
 			Vector2Int exitPosition = ProcessExit(Level.Exit);
-			Level.Add(exitPosition.x, exitPosition.y, Tile.EXIT);
+			Level.Add(exitPosition.x, exitPosition.y, Tile.Exit);
 		}
 
 		/// <inheritdoc/>
 		public override void Clear()
 		{
-			entrance.transform.position = Vector3.zero;
-			exit.transform.position = Vector3.zero;
-			player.transform.position = Vector3.zero;
+			_entrance.transform.position = Vector3.zero;
+			_exit.transform.position = Vector3.zero;
+			_player.transform.position = Vector3.zero;
 		}
 
 		#endregion
 
 		#region Entrance
 
-		private readonly EntranceEntity entrance;
+		private readonly EntranceEntity _entrance;
 
 		private void PlaceEntrance(int x, int y)
 		{
-			entrance.transform.position = new Vector3(x, -y, 0);
-			entrance.FlipByMovement(Level.Has(x + 1, y, Tile.PLAYER) ? Movement.RIGHT : Movement.LEFT);
+			_entrance.transform.position = new Vector3(x, -y, 0);
+			_entrance.FlipByMovement(Level.Has(x + 1, y, Tile.Player) ? Movement.Right : Movement.Left);
 		}
 
 		private Vector2Int ProcessEntrance(Room entrance)
@@ -146,11 +149,11 @@ namespace Dungeon.Drawers.Terrain
 				return false;
 
 			// If there is an exit directly to the right, invalid
-			if (!Level.HasWall(x + 1, y) && Level.Has(x + 2, y, Tile.EXIT))
+			if (!Level.HasWall(x + 1, y) && Level.Has(x + 2, y, Tile.Exit))
 				return false;
 
 			// If there is an exit directly to the left, invalid
-			if (!Level.HasWall(x - 1, y) && Level.Has(x - 2, y, Tile.EXIT))
+			if (!Level.HasWall(x - 1, y) && Level.Has(x - 2, y, Tile.Exit))
 				return false;
 
 			return true;
@@ -180,15 +183,15 @@ namespace Dungeon.Drawers.Terrain
 
 		#region Exit
 
-		private readonly ExitEntity exit;
+		private readonly ExitEntity _exit;
 
 		private void PlaceExit(int x, int y)
 		{
 			bool isLeft = Level.HasWall(x + 1, y);
-			Movement direction = isLeft ? Movement.LEFT : Movement.RIGHT;
+			Movement direction = isLeft ? Movement.Left : Movement.Right;
 
-			exit.transform.position = new Vector3(x, -y, 0);
-			exit.FlipByMovement(direction);
+			_exit.transform.position = new Vector3(x, -y, 0);
+			_exit.FlipByMovement(direction);
 		}
 
 		private Vector2Int ProcessExit(Room exit)
@@ -254,11 +257,11 @@ namespace Dungeon.Drawers.Terrain
 				return false;
 
 			// If there is an entrance directly to the right, invalid
-			if (!Level.HasWall(x + 1, y) && Level.Has(x + 2, y, Tile.ENTRANCE))
+			if (!Level.HasWall(x + 1, y) && Level.Has(x + 2, y, Tile.Entrance))
 				return false;
 
 			// If there is an entrance directly to the right, invalid
-			if (!Level.HasWall(x - 1, y) && Level.Has(x - 2, y, Tile.ENTRANCE))
+			if (!Level.HasWall(x - 1, y) && Level.Has(x - 2, y, Tile.Entrance))
 				return false;
 
 			return true;

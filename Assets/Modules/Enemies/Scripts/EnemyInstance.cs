@@ -1,23 +1,25 @@
-using BattleEntity;
 using Managers;
 using UnityEngine;
 
 namespace Enemies
 {
+	/// <summary>
+	/// Class used to represent an enemy instance
+	/// </summary>
 	public class EnemyInstance
 	{
-		public static EnemySO[] ENEMIES;
+		public static EnemySo[] Enemies;
 
 		#region Data
 
-		private EnemySO _data;
-		private int _level;
+		private readonly EnemySo _data;
+		private readonly int _level;
 
 		#endregion
 
 		#region Constructors
 
-		public EnemyInstance(EnemySO enemy, int level)
+		public EnemyInstance(EnemySo enemy, int level)
 		{
 			_data = enemy;
 			_level = level / 10;
@@ -27,7 +29,7 @@ namespace Enemies
 		{
 			System.Random random = GameManager.Instance.Level.Random;
 
-			EnemySO rdmEnemy = ENEMIES[random.Next(0, ENEMIES.Length)];
+			EnemySo rdmEnemy = Enemies[random.Next(0, Enemies.Length)];
 			EnemyInstance enemy = new(rdmEnemy, level);
 
 			return enemy;
@@ -37,20 +39,20 @@ namespace Enemies
 
 		#region Getters
 
-		public EnemySO GetRaw() => _data;
+		public EnemySo GetRaw() => _data;
 
 		public int GetHealth()
 		{
-			float health = _data.BaseHealth;
+			float health = _data.baseHealth;
 
-			health += _data.BaseHealth * 0.15f * _level;
+			health += _data.baseHealth * 0.15f * _level;
 			health = Mathf.Max(health, 0);
 
 			return Mathf.FloorToInt(health);
 		}
 
 		public int  GetAttack() => 5;
-		public Type GetTypes()  => _data.BaseType;
+		public Type GetTypes()  => _data.baseType;
 
 		#endregion
 	}

@@ -10,11 +10,11 @@ namespace Player
 {
 	public class PlayerInformation : MonoBehaviour
 	{
-		private RectTransform rectTransform;
+		private RectTransform _rectTransform;
 
 		private void Awake()
 		{
-			rectTransform = GetComponent<RectTransform>();
+			_rectTransform = GetComponent<RectTransform>();
 		}
 
 		#region Weapon
@@ -37,7 +37,7 @@ namespace Player
 		{
 			playerHealthBar.SetHealth(health, maxHealth);
 
-			LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+			LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransform);
 		}
 
 		public void HitHealth(uint amount)

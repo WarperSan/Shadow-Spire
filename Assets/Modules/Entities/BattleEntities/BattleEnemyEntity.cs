@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace BattleEntity
 {
+	/// <summary>
+	/// Battle entity that represents <see cref="EnemyInstance"/>
+	/// </summary>
 	public class BattleEnemyEntity : BattleEntity
 	{
 		public EnemyInstance   Enemy { get; private set; }

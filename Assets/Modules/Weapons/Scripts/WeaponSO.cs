@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Weapons
 {
@@ -6,19 +7,23 @@ namespace Weapons
 	/// Data of a weapon
 	/// </summary>
 	[CreateAssetMenu(fileName = "WeaponSO", menuName = "Weapon", order = 0)]
-	public class WeaponSO : ScriptableObject
+	public class WeaponSo : ScriptableObject
 	{
+		[FormerlySerializedAs("Icon")]
 		[Tooltip("Sprite used for the icon of this weapon")]
-		public Sprite Icon;
+		public Sprite icon;
 
+		[FormerlySerializedAs("BaseType")]
 		[Tooltip("Base type of this weapon")]
-		public BattleEntity.Type BaseType;
+		public Enemies.Type baseType;
 
+		[FormerlySerializedAs("BaseDamage")]
 		[Min(1)]
 		[Tooltip("Base damage of this weapon")]
-		public int BaseDamage;
+		public int baseDamage;
 
+		[FormerlySerializedAs("UnlockLevel")]
 		[Tooltip("At which level this weapon is unlockable")]
-		public int UnlockLevel;
+		public int unlockLevel;
 	}
 }

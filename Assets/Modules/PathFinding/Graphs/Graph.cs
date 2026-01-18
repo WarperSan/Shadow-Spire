@@ -11,11 +11,11 @@ namespace PathFinding.Graphs
 		/// <summary>
 		/// ID of the node (KEY) with the node itself (VALUE)
 		/// </summary>
-		protected readonly Dictionary<int, T> _nodes = new();
+		protected readonly Dictionary<int, T> Nodes = new();
 
 		public T GetNode(int id)
 		{
-			if (!_nodes.TryGetValue(id, out T node))
+			if (!Nodes.TryGetValue(id, out T node))
 				throw new ArgumentOutOfRangeException($"No node was found with the id '{id}'.");
 
 			return node;
@@ -44,7 +44,7 @@ namespace PathFinding.Graphs
 				throw new ArgumentException("Cannot link a node to itself.");
 
 			// If key doesn't exist, error
-			if (!_nodes.TryGetValue(from, out T node))
+			if (!Nodes.TryGetValue(from, out T node))
 				throw new ArgumentException("Cannot link to a node that doesn't exist.");
 
 			node.AddLink(to, cost);

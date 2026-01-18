@@ -58,10 +58,10 @@ namespace GridEntities.Abstract
 		public void FlipByMovement(Movement movement)
 		{
 			// If going right, flip
-			if (movement == Movement.RIGHT)
+			if (movement == Movement.Right)
 				spriteRenderer.flipX = true;
 			// If going left, unflip
-			else if (movement == Movement.LEFT)
+			else if (movement == Movement.Left)
 				spriteRenderer.flipX = false;
 		}
 

@@ -5,17 +5,20 @@ using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {
+	/// <summary>
+	/// Drawer that puts the walls tiles in the rooms
+	/// </summary>
 	public class WallDrawer : Drawer
 	{
-		private readonly Tilemap wallMap;
-		private readonly TileBase[] tiles;
+		private readonly Tilemap _wallMap;
+		private readonly TileBase[] _tiles;
 
 		#region Drawer
 
 		public WallDrawer(DungeonResult level, Tilemap wallMap, TileBase[] tiles) : base(level)
 		{
-			this.wallMap = wallMap;
-			this.tiles = tiles;
+			_wallMap = wallMap;
+			_tiles = tiles;
 		}
 
 		/// <inheritdoc/>
@@ -30,20 +33,20 @@ namespace Dungeon.Drawers.Terrain
 
 				// Bottom wall
 				for (int y = 0; y <= room.Height; y++)
-					Level.Set(room.X + room.Width, room.Y + y, Generation.Tile.WALL);
+					Level.Set(room.X + room.Width, room.Y + y, Generation.Tile.Wall);
 
 				// Right wall
 				for (int x = 0; x <= room.Width; x++)
-					Level.Set(room.X + x, room.Y + room.Height, Generation.Tile.WALL);
+					Level.Set(room.X + x, room.Y + room.Height, Generation.Tile.Wall);
 			}
 
 			// Left wall
 			for (int y = 0; y < Level.Height; y++)
-				Level.Set(0, y, Generation.Tile.WALL);
+				Level.Set(0, y, Generation.Tile.Wall);
 
 			// Up wall
 			for (int x = 0; x < Level.Width; x++)
-				Level.Set(x, 0, Generation.Tile.WALL);
+				Level.Set(x, 0, Generation.Tile.Wall);
 		}
 
 		/// <inheritdoc/>
@@ -71,13 +74,13 @@ namespace Dungeon.Drawers.Terrain
 					if (x < Level.Width - 1 && Level.HasWall(x + 1, y))
 						index += 0b0010; // RIGHT
 
-					wallMap.SetTile(new Vector3Int(x, -y, 0), tiles[index]);
+					_wallMap.SetTile(new Vector3Int(x, -y, 0), _tiles[index]);
 				}
 			}
 		}
 
 		/// <inheritdoc/>
-		public override void Clear() => wallMap.ClearAllTiles();
+		public override void Clear() => _wallMap.ClearAllTiles();
 
 		#endregion
 	}

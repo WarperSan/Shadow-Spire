@@ -8,7 +8,7 @@ namespace Player
 		[SerializeField]
 		private float movementSpeed;
 
-		private Vector2 direction;
+		private Vector2 _direction;
 
 		public Vector2 pushingDirection;
 		public BattleManager battleManager;
@@ -17,7 +17,7 @@ namespace Player
 
 		private void Update()
 		{
-			Vector3 movement = movementSpeed * Time.deltaTime * (direction + pushingDirection);
+			Vector3 movement = movementSpeed * Time.deltaTime * (_direction + pushingDirection);
 			Vector3 nextPosition = transform.localPosition + movement;
 
 			nextPosition.x = Mathf.Clamp(nextPosition.x, -2.5f, 2.5f);
@@ -38,12 +38,12 @@ namespace Player
 		public void ResetSelf()
 		{
 			transform.localPosition = Vector3.zero;
-			direction = Vector2.zero;
+			_direction = Vector2.zero;
 		}
 
 		#region Inputs
 
-		public void Move(Vector2 direction) => this.direction = direction;
+		public void Move(Vector2 direction) => _direction = direction;
 
 		#endregion
 	}

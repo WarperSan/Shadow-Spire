@@ -15,29 +15,29 @@ namespace GridEntities.Entities
 
 		private void Start()
 		{
-			InputManager.Instance.OnMovePlayer.AddListener(Move);
+			InputManager.Instance.onMovePlayer.AddListener(Move);
 		}
 
 		#region Inputs
 
-		private Movement? requestMove = null;
+		private Movement? _requestMove = null;
 
 		private void Move(Vector2 dir)
 		{
 			Movement movement;
 
 			if (dir.x > 0)
-				movement = Movement.RIGHT;
+				movement = Movement.Right;
 			else if (dir.x < 0)
-				movement = Movement.LEFT;
+				movement = Movement.Left;
 			else if (dir.y > 0)
-				movement = Movement.UP;
+				movement = Movement.Up;
 			else
-				movement = Movement.DOWN;
+				movement = Movement.Down;
 
 			// If can apply movement, register
 			if ((this as IMovable).CanMove(movement))
-				requestMove = movement;
+				_requestMove = movement;
 		}
 
 		#endregion
@@ -47,16 +47,16 @@ namespace GridEntities.Entities
 		/// <inheritdoc/>
 		public void OnTurnStarted()
 		{
-			requestMove = null; // Clear previous moves
+			_requestMove = null; // Clear previous moves
 		}
 
 		/// <inheritdoc/>
 		IEnumerator ITurnable.Think()
 		{
-			while (requestMove == null)
+			while (_requestMove == null)
 				yield return null;
 
-			yield return requestMove.Value;
+			yield return _requestMove.Value;
 		}
 
 		#endregion
@@ -80,7 +80,7 @@ namespace GridEntities.Entities
 		{
 			Health = Mathf.Min(Mathf.Max(health, 0), MaxHealth);
 			playerInformation.SetHealth((uint)Health, (uint)MaxHealth);
-			GameManager.Instance.IsPlayerDead = Health <= 0;
+			GameManager.Instance.isPlayerDead = Health <= 0;
 		}
 
 		public void TakeDamage(int damage)
@@ -97,15 +97,15 @@ namespace GridEntities.Entities
 
 		[Header("Weapon")]
 		[SerializeField]
-		private WeaponInstance weapon;
+		private WeaponInstance _weapon;
 
 		public WeaponInstance Weapon
 		{
-			get => weapon;
+			get => _weapon;
 			set
 			{
 				playerInformation.SetWeapon(value);
-				weapon = value;
+				_weapon = value;
 			}
 		}
 
@@ -131,12 +131,12 @@ namespace GridEntities.Entities
 
 		#region IDungeonReceive
 
-		private bool initialized = false;
+		private bool _initialized = false;
 
 		/// <inheritdoc/>
 		public void OnLevelStart(DungeonResult level)
 		{
-			if (!initialized)
+			if (!_initialized)
 			{
 				MaxHealth = 150;
 
@@ -144,7 +144,7 @@ namespace GridEntities.Entities
 				SetHealth(MaxHealth);
 				Weapon = WeaponInstance.CreateRandom(1);
 				SetPotionCount(0);
-				initialized = true;
+				_initialized = true;
 			}
 		}
 

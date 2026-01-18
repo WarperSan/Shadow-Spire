@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UI.Abstract;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI.Components
 {
@@ -11,9 +12,10 @@ namespace UI.Components
 
 		#pragma warning disable IDE0044 // Add readonly modifier
 
+		[FormerlySerializedAs("_text")]
 		[Header("Fields")]
 		[SerializeField]
-		private TMP_Text _text;
+		private TMP_Text text;
 
 		[SerializeField]
 		private Transform popupContainer;
@@ -26,7 +28,7 @@ namespace UI.Components
 
 		#pragma warning restore IDE0044 // Add readonly modifier
 
-		private string format;
+		private string _format;
 
 		#endregion
 
@@ -37,7 +39,7 @@ namespace UI.Components
 		{
 			base.OnAwake();
 
-			format = _text.text;
+			_format = text.text;
 		}
 
 		#endregion
@@ -47,7 +49,7 @@ namespace UI.Components
 		/// <inheritdoc/>
 		public override void SetHealth(uint health, uint maxHealth)
 		{
-			_text.text = string.Format(format, health, maxHealth);
+			text.text = string.Format(_format, health, maxHealth);
 		}
 
 		/// <inheritdoc/>
@@ -66,14 +68,14 @@ namespace UI.Components
 
 		#region Animations
 
-		private Coroutine blinkCoroutine;
+		private Coroutine _blinkCoroutine;
 
 		private void Blink(int count)
 		{
-			if (blinkCoroutine != null)
-				StopCoroutine(blinkCoroutine);
+			if (_blinkCoroutine != null)
+				StopCoroutine(_blinkCoroutine);
 
-			blinkCoroutine = StartCoroutine(BlinkCoroutine(count));
+			_blinkCoroutine = StartCoroutine(BlinkCoroutine(count));
 		}
 
 		private IEnumerator BlinkCoroutine(int count)
@@ -82,15 +84,15 @@ namespace UI.Components
 			{
 				yield return new WaitForSeconds(0.08f);
 
-				_text.enabled = false;
+				text.enabled = false;
 
 				yield return new WaitForSeconds(0.08f);
 
-				_text.enabled = true;
+				text.enabled = true;
 			}
 
 			// Clear coroutine
-			blinkCoroutine = null;
+			_blinkCoroutine = null;
 		}
 
 		private void Damage(uint amount)

@@ -25,19 +25,19 @@ namespace UI.TitleScreen
 		/// <inheritdoc/>
 		protected override void OnLoadOption(TitleScreenOptionData option)
 		{
-			optionTitle.text = loadedOption.Text;
+			optionTitle.text = LoadedOption.Text;
 		}
 
 		/// <inheritdoc/>
 		public override void Select()
 		{
-			optionTitle.text = string.Format("> {0} <", loadedOption.Text);
+			optionTitle.text = string.Format("> {0} <", LoadedOption.Text);
 		}
 
 		/// <inheritdoc/>
 		public override void Deselect()
 		{
-			optionTitle.text = loadedOption.Text;
+			optionTitle.text = LoadedOption.Text;
 		}
 
 		#endregion

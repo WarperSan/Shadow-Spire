@@ -10,11 +10,11 @@ namespace GridEntities.Interfaces
 	/// </summary>
 	public enum Movement
 	{
-		NONE = 0,
-		LEFT = 1,
-		RIGHT = 2,
-		UP = 3,
-		DOWN = 4
+		None = 0,
+		Left = 1,
+		Right = 2,
+		Up = 3,
+		Down = 4
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ namespace GridEntities.Interfaces
 
 			Transform transform = gridEntity.transform;
 
-			const float duration = MOVEMENT_DURATION_MS / 1000f;
+			const float DURATION = MOVEMENT_DURATION_MS / 1000f;
 
 			OnMoveStart(movement);
 
@@ -42,16 +42,16 @@ namespace GridEntities.Interfaces
 
 			// If there is an object at the next position
 			if (!CanMove(movement))
-				yield return new WaitForSeconds(duration);
+				yield return new WaitForSeconds(DURATION);
 			else
 			{
 				// Smoothly move in the desired direction taking the required time.
 				float elapsedTime = 0;
 
-				while (elapsedTime < duration)
+				while (elapsedTime < DURATION)
 				{
 					elapsedTime += Time.deltaTime;
-					float percent = elapsedTime / duration;
+					float percent = elapsedTime / DURATION;
 					transform.position = Vector2.Lerp(startPosition, endPosition, percent);
 					yield return null;
 				}
@@ -85,16 +85,16 @@ namespace GridEntities.Interfaces
 
 			switch (movement)
 			{
-				case Movement.LEFT:
+				case Movement.Left:
 					movePos = new Vector2Int(-1, 0);
 					break;
-				case Movement.RIGHT:
+				case Movement.Right:
 					movePos = new Vector2Int(1, 0);
 					break;
-				case Movement.UP:
+				case Movement.Up:
 					movePos = new Vector2Int(0, 1);
 					break;
-				case Movement.DOWN:
+				case Movement.Down:
 					movePos = new Vector2Int(0, -1);
 					break;
 				default:

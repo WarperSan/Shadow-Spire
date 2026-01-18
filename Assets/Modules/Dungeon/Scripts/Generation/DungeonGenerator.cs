@@ -6,43 +6,49 @@ using Random = System.Random;
 
 namespace Dungeon.Generation
 {
+	/// <summary>
+	/// Class that handles to generate the dungeon
+	/// </summary>
 	public class DungeonGenerator
 	{
-		private Random random;
-		private DungeonSettings settings;
+		private readonly Random _random;
+		private readonly DungeonSettings _settings;
 
 		private DungeonGenerator(Random random, DungeonSettings settings)
 		{
-			this.random = random;
-			this.settings = settings;
-			this.settings.MinimumRoomWidth++;  // Add right wall
-			this.settings.MinimumRoomHeight++; // Add down wall
+			_random = random;
+			_settings = settings;
+			_settings.MinimumRoomWidth++;  // Add right wall
+			_settings.MinimumRoomHeight++; // Add down wall
 		}
 
+		/// <summary>
+		/// Generates a dungeon based off the given settings
+		/// </summary>
 		public static DungeonResult Generate(Random random, DungeonSettings settings) => new DungeonGenerator(random, settings).Generate();
 
 		private DungeonResult Generate()
 		{
 			Room root = new()
 			{
-				Width = settings.Width,
-				Height = settings.Height
+				Width = _settings.Width,
+				Height = _settings.Height
 			};
 
 			// Slices the root into smaller rooms
 			SlicesRooms(root,
-				settings.SliceCount,
-				settings.MinimumRoomWidth,
-				settings.MinimumRoomHeight);
+				_settings.SliceCount,
+				_settings.MinimumRoomWidth,
+				_settings.MinimumRoomHeight);
 
 			// Compile all the rooms
 			Room[] rooms = CompileRooms(root);
 
 			Room entrance = EntranceExitDrawer.FindEntrance(rooms);
-			entrance.Type = RoomType.ENTRANCE;
+			entrance.Type = RoomType.Entrance;
 
 			Room exit = EntranceExitDrawer.FindExit(rooms, entrance);
-			exit.Type = RoomType.EXIT;
+			exit.Type = RoomType.Exit;
 
 			// Find adjacent rooms
 			Dictionary<Room, HashSet<Room>> adjacentRooms = FindAdjacentRooms(rooms);
@@ -58,13 +64,13 @@ namespace Dungeon.Generation
 			// Package results
 			return new DungeonResult
 			{
-				Index = settings.Index,
+				Index = _settings.Index,
 				Rooms = rooms,
 				AdjacentRooms = adjacentRooms,
 				Entrance = entrance,
 				Exit = exit,
-				Width = settings.Width,
-				Height = settings.Height
+				Width = _settings.Width,
+				Height = _settings.Height
 			};
 		}
 
@@ -90,7 +96,7 @@ namespace Dungeon.Generation
 				Room room = rooms.Dequeue();
 
 				// Split
-				bool sliced = room.Split(random, minRoomWidth, minRoomHeight);
+				bool sliced = room.Split(_random, minRoomWidth, minRoomHeight);
 
 				if (sliced)
 				{
@@ -115,7 +121,7 @@ namespace Dungeon.Generation
 			{
 				Room room = roomsToExplore.Pop();
 
-				// If has children, keep going
+				// If the room has children, keep going
 				if (room.Children != null)
 				{
 					foreach (Room item in room.Children)
@@ -205,9 +211,9 @@ namespace Dungeon.Generation
 				}
 
 				// Pick a random unexplored neighbor
-				Room nextRoom = neighbors[random.Next(0, neighbors.Count)];
+				Room nextRoom = neighbors[_random.Next(0, neighbors.Count)];
 
-				// Increase it's depth by 1
+				// Increase its depth by 1
 				nextRoom.Depth = currentRoom.Depth + 1;
 
 				// Add next room to the stack
@@ -231,29 +237,29 @@ namespace Dungeon.Generation
 			// Remove extra doors
 			foreach ((Room room, HashSet<Room> otherRooms) in adjacentRooms)
 			{
-				IEnumerator<Room> _rooms = otherRooms.GetEnumerator();
+				IEnumerator<Room> currentRooms = otherRooms.GetEnumerator();
 				List<Room> roomsToRemove = new();
 
-				while (_rooms.MoveNext())
+				while (currentRooms.MoveNext() && currentRooms.Current != null)
 				{
 					// If the difference is higher than 1
-					if (Mathf.Abs(room.Depth - _rooms.Current.Depth) > 1)
-						roomsToRemove.Add(_rooms.Current);
+					if (Mathf.Abs(room.Depth - currentRooms.Current.Depth) > 1)
+						roomsToRemove.Add(currentRooms.Current);
 				}
-				_rooms.Dispose();
+				currentRooms.Dispose();
 
 				foreach (Room item in roomsToRemove)
 					otherRooms.Remove(item);
 			}
 
 			// Create the door between the loops
-			if (settings.AddHighLoop)
+			if (_settings.AddHighLoop)
 			{
 				adjacentRooms[highLoop.Item1].Add(highLoop.Item2);
 				adjacentRooms[highLoop.Item2].Add(highLoop.Item1);
 			}
 
-			if (settings.AddLowLoop)
+			if (_settings.AddLowLoop)
 			{
 				adjacentRooms[lowLoop.Item1].Add(lowLoop.Item2);
 				adjacentRooms[lowLoop.Item2].Add(lowLoop.Item1);
@@ -302,7 +308,7 @@ namespace Dungeon.Generation
 
 		private void FindEnemyRooms(Room[] rooms)
 		{
-			if (settings.Index < ENEMY_ROOM_INDEX)
+			if (_settings.Index < ENEMY_ROOM_INDEX)
 				return;
 
 			List<Room> validRooms = new();
@@ -327,27 +333,25 @@ namespace Dungeon.Generation
 
 			for (int i = 0; i < count; i++)
 			{
-				int rdmIndex = random.Next(0, validRooms.Count);
+				int rdmIndex = _random.Next(0, validRooms.Count);
 				(validRooms[^1], validRooms[rdmIndex]) = (validRooms[rdmIndex], validRooms[^1]);
 			}
 
 			for (int i = 0; i < count; i++)
-				validRooms[^(count + 1)].Type = RoomType.ENEMY;
+				validRooms[^(count + 1)].Type = RoomType.Enemy;
 		}
 
 		private void FindTreasureRooms(Room[] rooms)
 		{
-			if (settings.Index < TREASURE_ROOM_INDEX)
+			if (_settings.Index < TREASURE_ROOM_INDEX)
 				return;
 
 			// Find deepest
 			Room deepest = null;
 
-			for (int i = 0; i < rooms.Length; i++)
+			foreach (Room room in rooms)
 			{
-				Room room = rooms[i];
-
-				if (room.Type != RoomType.NORMAL)
+				if (room.Type != RoomType.Normal)
 					continue;
 
 				if (deepest == null || room.Depth > deepest.Depth)
@@ -357,22 +361,20 @@ namespace Dungeon.Generation
 			if (deepest == null)
 				return;
 
-			deepest.Type = RoomType.TREASURE;
+			deepest.Type = RoomType.Treasure;
 		}
 
 		private void FindSpikesRooms(Room[] rooms)
 		{
-			if (settings.Index < SPIKES_ROOM_INDEX)
+			if (_settings.Index < SPIKES_ROOM_INDEX)
 				return;
 
 			// Find random
 			Room randomRoom = null;
 
-			for (int i = 0; i < rooms.Length; i++)
+			foreach (Room room in rooms)
 			{
-				Room room = rooms[i];
-
-				if (room.Type != RoomType.NORMAL)
+				if (room.Type != RoomType.Normal)
 					continue;
 
 				if (randomRoom == null)
@@ -382,14 +384,14 @@ namespace Dungeon.Generation
 				}
 
 				// 50% replace 50% keep
-				if (random.Next(0, 2) == 0)
+				if (_random.Next(0, 2) == 0)
 					randomRoom = room;
 			}
 
 			if (randomRoom == null)
 				return;
 
-			randomRoom.Type = RoomType.SPIKES;
+			randomRoom.Type = RoomType.Spikes;
 		}
 
 		#endregion

@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UI.Abstract;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace UI.Components
@@ -12,9 +13,10 @@ namespace UI.Components
 
 		#pragma warning disable IDE0044 // Add readonly modifier
 
+		[FormerlySerializedAs("_text")]
 		[Header("Fields")]
 		[SerializeField]
-		private TMP_Text _text;
+		private TMP_Text text;
 
 		[SerializeField]
 		private Vector3 startPos;
@@ -24,7 +26,7 @@ namespace UI.Components
 
 		#pragma warning restore IDE0044 // Add readonly modifier
 
-		private string format;
+		private string _format;
 
 		#endregion
 
@@ -34,7 +36,7 @@ namespace UI.Components
 		protected override void OnAwake()
 		{
 			base.OnAwake();
-			format = _text.text;
+			_format = text.text;
 		}
 
 		#endregion
@@ -44,7 +46,7 @@ namespace UI.Components
 		/// <inheritdoc/>
 		protected override void SetDamage(uint amount)
 		{
-			_text.text = string.Format(format, amount);
+			text.text = string.Format(_format, amount);
 		}
 
 		/// <inheritdoc/>
@@ -75,7 +77,7 @@ namespace UI.Components
 		private IEnumerator HealthPopup_Alpha()
 		{
 			yield return new WaitForSeconds(0.5f);
-			yield return _text.FadeOut(32, 10f / 60f / 32);
+			yield return text.FadeOut(32, 10f / 60f / 32);
 		}
 
 		#endregion

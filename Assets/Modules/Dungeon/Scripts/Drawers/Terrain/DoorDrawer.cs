@@ -7,11 +7,14 @@ using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {
+	/// <summary>
+	/// Drawer that replaces a wall tile with a door
+	/// </summary>
 	public class DoorDrawer : Drawer
 	{
-		private readonly Tilemap wallMap;
-		private readonly TileBase openedDoorTile;
-		private readonly TileBase closedDoorTile;
+		private readonly Tilemap _wallMap;
+		private readonly TileBase _openedDoorTile;
+		private readonly TileBase _closedDoorTile;
 
 		#region Drawer
 
@@ -22,9 +25,9 @@ namespace Dungeon.Drawers.Terrain
 			TileBase      closedDoorTile
 		) : base(level)
 		{
-			this.wallMap = wallMap;
-			this.openedDoorTile = openedDoorTile;
-			this.closedDoorTile = closedDoorTile;
+			_wallMap = wallMap;
+			_openedDoorTile = openedDoorTile;
+			_closedDoorTile = closedDoorTile;
 		}
 
 		/// <inheritdoc/>
@@ -40,8 +43,8 @@ namespace Dungeon.Drawers.Terrain
 					if (!Level.HasDoor(x, y))
 						continue;
 
-					wallMap.SetTile(new Vector3Int(x, -y, 0),
-						Level.Has(x, y, Generation.Tile.DOOR_OPENED) ? openedDoorTile : closedDoorTile);
+					_wallMap.SetTile(new Vector3Int(x, -y, 0),
+						Level.Has(x, y, Generation.Tile.DoorOpened) ? _openedDoorTile : _closedDoorTile);
 				}
 			}
 		}
@@ -66,7 +69,7 @@ namespace Dungeon.Drawers.Terrain
 
 					processedLinks.Add((room, adjacent));
 
-					bool isDoorClosed = false; //Mathf.Abs(room.Depth - adjacent.Depth) > 1;
+					bool isDoorClosed = Mathf.Abs(room.Depth - adjacent.Depth) > 1;
 					bool isVerticalWall = adjacent.X >= room.X + room.Width;
 
 					int min = isVerticalWall
@@ -97,13 +100,13 @@ namespace Dungeon.Drawers.Terrain
 					else
 						x = random.Next(min, max);
 
-					Level.Add(x, y, isDoorClosed ? Generation.Tile.DOOR_CLOSED : Generation.Tile.DOOR_OPENED);
+					Level.Add(x, y, isDoorClosed ? Generation.Tile.DoorClosed : Generation.Tile.DoorOpened);
 				}
 			}
 		}
 
 		/// <inheritdoc/>
-		public override void Clear() => wallMap.ClearAllTiles();
+		public override void Clear() => _wallMap.ClearAllTiles();
 
 		#endregion
 
@@ -117,14 +120,14 @@ namespace Dungeon.Drawers.Terrain
 				int maxY = Mathf.Min(room.Y + room.Height - 1, adjacent.Y + adjacent.Height - 1);
 
 				for (int y = minY; y <= maxY; y++)
-					Level.Remove(adjacent.X - 1, y, Generation.Tile.WALL);
+					Level.Remove(adjacent.X - 1, y, Generation.Tile.Wall);
 			} else
 			{
 				int minX = Mathf.Max(room.X, adjacent.X);
 				int maxX = Mathf.Min(room.X + room.Width - 1, adjacent.X + adjacent.Width - 1);
 
 				for (int x = minX; x <= maxX; x++)
-					Level.Remove(x, adjacent.Y - 1, Generation.Tile.WALL);
+					Level.Remove(x, adjacent.Y - 1, Generation.Tile.Wall);
 			}
 		}
 
@@ -132,9 +135,9 @@ namespace Dungeon.Drawers.Terrain
 		{
 			RoomType[] validTypes = new RoomType[]
 			{
-				RoomType.NORMAL,
-				RoomType.ENEMY,
-				RoomType.TREASURE
+				RoomType.Normal,
+				RoomType.Enemy,
+				RoomType.Treasure
 			};
 
 			return Array.IndexOf(validTypes, typeA) != -1 && Array.IndexOf(validTypes, typeB) != -1;

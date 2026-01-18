@@ -36,13 +36,13 @@ namespace UI.Battle
 		/// <inheritdoc/>
 		public override void Select()
 		{
-			text.text = string.Format("> {0} <", loadedOption.Text);
+			text.text = string.Format("> {0} <", LoadedOption.Text);
 		}
 
 		/// <inheritdoc/>
 		public override void Deselect()
 		{
-			text.text = loadedOption.Text;
+			text.text = LoadedOption.Text;
 		}
 
 		#endregion

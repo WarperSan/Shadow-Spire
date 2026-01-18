@@ -49,13 +49,13 @@ namespace Enemies.UI
 		/// <inheritdoc/>
 		public override void Select()
 		{
-			SetTargetted(true);
+			SetTarget(true);
 		}
 
 		/// <inheritdoc/>
 		public override void Deselect()
 		{
-			SetTargetted(false);
+			SetTarget(false);
 		}
 
 		#endregion
@@ -71,17 +71,17 @@ namespace Enemies.UI
 
 			SetHealth((uint)entity.Health, 0);
 
-			EnemySO enemy = entity.Enemy.GetRaw();
-			sprite.sprite = enemy.FightSprite;
+			EnemySo enemy = entity.Enemy.GetRaw();
+			sprite.sprite = enemy.fightSprite;
 
-			shadow.sprite = enemy.FightShadowSprite;
+			shadow.sprite = enemy.fightShadowSprite;
 			shadow.enabled = shadow.sprite != null;
 		}
 
 		private void OnHit(int damage)
 		{
 			SetDamage((uint)damage);
-			SetHealth((uint)loadedOption.Entity.Health, 0);
+			SetHealth((uint)LoadedOption.Entity.Health, 0);
 			animations.Hit();
 		}
 
@@ -91,7 +91,7 @@ namespace Enemies.UI
 			SetHealth(0, 0);
 			animations.Death();
 
-			(parent as EnemyOptions)?.FindNextValid(Vector2.right);
+			(Parent as EnemyOptions)?.FindNextValid(Vector2.right);
 		}
 
 		#endregion
@@ -133,7 +133,7 @@ namespace Enemies.UI
 			);
 		}
 
-		private void SetTargetted(bool isTarget)
+		private void SetTarget(bool isTarget)
 		{
 			if (isTarget)
 				animations.EnableTarget();
@@ -141,7 +141,7 @@ namespace Enemies.UI
 				animations.DisableTarget();
 		}
 
-		private string GetEffectivenessColor(float percent)
+		private static string GetEffectivenessColor(float percent)
 		{
 			if (percent >= 450)
 				return "#FF6CC6";
@@ -155,7 +155,7 @@ namespace Enemies.UI
 			if (percent > 100)
 				return "green";
 
-			if (percent == 100)
+			if (Mathf.Approximately(percent, 100))
 				return "white";
 
 			if (percent >= 75)

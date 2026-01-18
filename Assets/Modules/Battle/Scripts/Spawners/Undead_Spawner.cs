@@ -1,11 +1,11 @@
 using System.Collections;
 using Battle.Projectiles;
-using BattleEntity;
+using Enemies;
 using UnityEngine;
 
 namespace Battle.Spawners
 {
-	public class Undead_Spawner : Spawner
+	public class UndeadSpawner : Spawner
 	{
 		#region Fields
 
@@ -20,7 +20,7 @@ namespace Battle.Spawners
 
 		#region Data
 
-		private float spawnDelay = -1;
+		private float _spawnDelay = -1;
 
 		#endregion
 
@@ -31,7 +31,7 @@ namespace Battle.Spawners
 		private const float MAX_SPAWN_X = 2.25f;
 
 		/// <inheritdoc/>
-		public override Type HandledType => Type.UNDEAD;
+		public override Type HandledType => Type.Undead;
 
 		/// <inheritdoc/>
 		public override void Clean()
@@ -39,13 +39,13 @@ namespace Battle.Spawners
 			foreach (Transform item in projectileParent)
 				Destroy(item.gameObject);
 
-			spawnDelay = -1;
+			_spawnDelay = -1;
 		}
 
 		/// <inheritdoc/>
 		public override void Setup(int strength)
 		{
-			spawnDelay = Mathf.Max(1.2f / strength, 0.01f);
+			_spawnDelay = Mathf.Max(1.2f / strength, 0.01f);
 		}
 
 		/// <inheritdoc/>
@@ -67,12 +67,12 @@ namespace Battle.Spawners
 				if (newProjectile.TryGetComponent(out Projectile projectile))
 					projectile.SetEnemy(HandledType);
 
-				if (duration < spawnDelay)
+				if (duration < _spawnDelay)
 					break;
 
-				yield return new WaitForSeconds(spawnDelay);
+				yield return new WaitForSeconds(_spawnDelay);
 
-				duration -= spawnDelay;
+				duration -= _spawnDelay;
 			}
 		}
 

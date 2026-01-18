@@ -4,7 +4,6 @@ using BattleEntity;
 using Enemies;
 using Enemies.UI;
 using GridEntities.Entities;
-using SFX.Abstract;
 using UI.Battle;
 using UnityEngine;
 using Weapons;
@@ -13,27 +12,26 @@ namespace Managers
 {
 	public class BattleManager : MonoBehaviour
 	{
-		private EnemyEntity enemyEntity;
-		private BattleEnemyEntity[] battleEnemyEntities;
-		private BattlePlayerEntity battlePlayerEntity;
-		private PlayerEntity playerEntity;
+		private EnemyEntity _enemyEntity;
+		private BattleEnemyEntity[] _battleEnemyEntities;
+		private BattlePlayerEntity _battlePlayerEntity;
+		private PlayerEntity _playerEntity;
 
 		#region Battle State
 
-		private bool hasBattleEnded;
+		private bool _hasBattleEnded;
 
 		public IEnumerator StartBattle(EnemyEntity enemyEntity, PlayerEntity playerEntity)
 		{
-			hasBattleEnded = false;
+			_hasBattleEnded = false;
 
 			// Initialize entities
-			this.enemyEntity = enemyEntity;
-			this.playerEntity = playerEntity;
-			battlePlayerEntity = new BattlePlayerEntity(playerEntity);
+			_enemyEntity = enemyEntity;
+			_playerEntity = playerEntity;
+			_battlePlayerEntity = new BattlePlayerEntity(playerEntity);
 
 			// Find all elements
 			yield return FindBattleUI();
-			yield return FindBattleMusic();
 			yield return FindMinigameManager();
 
 			// Load options
@@ -41,8 +39,7 @@ namespace Managers
 			LoadEnemyOptions(playerEntity.Weapon, GenerateEnemies(enemyEntity));
 
 			// Disable spoiler
-			yield return battleUI.DisableSpoiler();
-			yield return battleMusic.FadeIn();
+			yield return _battleUI.DisableSpoiler();
 
 			// Wait for spawn animation
 			yield return new WaitForSeconds(1f);
@@ -53,7 +50,7 @@ namespace Managers
 
 		public void EndBattle(bool isVictory)
 		{
-			hasBattleEnded = true;
+			_hasBattleEnded = true;
 			StartCoroutine(EndBattleCoroutine(isVictory));
 		}
 
@@ -63,51 +60,35 @@ namespace Managers
 			DisableBattleOption();
 			DisableEnemyOption();
 
-			yield return battleMusic.FadeOut();
-			yield return battleUI.EnableSpoiler();
+			yield return _battleUI.EnableSpoiler();
 
-			GameManager.Instance.EndBattle(isVictory, enemyEntity);
+			GameManager.Instance.EndBattle(isVictory, _enemyEntity);
 		}
 
 		#endregion
 
 		#region Battle UI
 
-		private BattleUI battleUI;
+		private BattleUI _battleUI;
 
 		private IEnumerator FindBattleUI()
 		{
 			do
 			{
-				battleUI = FindAnyObjectByType<BattleUI>();
+				_battleUI = FindAnyObjectByType<BattleUI>();
 				yield return null;
-			} while (battleUI == null);
-		}
-
-		#endregion
-
-		#region Battle Music
-
-		private BaseMusicPlayer battleMusic;
-
-		private IEnumerator FindBattleMusic()
-		{
-			do
-			{
-				battleMusic = FindAnyObjectByType<BaseMusicPlayer>();
-				yield return null;
-			} while (false);
+			} while (_battleUI == null);
 		}
 
 		#endregion
 
 		#region Battle Options
 
-		private bool isSelectingBattleOption;
+		private bool _isSelectingBattleOption;
 
 		private void LoadBattleOptions()
 		{
-			battleUI.Load(new BattleOptionData[]
+			_battleUI.Load(new BattleOptionData[]
 			{
 				new()
 				{
@@ -119,7 +100,7 @@ namespace Managers
 				{
 					Text = "Heal",
 					OnEnter = () => StartCoroutine(OnHealPressed()),
-					IsValid = () => playerEntity.HasPotions()
+					IsValid = () => _playerEntity.HasPotions()
 				},
 				#if UNITY_EDITOR
 				// new()
@@ -144,7 +125,7 @@ namespace Managers
 
 		private IEnumerator OnHealPressed()
 		{
-			if (!playerEntity.HasPotions())
+			if (!_playerEntity.HasPotions())
 				yield break;
 
 			yield return HealPlayer(50);
@@ -157,14 +138,14 @@ namespace Managers
 
 		private void EnableBattleOption()
 		{
-			isSelectingBattleOption = true;
-			battleUI.ShowSelection<BattleOptionData>();
+			_isSelectingBattleOption = true;
+			_battleUI.ShowSelection<BattleOptionData>();
 		}
 
 		private void DisableBattleOption()
 		{
-			isSelectingBattleOption = false;
-			battleUI.HideSelection<BattleOptionData>();
+			_isSelectingBattleOption = false;
+			_battleUI.HideSelection<BattleOptionData>();
 		}
 
 		#endregion
@@ -173,17 +154,17 @@ namespace Managers
 
 		private IEnumerator HealPlayer(int amount)
 		{
-			playerEntity.ConsumePotion();
-			battlePlayerEntity.Heal(amount);
+			_playerEntity.ConsumePotion();
+			_battlePlayerEntity.Heal(amount);
 
 			yield return new WaitForSeconds(0.5f);
 		}
 
 		public void DamagePlayer(int amount)
 		{
-			battlePlayerEntity.TakeDamage(amount);
+			_battlePlayerEntity.TakeDamage(amount);
 
-			if (battlePlayerEntity.IsDead)
+			if (_battlePlayerEntity.IsDead)
 				EndBattle(false);
 		}
 
@@ -191,11 +172,11 @@ namespace Managers
 
 		#region Enemy Options
 
-		private bool isSelectingEnemyOption;
+		private bool _isSelectingEnemyOption;
 
 		private void LoadEnemyOptions(WeaponInstance weapon, params BattleEnemyEntity[] entities)
 		{
-			battleEnemyEntities = entities;
+			_battleEnemyEntities = entities;
 			EnemyOptionData[] options = new EnemyOptionData[entities.Length];
 
 			for (int i = 0; i < options.Length; i++)
@@ -209,7 +190,7 @@ namespace Managers
 				};
 			}
 
-			battleUI.Load(options);
+			_battleUI.Load(options);
 		}
 
 		private BattleEnemyEntity[] GenerateEnemies(EnemyEntity enemy)
@@ -235,7 +216,7 @@ namespace Managers
 			RemoveInputs();
 			DisableEnemyOption();
 
-			EnemyOption enemyOption = battleUI.GetSelection<EnemyOptionData, EnemyOption>();
+			EnemyOption enemyOption = _battleUI.GetSelection<EnemyOptionData, EnemyOption>();
 			EnemyOptionData enemy = enemyOption.GetOption();
 
 			enemy.Entity.TakeAttack(enemy.Weapon);
@@ -254,30 +235,30 @@ namespace Managers
 
 		private void OnEnemyEscape()
 		{
-			isSelectingEnemyOption = false;
-			battleUI.HideSelection<EnemyOptionData>();
+			_isSelectingEnemyOption = false;
+			_battleUI.HideSelection<EnemyOptionData>();
 
 			EnableBattleOption();
 		}
 
 		private void EnableEnemyOption()
 		{
-			isSelectingEnemyOption = true;
-			battleUI.ShowSelection<EnemyOptionData>();
+			_isSelectingEnemyOption = true;
+			_battleUI.ShowSelection<EnemyOptionData>();
 		}
 
 		private void DisableEnemyOption()
 		{
-			isSelectingEnemyOption = false;
-			battleUI.HideSelection<EnemyOptionData>();
+			_isSelectingEnemyOption = false;
+			_battleUI.HideSelection<EnemyOptionData>();
 		}
 
 		private bool VerifyEnemiesState()
 		{
-			for (int i = 0; i < battleEnemyEntities.Length; i++)
+			for (int i = 0; i < _battleEnemyEntities.Length; i++)
 			{
 				// If at least one enemy alive
-				if (!battleEnemyEntities[i].IsDead)
+				if (!_battleEnemyEntities[i].IsDead)
 					return true;
 			}
 
@@ -288,22 +269,22 @@ namespace Managers
 		private IEnumerator EnemyTurn()
 		{
 			// Set up
-			minigameManager.SetupProjectiles(battleEnemyEntities, battlePlayerEntity, this);
+			_minigameManager.SetupProjectiles(_battleEnemyEntities, _battlePlayerEntity, this);
 
 			// Disable Player BattleUI
-			yield return battleUI.StartEnemyTurn(playerEntity.playerInformation);
+			yield return _battleUI.StartEnemyTurn(_playerEntity.playerInformation);
 
 			// Execute enemy attacks
-			yield return minigameManager.SpawnProjectiles();
+			yield return _minigameManager.SpawnProjectiles();
 
-			if (hasBattleEnded)
+			if (_hasBattleEnded)
 				yield break;
 
 			// Enable Player BattleUI
-			yield return battleUI.EndEnemyTurn(playerEntity.playerInformation);
+			yield return _battleUI.EndEnemyTurn(_playerEntity.playerInformation);
 
 			// End attacks
-			minigameManager.CleanProjectiles();
+			_minigameManager.CleanProjectiles();
 
 			EnableBattleOption();
 			AddInputs();
@@ -313,15 +294,15 @@ namespace Managers
 
 		#region Minigame
 
-		private MinigameManager minigameManager;
+		private MinigameManager _minigameManager;
 
 		private IEnumerator FindMinigameManager()
 		{
 			do
 			{
-				minigameManager = FindAnyObjectByType<MinigameManager>(FindObjectsInactive.Include);
+				_minigameManager = FindAnyObjectByType<MinigameManager>(FindObjectsInactive.Include);
 				yield return null;
-			} while (minigameManager == null);
+			} while (_minigameManager == null);
 		}
 
 		#endregion
@@ -330,45 +311,45 @@ namespace Managers
 
 		private void Move(Vector2 dir)
 		{
-			if (isSelectingBattleOption)
+			if (_isSelectingBattleOption)
 			{
-				battleUI.Move<BattleOptionData>(dir);
+				_battleUI.Move<BattleOptionData>(dir);
 				return;
 			}
 
-			if (isSelectingEnemyOption)
+			if (_isSelectingEnemyOption)
 			{
-				battleUI.Move<EnemyOptionData>(dir);
+				_battleUI.Move<EnemyOptionData>(dir);
 				return;
 			}
 		}
 
 		private void Enter()
 		{
-			if (isSelectingBattleOption)
+			if (_isSelectingBattleOption)
 			{
-				battleUI.Enter<BattleOptionData>();
+				_battleUI.Enter<BattleOptionData>();
 				return;
 			}
 
-			if (isSelectingEnemyOption)
+			if (_isSelectingEnemyOption)
 			{
-				battleUI.Enter<EnemyOptionData>();
+				_battleUI.Enter<EnemyOptionData>();
 				return;
 			}
 		}
 
 		private void Escape()
 		{
-			if (isSelectingBattleOption)
+			if (_isSelectingBattleOption)
 			{
-				battleUI.Escape<BattleOptionData>();
+				_battleUI.Escape<BattleOptionData>();
 				return;
 			}
 
-			if (isSelectingEnemyOption)
+			if (_isSelectingEnemyOption)
 			{
-				battleUI.Escape<EnemyOptionData>();
+				_battleUI.Escape<EnemyOptionData>();
 				return;
 			}
 		}
@@ -378,9 +359,9 @@ namespace Managers
 		/// </summary>
 		private void AddInputs()
 		{
-			InputManager.Instance.OnMoveUI.AddListener(Move);
-			InputManager.Instance.OnEnterUI.AddListener(Enter);
-			InputManager.Instance.OnEscapeUI.AddListener(Escape);
+			InputManager.Instance.onMoveUI.AddListener(Move);
+			InputManager.Instance.onEnterUI.AddListener(Enter);
+			InputManager.Instance.onEscapeUI.AddListener(Escape);
 		}
 
 		/// <summary>
@@ -388,9 +369,9 @@ namespace Managers
 		/// </summary>
 		private void RemoveInputs()
 		{
-			InputManager.Instance.OnMoveUI.RemoveListener(Move);
-			InputManager.Instance.OnEnterUI.RemoveListener(Enter);
-			InputManager.Instance.OnEscapeUI.RemoveListener(Escape);
+			InputManager.Instance.onMoveUI.RemoveListener(Move);
+			InputManager.Instance.onEnterUI.RemoveListener(Enter);
+			InputManager.Instance.onEscapeUI.RemoveListener(Escape);
 		}
 
 		#endregion

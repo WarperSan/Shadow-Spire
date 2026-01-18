@@ -13,20 +13,20 @@ namespace UI.Abstract
 	{
 		#region Parent
 
-		protected UIOptions parent;
+		protected UIOptions Parent;
 
-		public void SetParent(UIOptions parent) => this.parent = parent;
+		public void SetParent(UIOptions parent) => Parent = parent;
 
 		#endregion
 
 		#region Load
 
-		protected T loadedOption;
-		public T GetOption() => loadedOption;
+		protected T LoadedOption;
+		public T GetOption() => LoadedOption;
 
 		public void LoadOption(T option)
 		{
-			loadedOption = option;
+			LoadedOption = option;
 			OnLoadOption(option);
 		}
 
@@ -43,8 +43,8 @@ namespace UI.Abstract
 
 		#region Input
 
-		public void Enter()  => loadedOption.OnEnter?.Invoke();
-		public void Escape() => loadedOption.OnEscape?.Invoke();
+		public void Enter()  => LoadedOption.OnEnter?.Invoke();
+		public void Escape() => LoadedOption.OnEscape?.Invoke();
 
 		#endregion
 	}

@@ -1,11 +1,11 @@
 using System.Collections;
 using Battle.Projectiles;
-using BattleEntity;
+using Enemies;
 using UnityEngine;
 
 namespace Battle.Spawners
 {
-	public class Ghost_Spawner : Spawner
+	public class GhostSpawner : Spawner
 	{
 		#region Fields
 
@@ -23,9 +23,9 @@ namespace Battle.Spawners
 
 		#region Data
 
-		private float cooldown;
-		private float speed;
-		private int count;
+		private float _cooldown;
+		private float _speed;
+		private int _count;
 
 		#endregion
 
@@ -37,7 +37,7 @@ namespace Battle.Spawners
 		private const float MAX_Y = 3f;
 
 		/// <inheritdoc/>
-		public override Type HandledType => Type.GHOST;
+		public override Type HandledType => Type.Ghost;
 
 		/// <inheritdoc/>
 		public override void Clean()
@@ -49,15 +49,15 @@ namespace Battle.Spawners
 		/// <inheritdoc/>
 		public override void Setup(int strength)
 		{
-			cooldown = 2f / strength;
-			speed = 0.75f * strength;
-			count = strength / 3 + 1;
+			_cooldown = 2f / strength;
+			_speed = 0.75f * strength;
+			_count = strength / 3 + 1;
 		}
 
 		/// <inheritdoc/>
 		public override IEnumerator StartSpawn(float duration)
 		{
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < _count; i++)
 			{
 				GameObject ghost = Instantiate(ghostPrefab, projectileParent);
 
@@ -69,12 +69,12 @@ namespace Battle.Spawners
 				if (ghost.TryGetComponent(out GhostProjectile projectile))
 				{
 					projectile.SetEnemy(HandledType);
-					projectile.Player = player;
-					projectile.Cooldown = cooldown;
-					projectile.Speed = speed;
+					projectile.player = player;
+					projectile.cooldown = _cooldown;
+					projectile.speed = _speed;
 				}
 
-				yield return new WaitForSeconds(duration / count);
+				yield return new WaitForSeconds(duration / _count);
 			}
 		}
 

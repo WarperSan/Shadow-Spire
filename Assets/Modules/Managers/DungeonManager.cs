@@ -88,8 +88,8 @@ namespace Managers
 
 		#region Generation
 
-		private Drawer[] DrawerPipeline;
-		private IDungeonReceive[] Receivers;
+		private Drawer[] _drawerPipeline;
+		private IDungeonReceive[] _receivers;
 
 		public DungeonResult GenerateLevel(DungeonSettings settings, PlayerEntity player)
 		{
@@ -98,7 +98,7 @@ namespace Managers
 			DungeonResult lvl = DungeonGenerator.Generate(random, settings);
 
 			// Create drawers
-			DrawerPipeline = new Drawer[]
+			_drawerPipeline = new Drawer[]
 			{
 				// Terrain
 				new WallDrawer(lvl, wallMap, wallTiles),
@@ -115,7 +115,7 @@ namespace Managers
 				// Rooms
 				new EnemyRoomDrawer(lvl,
 					enemyPrefab,
-					Enemies.EnemyInstance.ENEMIES,
+					Enemies.EnemyInstance.Enemies,
 					spawnItemsParent),
 				new TreasureRoomDrawer(lvl, potionPrefab, spawnItemsParent),
 				new SpikesRoomDrawer(lvl, spikesPrefab, spawnItemsParent)
@@ -128,7 +128,7 @@ namespace Managers
 			lvl.Height = lvl.Grid.GetLength(0);
 			lvl.Width = lvl.Grid.GetLength(1);
 
-			foreach (Drawer drawer in DrawerPipeline)
+			foreach (Drawer drawer in _drawerPipeline)
 				drawer.Process(lvl.Rooms);
 
 			// Compute graphs
@@ -140,20 +140,20 @@ namespace Managers
 		public void StartLevel(DungeonResult lvl)
 		{
 			// Draw the level
-			foreach (Drawer drawer in DrawerPipeline)
+			foreach (Drawer drawer in _drawerPipeline)
 				drawer.Draw(lvl.Rooms);
 
 			// Notify all receivers
-			Receivers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDungeonReceive>().ToArray();
+			_receivers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDungeonReceive>().ToArray();
 
-			foreach (IDungeonReceive receiver in Receivers)
+			foreach (IDungeonReceive receiver in _receivers)
 				receiver.OnLevelStart(lvl);
 		}
 
 		public void ClearDungeon()
 		{
 			// Clear all drawers
-			foreach (Drawer drawer in DrawerPipeline)
+			foreach (Drawer drawer in _drawerPipeline)
 				drawer.Clear();
 		}
 

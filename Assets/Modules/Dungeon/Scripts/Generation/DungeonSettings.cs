@@ -1,5 +1,8 @@
 namespace Dungeon.Generation
 {
+	/// <summary>
+	/// Settings defining a dungeon's characteristics
+	/// </summary>
 	public struct DungeonSettings
 	{
 		/// <summary>

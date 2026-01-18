@@ -6,19 +6,35 @@ using Utils;
 
 namespace Dungeon.Drawers.Rooms
 {
+	/// <summary>
+	/// Drawer meant to draw room types
+	/// </summary>
 	public abstract class RoomDrawer : Drawer
 	{
-		public abstract RoomType Type { get; }
+		/// <summary>
+		/// Room type handled by this drawer
+		/// </summary>
+		protected abstract RoomType Type { get; }
 
 		protected RoomDrawer(DungeonResult level) : base(level)
 		{
 		}
 
-		protected abstract void OnDraw(Room    room);
+		/// <summary>
+		/// Draws in the given room
+		/// </summary>
+		protected abstract void OnDraw(Room room);
+		
+		/// <summary>
+		/// Processes the given room
+		/// </summary>
 		protected abstract void OnProcess(Room room);
 
 		#region Utils
 
+		/// <summary>
+		/// Fetches a list of every position that meet the given condition in a room
+		/// </summary>
 		protected List<Vector2Int> GetValidPositions(Room room, Func<int, int, bool> predicate = null)
 		{
 			// Find valid positions

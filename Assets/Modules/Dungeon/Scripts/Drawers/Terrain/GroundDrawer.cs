@@ -5,17 +5,20 @@ using Utils;
 
 namespace Dungeon.Drawers.Terrain
 {
+	/// <summary>
+	/// Drawer that puts the ground tiles in the rooms
+	/// </summary>
 	public class GroundDrawer : Drawer
 	{
-		private readonly Tilemap groundMap;
-		private readonly TileBase tile;
+		private readonly Tilemap _groundMap;
+		private readonly TileBase _tile;
 
 		#region Drawer
 
 		public GroundDrawer(DungeonResult level, Tilemap groundMap, TileBase tile) : base(level)
 		{
-			this.groundMap = groundMap;
-			this.tile = tile;
+			_groundMap = groundMap;
+			_tile = tile;
 		}
 
 		/// <inheritdoc/>
@@ -28,7 +31,7 @@ namespace Dungeon.Drawers.Terrain
 					if (Level.HasWall(x, y) || Level.HasObstacle(x, y))
 						continue;
 
-					Level.Add(x, y, Generation.Tile.GROUND);
+					Level.Add(x, y, Generation.Tile.Ground);
 				}
 			}
 		}
@@ -46,16 +49,16 @@ namespace Dungeon.Drawers.Terrain
 					if (!Level.HasGround(x, y))
 						continue;
 
-					if (Level.Has(x, y, Generation.Tile.COVERED_GROUND))
+					if (Level.Has(x, y, Generation.Tile.CoveredGround))
 						continue;
 
-					groundMap.SetTile(new Vector3Int(x, -y, 0), tile);
+					_groundMap.SetTile(new Vector3Int(x, -y, 0), _tile);
 				}
 			}
 		}
 
 		/// <inheritdoc/>
-		public override void Clear() => groundMap.ClearAllTiles();
+		public override void Clear() => _groundMap.ClearAllTiles();
 
 		#endregion
 	}

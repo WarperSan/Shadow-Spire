@@ -4,6 +4,7 @@ using GridEntities.Abstract;
 using GridEntities.Interfaces;
 using PathFinding.Graphs;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace Managers
@@ -134,13 +135,13 @@ namespace Managers
 				Vector2 next = graph.GetNode(path[i]).Position;
 
 				if (next.x < current.x)
-					movements[i - 1] = Movement.LEFT;
+					movements[i - 1] = Movement.Left;
 				else if (next.y < current.y)
-					movements[i - 1] = Movement.DOWN;
+					movements[i - 1] = Movement.Down;
 				else if (next.x > current.x)
-					movements[i - 1] = Movement.RIGHT;
+					movements[i - 1] = Movement.Right;
 				else
-					movements[i - 1] = Movement.UP;
+					movements[i - 1] = Movement.Up;
 			}
 
 			return movements;
@@ -175,10 +176,11 @@ namespace Managers
 
 		#if UNITY_EDITOR
 
+		[FormerlySerializedAs("LinkCostColor")]
 		[Header("Gizmos")]
 		[SerializeField]
 		[Tooltip("Gradient used for the links")]
-		private Gradient LinkCostColor;
+		private Gradient linkCostColor;
 
 		/// <inheritdoc/>
 		private void OnDrawGizmos()
@@ -213,7 +215,7 @@ namespace Managers
 					// Draw links
 					foreach (int neighbor in n.GetNeighbors())
 					{
-						Gizmos.color = LinkCostColor.Evaluate(n.GetCost(neighbor) / 3f);
+						Gizmos.color = linkCostColor.Evaluate(n.GetCost(neighbor) / 3f);
 						Gizmos.DrawLine(n.Position + new Vector2(0.5f, -0.5f), graph.GetNode(neighbor).Position + new Vector2(0.5f, -0.5f));
 					}
 				}

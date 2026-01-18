@@ -28,7 +28,7 @@ namespace UI.Abstract
 		/// <summary>
 		/// Obtains the current selection of this element
 		/// </summary>
-		public virtual U GetSelection<T, U>() where T : UIOptionData where U : UIOption<T> => null;
+		public virtual TU GetSelection<T, TU>() where T : UIOptionData where TU : UIOption<T> => null;
 
 		#endregion
 
@@ -52,7 +52,7 @@ namespace UI.Abstract
 		#endregion
 	}
 
-	public abstract class UIOptions<T, U> : UIOptions where T : UIOption<U> where U : UIOptionData
+	public abstract class UIOptions<T, TU> : UIOptions where T : UIOption<TU> where TU : UIOptionData
 	{
 		#region Fields
 
@@ -64,18 +64,18 @@ namespace UI.Abstract
 
 		#region Load
 
-		protected T[] loadedOptions;
-		protected int selectedIndex = -1;
+		protected T[] LoadedOptions;
+		protected int SelectedIndex = -1;
 
 		/// <inheritdoc/>
 		public override void LoadOptions(UIOptionData[] options)
 		{
-			if (options is not U[] typedOptions)
+			if (options is not TU[] typedOptions)
 				return;
 
 			DestroyOptions();
 
-			loadedOptions = new T[options.Length];
+			LoadedOptions = new T[options.Length];
 			Transform[] elements = new Transform[options.Length];
 
 			for (int i = 0; i < options.Length; i++)
@@ -88,11 +88,11 @@ namespace UI.Abstract
 				{
 					battleOption.SetParent(this);
 					battleOption.LoadOption(typedOptions[i]);
-					loadedOptions[i] = battleOption;
+					LoadedOptions[i] = battleOption;
 				}
 			}
 
-			selectedIndex = 0;
+			SelectedIndex = 0;
 
 			AlignOptions(elements);
 		}
@@ -111,15 +111,15 @@ namespace UI.Abstract
 		/// </summary>
 		public void DestroyOptions()
 		{
-			if (selectedIndex != -1)
+			if (SelectedIndex != -1)
 				HideSelection();
 
 			// Destroy all options
 			foreach (Transform option in transform)
 				Destroy(option.gameObject);
 
-			loadedOptions = null;
-			selectedIndex = -1;
+			LoadedOptions = null;
+			SelectedIndex = -1;
 		}
 
 		#endregion
@@ -127,15 +127,15 @@ namespace UI.Abstract
 		#region Selection
 
 		/// <inheritdoc/>
-		public override void ShowSelection() => loadedOptions[selectedIndex].Select();
+		public override void ShowSelection() => LoadedOptions[SelectedIndex].Select();
 
 		/// <inheritdoc/>
-		public override void HideSelection() => loadedOptions[selectedIndex].Deselect();
+		public override void HideSelection() => LoadedOptions[SelectedIndex].Deselect();
 
 		/// <inheritdoc/>
-		public override U1 GetSelection<T1, U1>() => loadedOptions[selectedIndex] as U1 ?? base.GetSelection<T1, U1>();
+		public override TU1 GetSelection<T1, TU1>() => LoadedOptions[SelectedIndex] as TU1 ?? base.GetSelection<T1, TU1>();
 
-		public T GetSelection() => loadedOptions[selectedIndex];
+		public T GetSelection() => LoadedOptions[SelectedIndex];
 
 		#endregion
 
@@ -154,22 +154,22 @@ namespace UI.Abstract
 			dir = dir.normalized;
 
 			if (dir.x < 0)
-				selectedIndex--;
+				SelectedIndex--;
 			else if (dir.x > 0)
-				selectedIndex++;
+				SelectedIndex++;
 
-			if (selectedIndex < 0)
-				selectedIndex = loadedOptions.Length - 1;
+			if (SelectedIndex < 0)
+				SelectedIndex = LoadedOptions.Length - 1;
 
-			if (selectedIndex >= loadedOptions.Length)
-				selectedIndex = 0;
+			if (SelectedIndex >= LoadedOptions.Length)
+				SelectedIndex = 0;
 		}
 
 		/// <inheritdoc/>
-		public override void Enter() => loadedOptions[selectedIndex].Enter();
+		public override void Enter() => LoadedOptions[SelectedIndex].Enter();
 
 		/// <inheritdoc/>
-		public override void Escape() => loadedOptions[selectedIndex].Escape();
+		public override void Escape() => LoadedOptions[SelectedIndex].Escape();
 
 		#endregion
 	}

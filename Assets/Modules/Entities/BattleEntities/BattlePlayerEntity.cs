@@ -2,33 +2,36 @@
 
 namespace BattleEntity
 {
+	/// <summary>
+	/// Battle entity that represents the <see cref="PlayerEntity"/>
+	/// </summary>
 	public class BattlePlayerEntity : BattleEntity
 	{
-		private PlayerEntity playerEntity;
+		private readonly PlayerEntity _playerEntity;
 
 		public BattlePlayerEntity(PlayerEntity playerEntity)
 		{
 			Health = playerEntity.Health;
-			this.playerEntity = playerEntity;
-			Type = Type.NONE;
+			_playerEntity = playerEntity;
+			Type = Enemies.Type.None;
 		}
 
 		/// <inheritdoc/>
 		protected override void OnHit(int damage)
 		{
-			playerEntity.TakeDamage(damage);
+			_playerEntity.TakeDamage(damage);
 		}
 
 		/// <inheritdoc/>
 		protected override void OnDeath(int damage)
 		{
-			playerEntity.TakeDamage(damage);
+			_playerEntity.TakeDamage(damage);
 		}
 
 		public void Heal(int amount)
 		{
 			Health += amount;
-			playerEntity.Heal(amount);
+			_playerEntity.Heal(amount);
 		}
 	}
 }

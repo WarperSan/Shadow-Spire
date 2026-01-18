@@ -15,18 +15,18 @@ namespace Enemies.UI
 		/// <inheritdoc/>
 		protected override void OnMoveSelected(Vector2 dir)
 		{
-			int startIndex = selectedIndex;
+			int startIndex = SelectedIndex;
 
 			do
 			{
 				base.OnMoveSelected(dir); // Move once
 
-				EnemyOptionData data = loadedOptions[selectedIndex].GetOption();
+				EnemyOptionData data = LoadedOptions[SelectedIndex].GetOption();
 
 				// Check if selected is alive
 				if (!data.Entity.IsDead)
 					break;
-			} while (selectedIndex != startIndex);
+			} while (SelectedIndex != startIndex);
 		}
 
 		public void FindNextValid(Vector2 dir) => OnMoveSelected(dir);

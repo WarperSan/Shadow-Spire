@@ -14,30 +14,30 @@ namespace GridEntities.Entities
 		#region Data
 
 		public EnemyInstance Instance;
-		private EnemySO _data;
+		private EnemySo _data;
 
-		private int waitTurns;
-		private int movesPerTurn;
-		private int turnsRemaining;
+		private int _waitTurns;
+		private int _movesPerTurn;
+		private int _turnsRemaining;
 
-		public void SetData(EnemySO data, int level)
+		public void SetData(EnemySo data, int level)
 		{
 			Instance = new EnemyInstance(data, level);
 
-			spriteRenderer.sprite = data.OverworldSprite;
-			spriteRenderer.color = data.BaseType.GetColor();
+			spriteRenderer.sprite = data.overworldSprite;
+			spriteRenderer.color = data.baseType.GetColor();
 
-			turnsRemaining = waitTurns = data.MovementSpeed switch
+			_turnsRemaining = _waitTurns = data.movementSpeed switch
 			{
-				EnemyMovementSpeed.VERY_SLOW => 2,
-				EnemyMovementSpeed.SLOW      => 1,
+				EnemyMovementSpeed.VerySlow => 2,
+				EnemyMovementSpeed.Slow      => 1,
 				_                            => 0
 			};
 
-			movesPerTurn = data.MovementSpeed switch
+			_movesPerTurn = data.movementSpeed switch
 			{
-				EnemyMovementSpeed.FAST      => 2,
-				EnemyMovementSpeed.VERY_FAST => 3,
+				EnemyMovementSpeed.Fast      => 2,
+				EnemyMovementSpeed.VeryFast => 3,
 				_                            => 1
 			};
 
@@ -48,52 +48,52 @@ namespace GridEntities.Entities
 
 		#region ITurnable
 
-		private int[] path;
-		private Movement[] movements;
-		private int currentIndex = -1;
+		private int[] _path;
+		private Movement[] _movements;
+		private int _currentIndex = -1;
 
 		/// <inheritdoc/>
 		IEnumerator ITurnable.Think()
 		{
-			turnsRemaining--;
+			_turnsRemaining--;
 
-			if (turnsRemaining >= 0)
+			if (_turnsRemaining >= 0)
 				yield break;
 
-			turnsRemaining = waitTurns;
+			_turnsRemaining = _waitTurns;
 
-			if (_data.Pathing == EnemyPathing.DIRECT || path == null || currentIndex >= path.Length)
+			if (_data.pathing == EnemyPathing.Direct || _path == null || _currentIndex >= _path.Length)
 				UpdatePath();
 
 			// If no path found or on the same tile
-			if (movements == null || movements.Length == 0)
+			if (_movements == null || _movements.Length == 0)
 				yield break;
 
-			if (movesPerTurn + currentIndex >= movements.Length)
+			if (_movesPerTurn + _currentIndex >= _movements.Length)
 			{
-				yield return movements[currentIndex..];
+				yield return _movements[_currentIndex..];
 
-				currentIndex = path.Length;
+				_currentIndex = _path.Length;
 				yield break;
 			}
 
-			yield return movements[currentIndex..(movesPerTurn + currentIndex)];
+			yield return _movements[_currentIndex..(_movesPerTurn + _currentIndex)];
 
-			currentIndex += movesPerTurn;
+			_currentIndex += _movesPerTurn;
 		}
 
 		private void UpdatePath()
 		{
 			Vector2Int target = Position;
 
-			if (_data.Pathing == EnemyPathing.DIRECT)
+			if (_data.pathing == EnemyPathing.Direct)
 				target = GameManager.Instance.player.Position;
-			else if (_data.Pathing == EnemyPathing.RANDOM)
+			else if (_data.pathing == EnemyPathing.Random)
 				target = GetRandomPosition();
 
-			path = PathFindingManager.FindPath(this, target);
-			movements = PathFindingManager.GetDirections(path);
-			currentIndex = 0;
+			_path = PathFindingManager.FindPath(this, target);
+			_movements = PathFindingManager.GetDirections(_path);
+			_currentIndex = 0;
 		}
 
 		private Vector2Int GetRandomPosition()

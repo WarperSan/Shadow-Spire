@@ -54,17 +54,17 @@ namespace Utils
 		/// <summary>
 		/// Checks if the given tile has a wall
 		/// </summary>
-		public static bool HasWall(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.WALL);
+		public static bool HasWall(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.Wall);
 
 		/// <summary>
 		/// Checks if the given tile has ground
 		/// </summary>
-		public static bool HasGround(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.GROUND | Tile.COVERED_GROUND);
+		public static bool HasGround(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.Ground | Tile.CoveredGround);
 
 		/// <summary>
 		/// Checks if the given tile has an obstacle
 		/// </summary>
-		public static bool HasObstacle(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.ENTRANCE | Tile.EXIT);
+		public static bool HasObstacle(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.Entrance | Tile.Exit);
 
 		/// <summary>
 		/// Checks if the given tile is blocked
@@ -74,7 +74,7 @@ namespace Utils
 		/// <summary>
 		/// Checks if the given tile has a door
 		/// </summary>
-		public static bool HasDoor(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.DOOR_CLOSED | Tile.DOOR_OPENED);
+		public static bool HasDoor(this DungeonResult level, int x, int y) => level.Has(x, y, Tile.DoorClosed | Tile.DoorOpened);
 
 		#endregion
 	}

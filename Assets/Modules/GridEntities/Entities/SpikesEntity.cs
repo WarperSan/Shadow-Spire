@@ -20,8 +20,8 @@ namespace GridEntities.Entities
 
 		private const int ACTIVE_TURNS = 3;
 
-		private int activeTurns;
-		private bool canAttack;
+		private int _activeTurns;
+		private bool _canAttack;
 
 		#region IEventable
 
@@ -33,12 +33,12 @@ namespace GridEntities.Entities
 		/// <inheritdoc/>
 		public void OnEntityLanded(PlayerEntity entity)
 		{
-			if (canAttack)
+			if (_canAttack)
 			{
 				entity.TakeDamage(2);
-				activeTurns = ACTIVE_TURNS;
+				_activeTurns = ACTIVE_TURNS;
 			} else
-				activeTurns = ACTIVE_TURNS + 1;
+				_activeTurns = ACTIVE_TURNS + 1;
 		}
 
 		#endregion
@@ -47,9 +47,9 @@ namespace GridEntities.Entities
 
 		public IEnumerator Think()
 		{
-			activeTurns--;
-			canAttack = activeTurns < ACTIVE_TURNS && activeTurns >= 0;
-			spriteRenderer.sprite = canAttack ? onSprite : offSprite;
+			_activeTurns--;
+			_canAttack = _activeTurns < ACTIVE_TURNS && _activeTurns >= 0;
+			spriteRenderer.sprite = _canAttack ? onSprite : offSprite;
 
 			yield return null;
 		}

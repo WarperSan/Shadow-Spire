@@ -5,15 +5,18 @@ using Object = UnityEngine.Object;
 
 namespace Dungeon.Drawers.Rooms
 {
+	/// <summary>
+	/// Drawer that creates a room of spike
+	/// </summary>
 	public class SpikesRoomDrawer : RoomDrawer
 	{
-		private readonly GameObject SpikesPrefab;
-		private readonly Transform SpawnedParent;
+		private readonly GameObject _spikesPrefab;
+		private readonly Transform _spawnedParent;
 
 		#region RoomDrawer
 
 		/// <inheritdoc/>
-		public override RoomType Type => RoomType.SPIKES;
+		protected override RoomType Type => RoomType.Spikes;
 
 		/// <inheritdoc/>
 		protected override void OnDraw(Room room)
@@ -23,10 +26,10 @@ namespace Dungeon.Drawers.Rooms
 				for (int x = room.X; x < room.X + room.Width; x++)
 				{
 					// If not a treasure, skip
-					if (!Level.Has(x, y, Tile.SPIKES))
+					if (!Level.Has(x, y, Tile.Spikes))
 						continue;
 
-					GameObject treasure = Object.Instantiate(SpikesPrefab, SpawnedParent);
+					GameObject treasure = Object.Instantiate(_spikesPrefab, _spawnedParent);
 					treasure.transform.position = new Vector3(x, -y, 0);
 				}
 			}
@@ -39,8 +42,8 @@ namespace Dungeon.Drawers.Rooms
 			{
 				for (int x = room.X; x < room.X + room.Width; x++)
 				{
-					Level.Add(x, y, Tile.SPIKES);
-					Level.Add(x, y, Tile.COVERED_GROUND);
+					Level.Add(x, y, Tile.Spikes);
+					Level.Add(x, y, Tile.CoveredGround);
 				}
 			}
 		}
@@ -51,18 +54,21 @@ namespace Dungeon.Drawers.Rooms
 
 		public SpikesRoomDrawer(DungeonResult level, GameObject spikesPrefab, Transform spawnedParent) : base(level)
 		{
-			SpikesPrefab = spikesPrefab;
+			_spikesPrefab = spikesPrefab;
 
 			GameObject parent = new()
 			{
-				name = "Spikes"
+				name = "Spikes",
+				transform =
+				{
+					parent = spawnedParent
+				}
 			};
-			parent.transform.parent = spawnedParent;
-			SpawnedParent = parent.transform;
+			_spawnedParent = parent.transform;
 		}
 
 		/// <inheritdoc/>
-		public override void Clear() => Object.Destroy(SpawnedParent.gameObject);
+		public override void Clear() => Object.Destroy(_spawnedParent.gameObject);
 
 		#endregion
 	}

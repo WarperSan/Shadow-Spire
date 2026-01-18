@@ -12,7 +12,7 @@ namespace Weapons.UI
 
 		public IEnumerator ShowWeapons()
 		{
-			hasSelected = false;
+			_hasSelected = false;
 
 			LoadWeapons(GameManager.Instance.player.Weapon);
 			title.SetActive(true);
@@ -23,7 +23,7 @@ namespace Weapons.UI
 			AddInputs();
 
 			// Wait until weapon selected
-			while (!hasSelected)
+			while (!_hasSelected)
 				yield return null;
 
 			title.SetActive(false);
@@ -33,10 +33,10 @@ namespace Weapons.UI
 		private void SelectWeapon()
 		{
 			// If already selected, skip
-			if (hasSelected)
+			if (_hasSelected)
 				return;
 
-			hasSelected = true;
+			_hasSelected = true;
 
 			// Disable inputs
 			RemoveInputs();
@@ -50,7 +50,7 @@ namespace Weapons.UI
 		[SerializeField]
 		private WeaponOptions options;
 
-		private bool hasSelected = false;
+		private bool _hasSelected = false;
 
 		private void LoadWeapons(WeaponInstance currentWeapon)
 		{
@@ -90,8 +90,8 @@ namespace Weapons.UI
 		/// </summary>
 		private void AddInputs()
 		{
-			InputManager.Instance.OnMoveUI.AddListener(Move);
-			InputManager.Instance.OnEnterUI.AddListener(Enter);
+			InputManager.Instance.onMoveUI.AddListener(Move);
+			InputManager.Instance.onEnterUI.AddListener(Enter);
 		}
 
 		/// <summary>
@@ -99,8 +99,8 @@ namespace Weapons.UI
 		/// </summary>
 		private void RemoveInputs()
 		{
-			InputManager.Instance.OnMoveUI.RemoveListener(Move);
-			InputManager.Instance.OnEnterUI.RemoveListener(Enter);
+			InputManager.Instance.onMoveUI.RemoveListener(Move);
+			InputManager.Instance.onEnterUI.RemoveListener(Enter);
 		}
 
 		#endregion

@@ -32,14 +32,14 @@ namespace Enemies.UI
 
 		#region Animation
 
-		private Coroutine currentAnimation;
+		private Coroutine _currentAnimation;
 
 		private void PlayAnimation(IEnumerator anim)
 		{
-			if (currentAnimation != null)
-				StopCoroutine(currentAnimation);
+			if (_currentAnimation != null)
+				StopCoroutine(_currentAnimation);
 
-			currentAnimation = StartCoroutine(anim);
+			_currentAnimation = StartCoroutine(anim);
 		}
 
 		#endregion
@@ -164,6 +164,7 @@ namespace Enemies.UI
 
 		public void Idle() => PlayAnimation(IdleCoroutine());
 
+		// TODO: Check if there is a better way to do endless loops
 		private IEnumerator IdleCoroutine()
 		{
 			while (true)
@@ -247,26 +248,27 @@ namespace Enemies.UI
 
 		#region Target
 
-		private Coroutine targetAnimation;
+		private Coroutine _targetAnimation;
 
 		public void EnableTarget()
 		{
-			if (targetAnimation != null)
-				StopCoroutine(targetAnimation);
+			if (_targetAnimation != null)
+				StopCoroutine(_targetAnimation);
 
 			targetGroup.alpha = 1;
-			targetAnimation = StartCoroutine(Target_Idle());
+			_targetAnimation = StartCoroutine(Target_Idle());
 		}
 
 		public void DisableTarget()
 		{
-			if (targetAnimation != null)
-				StopCoroutine(targetAnimation);
+			if (_targetAnimation != null)
+				StopCoroutine(_targetAnimation);
 
 			targetGroup.alpha = 0;
-			targetAnimation = null;
+			_targetAnimation = null;
 		}
 
+		// TODO: Check if there is a better way to do endless loops
 		private IEnumerator Target_Idle()
 		{
 			while (true)

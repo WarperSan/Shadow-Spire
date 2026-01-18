@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3cf986eb00d0e328f23e87636ec72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LinkCostColor:
+  linkCostColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 0, g: 0, b: 1, a: 1}
@@ -860,19 +860,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f354ae94b583e85a2471c119bdf3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMovePlayer:
+  onMovePlayer:
     m_PersistentCalls:
       m_Calls: []
-  OnMoveUI:
+  onMoveUI:
     m_PersistentCalls:
       m_Calls: []
-  OnEnterUI:
+  onEnterUI:
     m_PersistentCalls:
       m_Calls: []
-  OnEscapeUI:
+  onEscapeUI:
     m_PersistentCalls:
       m_Calls: []
-  OnMoveMinigame:
+  onMoveMinigame:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &858577269
@@ -1362,8 +1362,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1931053744}
-  IsPlayerDead: 0
-  UIManager: {fileID: 2022798376}
+  isPlayerDead: 0
+  uiManager: {fileID: 2022798376}
   dungeonManager: {fileID: 366401024}
   levelIndex: 4
   dungeonCamera: {fileID: 1052180607}
@@ -1485,29 +1485,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8069985642260962882, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1052180608}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
---- !u!1 &1052180605 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8069985642260962882, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
-  m_PrefabInstance: {fileID: 1052180604}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &1052180607 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 7454452020516724668, guid: 2e77fa70172269d12b84f98cbed83406, type: 3}
   m_PrefabInstance: {fileID: 1052180604}
   m_PrefabAsset: {fileID: 0}
---- !u!81 &1052180608
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052180605}
-  m_Enabled: 1
 --- !u!1 &1278837195
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,16 +3,22 @@ using UnityEngine;
 
 namespace Dungeon.Generation
 {
+	/// <summary>
+	/// Types of rooms that compose a dungeon
+	/// </summary>
 	public enum RoomType
 	{
-		NORMAL,
-		ENTRANCE, // Room that is the entrance
-		EXIT,     // Room that is the exit
-		ENEMY,    // Room that spawns monsters
-		TREASURE, // Room that spawns a treasure
-		SPIKES    // Room that spawns spikes
+		Normal,
+		Entrance, // Room that is the entrance
+		Exit,     // Room that is the exit
+		Enemy,    // Room that spawns monsters
+		Treasure, // Room that spawns a treasure
+		Spikes    // Room that spawns spikes
 	}
 
+	/// <summary>
+	/// Class holding the information for a single room
+	/// </summary>
 	public class Room
 	{
 		public int X { get; set; }
@@ -22,21 +28,26 @@ namespace Dungeon.Generation
 		public int Height { get; set; }
 
 		public int      Depth { get; set; }
-		public RoomType Type  { get; set; } = RoomType.NORMAL;
+		public RoomType Type  { get; set; } = RoomType.Normal;
 
+		/// <summary>
+		/// List of rooms that compose this room
+		/// </summary>
 		public Room[] Children { get; private set; }
 
+		/// <summary>
+		/// Splits this room into two smaller rooms
+		/// </summary>
 		public bool Split(System.Random rand, int minWidth, int minHeight)
 		{
 			Room roomA = new();
 			Room roomB = new();
 
-			bool hasSplitted = false;
-			bool splitVertical = false;
+			bool hasSplit = false;
 
 			for (int i = 0; i < 10; i++)
 			{
-				splitVertical = rand.Next(0, 2) == 0;
+				bool splitVertical = rand.Next(0, 2) == 0;
 				double percent = rand.NextDouble() * 0.4f + 0.3f; // 30-70%
 
 				int newWidth = (int)Math.Floor(Width * percent);
@@ -55,9 +66,11 @@ namespace Dungeon.Generation
 					roomB.Width = Width - newWidth;
 					roomB.Height = Height;
 
-					hasSplitted = true;
+					hasSplit = true;
 					break;
-				} else if (newHeight >= minHeight && Height - newHeight >= minHeight)
+				}
+
+				if (newHeight >= minHeight && Height - newHeight >= minHeight)
 				{
 					roomA.X = X;
 					roomA.Y = Y;
@@ -70,21 +83,27 @@ namespace Dungeon.Generation
 					roomB.Height = Height - newHeight;
 
 					splitVertical = false; // Vertical can fail
-					hasSplitted = true;
+					hasSplit = true;
 					break;
 				}
 			}
 
-			if (!hasSplitted)
+			if (!hasSplit)
 				return false;
 
-			Children = new Room[] { roomA, roomB };
+			Children = new[] { roomA, roomB };
 
 			return true;
 		}
 
+		/// <summary>
+		/// Checks if the given room is adjacent to this room
+		/// </summary>
 		public bool IsAdjacent(Room other) => IsUnder(other) || IsBeside(other);
 
+		/// <summary>
+		/// Checks if the given room is under this room
+		/// </summary>
 		public bool IsUnder(Room other)
 		{
 			Vector2Int selfMax = new(X + Width - 1, Y + Height - 1);
@@ -94,6 +113,9 @@ namespace Dungeon.Generation
 			       otherMax.x > X && other.X < selfMax.x; // The rooms have a common X point
 		}
 
+		/// <summary>
+		/// Checks if the given room is beside this room
+		/// </summary>
 		public bool IsBeside(Room other)
 		{
 			Vector2Int selfMax = new(X + Width - 1, Y + Height - 1);
@@ -103,6 +125,7 @@ namespace Dungeon.Generation
 			       otherMax.y > Y && other.Y < selfMax.y; // The rooms have a common Y point
 		}
 
+		/// <inheritdoc/>
 		public override string ToString() => $"[{X};{Y} ({Width}x{Height})]";
 	}
 }

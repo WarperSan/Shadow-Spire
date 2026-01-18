@@ -7,11 +7,11 @@ namespace Battle.Utils
 		[SerializeField]
 		private float lifetime = 10.0f;
 
-		private float initTime;
+		private float _initTime;
 
 		private void OnEnable()
 		{
-			initTime = Time.time;
+			_initTime = Time.time;
 		}
 
 		private void OnDisable()
@@ -21,7 +21,7 @@ namespace Battle.Utils
 
 		private void Update()
 		{
-			if (Time.time > initTime + lifetime)
+			if (Time.time > _initTime + lifetime)
 				enabled = false;
 		}
 	}

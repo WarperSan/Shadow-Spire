@@ -33,8 +33,8 @@ namespace Managers
 
 		#region Data
 
-		private Dictionary<BattleEntity.Type, int> typesCount = new();
-		private float duration;
+		private readonly Dictionary<Enemies.Type, int> _typesCount = new();
+		private float _duration;
 
 		#endregion
 
@@ -51,8 +51,8 @@ namespace Managers
 			int enemyCount = 0;
 
 			// Compile types
-			foreach (BattleEntity.Type item in Enum.GetValues(typeof(BattleEntity.Type)))
-				typesCount[item] = 0;
+			foreach (Enemies.Type item in Enum.GetValues(typeof(Enemies.Type)))
+				_typesCount[item] = 0;
 
 			foreach (BattleEnemyEntity enemy in battleEnemyEntities)
 			{
@@ -60,8 +60,8 @@ namespace Managers
 				if (enemy.IsDead)
 					continue;
 
-				foreach (BattleEntity.Type uniqueType in enemy.Type.GetTypes())
-					typesCount[uniqueType]++;
+				foreach (Enemies.Type uniqueType in enemy.Type.GetTypes())
+					_typesCount[uniqueType]++;
 
 				enemyCount++;
 			}
@@ -69,19 +69,19 @@ namespace Managers
 			// Set up spawners
 			foreach (Spawner spawner in spawners)
 			{
-				int strength = typesCount[spawner.HandledType];
+				int strength = _typesCount[spawner.HandledType];
 
 				spawner.Setup(strength);
 				spawner.enabled = strength > 0;
 			}
 
-			duration = 3.5f * enemyCount;
+			_duration = 3.5f * enemyCount;
 		}
 
 		public IEnumerator SpawnProjectiles()
 		{
 			InputManager.Instance.SwitchToMiniGame();
-			InputManager.Instance.OnMoveMinigame.AddListener(Move);
+			InputManager.Instance.onMoveMinigame.AddListener(Move);
 			player.canTakeDamage = true;
 
 			List<Coroutine> spawnerCoroutines = new();
@@ -91,16 +91,16 @@ namespace Managers
 				if (!spawner.enabled)
 					continue;
 
-				spawnerCoroutines.Add(StartCoroutine(spawner.StartSpawn(duration)));
+				spawnerCoroutines.Add(StartCoroutine(spawner.StartSpawn(_duration)));
 			}
 
-			yield return new WaitForSeconds(duration);
+			yield return new WaitForSeconds(_duration);
 
 			foreach (Coroutine item in spawnerCoroutines)
 				yield return item;
 
 			player.canTakeDamage = false;
-			InputManager.Instance.OnMoveMinigame.RemoveListener(Move);
+			InputManager.Instance.onMoveMinigame.RemoveListener(Move);
 			InputManager.Instance.SwitchToUI();
 		}
 
@@ -117,7 +117,7 @@ namespace Managers
 			}
 
 			// Remove all the compiled data
-			duration = -1;
+			_duration = -1;
 		}
 
 		#endregion

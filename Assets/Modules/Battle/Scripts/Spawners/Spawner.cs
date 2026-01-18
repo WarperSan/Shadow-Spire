@@ -1,5 +1,5 @@
 using System.Collections;
-using BattleEntity;
+using Enemies;
 using UnityEngine;
 
 namespace Battle.Spawners

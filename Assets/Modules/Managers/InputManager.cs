@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace Managers
@@ -8,25 +9,30 @@ namespace Managers
 	[RequireComponent(typeof(PlayerInput))]
 	public class InputManager : Singleton<InputManager>
 	{
+		[FormerlySerializedAs("OnMovePlayer")]
 		[Header("Player")]
-		public UnityEvent<Vector2> OnMovePlayer;
+		public UnityEvent<Vector2> onMovePlayer;
 
+		[FormerlySerializedAs("OnMoveUI")]
 		[Header("UI")]
-		public UnityEvent<Vector2> OnMoveUI;
+		public UnityEvent<Vector2> onMoveUI;
 
-		public UnityEvent OnEnterUI;
-		public UnityEvent OnEscapeUI;
+		[FormerlySerializedAs("OnEnterUI")]
+		public UnityEvent onEnterUI;
+		[FormerlySerializedAs("OnEscapeUI")]
+		public UnityEvent onEscapeUI;
 
+		[FormerlySerializedAs("OnMoveMinigame")]
 		[Header("Minigame")]
-		public UnityEvent<Vector2> OnMoveMinigame;
+		public UnityEvent<Vector2> onMoveMinigame;
 
 		#region Inputs
 
-		private PlayerInput input;
+		private PlayerInput _input;
 
-		public void SwitchToPlayer()   => input.SwitchCurrentActionMap("Player");
-		public void SwitchToMiniGame() => input.SwitchCurrentActionMap("Minigame-Player");
-		public void SwitchToUI()       => input.SwitchCurrentActionMap("UI");
+		public void SwitchToPlayer()   => _input.SwitchCurrentActionMap("Player");
+		public void SwitchToMiniGame() => _input.SwitchCurrentActionMap("Minigame-Player");
+		public void SwitchToUI()       => _input.SwitchCurrentActionMap("UI");
 
 		#endregion
 
@@ -38,7 +44,7 @@ namespace Managers
 				return;
 
 			Vector2 dir = context.ReadValue<Vector2>();
-			OnMovePlayer?.Invoke(dir);
+			onMovePlayer?.Invoke(dir);
 		}
 
 		public void MoveUI(InputAction.CallbackContext context)
@@ -47,13 +53,13 @@ namespace Managers
 				return;
 
 			Vector2 dir = context.ReadValue<Vector2>();
-			OnMoveUI?.Invoke(dir);
+			onMoveUI?.Invoke(dir);
 		}
 
 		public void MoveMinigame(InputAction.CallbackContext context)
 		{
 			Vector2 dir = context.ReadValue<Vector2>();
-			OnMoveMinigame?.Invoke(dir);
+			onMoveMinigame?.Invoke(dir);
 		}
 
 		public void EnterUI(InputAction.CallbackContext context)
@@ -61,7 +67,7 @@ namespace Managers
 			if (!context.started)
 				return;
 
-			OnEnterUI?.Invoke();
+			onEnterUI?.Invoke();
 		}
 
 		public void EscapeUI(InputAction.CallbackContext context)
@@ -69,7 +75,7 @@ namespace Managers
 			if (!context.started)
 				return;
 
-			OnEscapeUI?.Invoke();
+			onEscapeUI?.Invoke();
 		}
 
 		#endregion
@@ -82,7 +88,7 @@ namespace Managers
 		/// <inheritdoc/>
 		protected override void OnAwake()
 		{
-			input = GetComponent<PlayerInput>();
+			_input = GetComponent<PlayerInput>();
 		}
 
 		#endregion

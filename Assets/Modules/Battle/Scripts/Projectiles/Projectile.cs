@@ -1,7 +1,8 @@
-using BattleEntity;
+using Enemies;
 using Managers;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace Battle.Projectiles
@@ -10,17 +11,18 @@ namespace Battle.Projectiles
 	{
 		#region Renderer
 
+		[FormerlySerializedAs("_renderers")]
 		[Header("Renderer")]
 		[SerializeField]
-		protected SpriteRenderer[] _renderers;
+		protected SpriteRenderer[] renderers;
 
-		protected Color _color;
+		protected Color Color;
 
 		protected virtual void SetColor(Color color)
 		{
-			_color = color;
+			Color = color;
 
-			foreach (SpriteRenderer item in _renderers)
+			foreach (SpriteRenderer item in renderers)
 				item.color = color;
 		}
 

@@ -33,23 +33,23 @@ namespace UI.TitleScreen
 
 			ShowSelection();
 
-			InputManager.Instance.OnMoveUI.AddListener(Move);
-			InputManager.Instance.OnEnterUI.AddListener(Enter);
+			InputManager.Instance.onMoveUI.AddListener(Move);
+			InputManager.Instance.onEnterUI.AddListener(Enter);
 
 			Cursor.visible = false;
 		}
 
 		#region Play Sequence
 
-		private bool isRunningPlaySequence;
+		private bool _isRunningPlaySequence;
 
 		public void OnPlay()
 		{
-			if (isRunningPlaySequence)
+			if (_isRunningPlaySequence)
 				return;
 
 			StartCoroutine(PlaySequence());
-			isRunningPlaySequence = true;
+			_isRunningPlaySequence = true;
 		}
 
 		private IEnumerator PlaySequence()
@@ -64,15 +64,15 @@ namespace UI.TitleScreen
 
 		#region Quit Sequence
 
-		private bool isRunningQuitSequence;
+		private bool _isRunningQuitSequence;
 
 		public void OnQuit()
 		{
-			if (isRunningQuitSequence)
+			if (_isRunningQuitSequence)
 				return;
 
 			StartCoroutine(QuitSequence());
-			isRunningQuitSequence = true;
+			_isRunningQuitSequence = true;
 		}
 
 		private IEnumerator QuitSequence()

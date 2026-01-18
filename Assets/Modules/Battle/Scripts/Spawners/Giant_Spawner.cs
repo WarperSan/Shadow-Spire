@@ -1,11 +1,11 @@
 using System.Collections;
 using Battle.Projectiles;
-using BattleEntity;
+using Enemies;
 using UnityEngine;
 
 namespace Battle.Spawners
 {
-	public class Giant_Spawner : Spawner
+	public class GiantSpawner : Spawner
 	{
 		#region Fields
 
@@ -29,7 +29,7 @@ namespace Battle.Spawners
 		private const float OFF_Y = 8.5f;
 
 		/// <inheritdoc/>
-		public override Type HandledType => Type.GIANT;
+		public override Type HandledType => Type.Giant;
 
 		/// <inheritdoc/>
 		public override void Clean()
